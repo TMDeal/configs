@@ -1,0 +1,12 @@
+*.pyc
+.tags
+.cache
+tmp
+bundle
+autoload
+.ropeproject
+yankring*
+.netrwhist
+.slime_paste
+.localvimrc_persistent
+.*log
