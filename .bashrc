@@ -59,8 +59,10 @@ export TERM=xterm-256color
 export VISUAL=vim
 export EDITOR=vim
 
-[[ -f /usr/share/fzf/key-bindings.bash ]] && source /usr/share/fzf/key-bindings.bash
-export FZF_DEFAULT_OPTS="--extended"
+if [[ -f /usr/share/fzf/key-bindings.bash ]]; then
+    source /usr/share/fzf/key-bindings.bash
+    export FZF_DEFAULT_OPTS="--extended"
+fi
 
 if [ -f /usr/bin/virtualenvwrapper.sh ]; then
     export WORKON_HOME=$HOME/.virtualenvs
@@ -69,16 +71,13 @@ if [ -f /usr/bin/virtualenvwrapper.sh ]; then
 fi
 
 # don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
 HISTCONTROL=ignoreboth
-HISTCONTROL=ignoredups
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
 
 # append to the history file, don't overwrite it
 shopt -s histappend
+
+HISTSIZE=1000
+HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
