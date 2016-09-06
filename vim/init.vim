@@ -71,7 +71,7 @@ Plug 'neomake/neomake', {'on': 'Neomake'}
 "filetypes
 let g:polyglot_disabled=['jsx']
 Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
-" Plug 'othree/javascript-libraries-syntax.vim', {'as': 'javascript-libraries-syntax'}
+Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript', 'as': 'javascript-libraries-syntax'}
 
 "}}}
 "Utility===================================================================={{{
@@ -864,6 +864,7 @@ augroup END
 augroup Web
     au!
     au BufEnter *.html setlocal sw=2 sts=2 ts=2
+    au BufEnter *.pug setlocal sw=2 sts=2 ts=2
 augroup END
 
 augroup Tex
