@@ -46,7 +46,6 @@ call g:plug#begin(expand('$EDITOR_ROOT/bundle'))
 
 "python
 Plug 'klen/python-mode', {'for': 'python'}
-Plug 'davidhalter/jedi-vim', {'for': 'python', 'as': 'jedi'}
 Plug 'heavenshell/vim-pydocstring', {'for': 'python', 'as': 'pydocstring'}
 Plug 'tweekmonster/django-plus.vim', {'on': [], 'as': 'django-plus'}
 Plug 'jmcomets/vim-pony', {'on': [], 'as': 'pony'}
@@ -392,21 +391,6 @@ let g:pymode_folding=0
 let g:pymode_lint=0
 let g:pymode_rope_completion=0
 let g:pymode_rope_lookup_project=0
-
-"}}}
-"Jedi-vim==================================================================={{{
-
-let g:jedi#completions_enabled=0
-let g:jedi#show_call_signatures=2
-let g:jedi#show_call_signatures_delay=0
-
-let g:jedi#completions_command=''
-let g:jedi#goto_command=''
-let g:jedi#goto_assignments_command=''
-let g:jedi#goto_definitions_command=''
-let g:jedi#documentation_command=''
-let g:jedi#rename_command=''
-let g:jedi#usages_command=''
 
 "}}}
 "Delimitmate================================================================{{{
