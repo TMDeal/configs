@@ -372,11 +372,6 @@ let g:pymode_rope_lookup_project=0
 "}}}
 "Delimitmate================================================================{{{
 
-let g:lexima_enable_basic_rules=1
-let g:lexima_enable_space_rules=1
-let g:lexima_enable_newline_rules=1
-let g:lexima_enable_endwise_rules=1
-
 let g:delimitMate_matchpairs="(:),[:],{:}"
 let g:delimitMate_quotes="\" ' `"
 let g:delimitMate_nesting_quotes=['"']
