@@ -163,7 +163,7 @@ endfunction
 
 function! TryToLoadGit()
     if isdirectory(expand($ROOT . '/.git'))
-        call plug#load('vim-fugitive', 'vim-gitgutter')
+        call plug#load('fugitive', 'gitgutter')
     endif
 endfunction
 
