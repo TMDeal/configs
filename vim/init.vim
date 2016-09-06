@@ -76,44 +76,14 @@ Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
 "}}}
 "Utility===================================================================={{{
 
-function! BuildYCM(info) "{{{
-    let install_command='python2 install.py'
-
-    if executable('clang')
-        if system("clang --version | grep 3.[8-9] >/dev/null && echo $?")==0 
-            let install_command.=' --system-libclang'
-        endif
-        let install_command.=' --clang-completer'
-    endif
-
-    let args_list=''
-    let args_info={
-                \'--omnisharp-completer': ['mono'],
-                \'--gocode-completer': ['go'],
-                \'--tern-completer': ['node', 'npm'],
-                \'--racer-completer': ['rustc', 'cargo'],
-                \}
-
-    for [completer, executables] in items(args_info)
-        let can_install_completer=1
-        for exe in executables
-            if !executable(exe)
-                let can_install_completer=0
-                break 
-            endif
-        endfor
-        if can_install_completer==1
-            let args_list .= ' ' . completer
-        endif
-    endfor
-
-    let install_command.=args_list
-
-    if a:info.status == 'installed' || a:info.force
-        execute "!" . install_command
-    endif
-endfunction "}}}
-Plug 'Valloric/YouCompleteMe', MaybeLoad(has('python'), {'do': function('BuildYCM')})
+Plug 'Shougo/deoplete.nvim', MaybeLoad(has('nvim'), {'do': ':UpdateRemotePlugins', 'as': 'deoplete'})
+            \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
+            \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'for': 'javascript', 'as': 'ternjs'}
+            \|Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
+            \|Plug 'zchee/deoplete-jedi', {'for': 'python'}
+            \|Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp']}
+            \|Plug 'Shougo/echodoc.vim', {'as': 'echodoc'}
+            \|Plug 'Shougo/context_filetype.vim', {'as': 'context_filetype'}
 
 Plug 'SirVer/ultisnips', MaybeLoad(has('python')) "| Plug 'honza/vim-snippets'
 
@@ -342,34 +312,41 @@ let g:UltiSnipsJumpForwardTrigger='<C-k>'
 let g:UltiSnipsJumpBackwardTrigger='<C-j>'
 
 "}}}
-"YouCompleteMe=============================================================={{{
+"Deoplete==================================================================={{{
+let g:deoplete#enable_at_startup=1
+let g:echodoc_enable_at_startup=1
 
-let g:ycm_global_ycm_extra_conf=$EDITOR_ROOT . '/.ycm_extra_conf.py'
-let g:ycm_extra_conf_globlist=['~/my-workspace/*']
-let g:ycm_add_preview_to_completeopt=0
-let g:ycm_allow_changing_updatetime=0
-let g:ycm_auto_trigger=1
-let g:ycm_autoclose_preview_window_after_insertion=1
-let g:ycm_autoclose_preview_window_after_completion=0
-let g:ycm_key_detailed_diagnostics=''
-let g:ycm_enable_diagnostic_signs=0
-let g:ycm_enable_diagnostic_highlighting=0
-let g:ycm_python_binary_path = '/usr/bin/python3'
-let g:ycm_collect_identifiers_from_tags_files=1
+let g:tern_request_timeout=1
+let g:tern_show_signature_in_pum=0
+let g:tern#command=["tern"]
+let g:tern#arguments=["--persistent"]
 
-let g:ycm_semantic_triggers =  {
-            \   'c' : ['->', '.'],
-            \   'cpp' : ['->', '.', '::'],
-            \   'java' : ['.'],
-            \   'python' : ['.', 'from ', 'import '],
-            \   'php' : ['.', '->', '::'],
-            \   'javascript' : ['.'],
-            \   'typescript' : ['.'],
-            \   'css' : ['.'],
-            \   'perl' : ['->'],
-            \   'ruby' : ['.', '::'],
-            \   'lua' : ['.', ':'],
-            \ }
+let g:deoplete#sources#jedi#show_docstring=1
+let g:deoplete#sources#clang#libclang_path='/usr/lib/libclang.so'
+let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
+let g:deoplete#sources#clang#std#cpp='c++1y'
+
+call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy', 'matcher_length'])
+call deoplete#custom#set('_', 'converters',
+            \ ['converter_auto_delimiter', 'converter_remove_overlap',
+            \  'converter_truncate_abbr', 'converter_truncate_menu'])
+
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr><S-tab> pumvisible() ? "\<c-p>" : "\<S-tab>"
+inoremap <expr><C-g> deoplete#undo_completion()
+inoremap <expr><C-l> deoplete#refresh()
+inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
+
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+
+if has("gui_running")
+    inoremap <silent><expr><C-Space> deoplete#mappings#manual_complete()
+else
+    inoremap <silent><expr><C-@> deoplete#mappings#manual_complete()
+endif
 
 "}}}
 "Python Mode================================================================{{{
