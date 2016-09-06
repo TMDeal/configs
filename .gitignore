@@ -10,3 +10,5 @@ yankring*
 .slime_paste
 .localvimrc_persistent
 .*log
+bookmarks
+history
