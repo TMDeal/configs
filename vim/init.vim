@@ -179,7 +179,7 @@ let g:disable_protodef_sorting=1
 let g:lt_height = 5
 
 "ProjectRoot
-let g:rootmarkers = ['manage.py', 'package.json', 'CMakeLists.txt', 'Makefile', '.projectroot']
+let g:rootmarkers = ['.git', 'manage.py', 'package.json', 'CMakeLists.txt', 'Makefile', '.projectroot']
 
 "Pydocstring
 let g:pydocstring_templates_dir=$EDITOR_ROOT . '/templates/'
