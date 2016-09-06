@@ -95,11 +95,21 @@ else
 fi
 
 #alias settings
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
 if $( command_exists nvim ); then
    alias vim="nvim"
 fi
 
-alias ls="ls --color=auto --group-directories-first -h"
+if [ -x /usr/bin/dircolors ]; then
+    alias ls='ls --color=auto --group-directories-first'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
 alias l="ls -alh"
 alias tmux="tmux -2"
 alias ..="cd .."
