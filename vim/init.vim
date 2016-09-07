@@ -35,17 +35,55 @@ endfor
 "}}}
 "Plugins===================================================================={{{
 
-"Only activate plugin if condition is met
-function! MaybeLoad(condition, ...)
+function! MaybeLoad(condition, ...) "{{{
   let opts = get(a:000, 0, {})
   return a:condition ? opts : extend(opts, { 'on': [], 'for': [] })
 endfunction
+"}}}
+function! BuildYCM(info) "{{{
+    let install_command='python2 install.py'
+
+    if executable('clang')
+        if system("clang --version | grep 3.[8-9] >/dev/null && echo $?")==0 
+            let install_command.=' --system-libclang'
+        endif
+        let install_command.=' --clang-completer'
+    endif
+
+    let args_list=''
+    let args_info={
+                \'--omnisharp-completer': ['mono'],
+                \'--gocode-completer': ['go'],
+                \'--tern-completer': ['node', 'npm'],
+                \'--racer-completer': ['rustc', 'cargo'],
+                \}
+
+    for [completer, executables] in items(args_info)
+        let can_install_completer=1
+        for exe in executables
+            if !executable(exe)
+                let can_install_completer=0
+                break 
+            endif
+        endfor
+        if can_install_completer==1
+            let args_list .= ' ' . completer
+        endif
+    endfor
+
+    let install_command.=args_list
+
+    if a:info.status == 'installed' || a:info.force
+        execute "!" . install_command
+    endif
+endfunction "}}}
 
 call g:plug#begin(expand('$EDITOR_ROOT/bundle'))
 "Code======================================================================={{{
 
 "python
 Plug 'klen/python-mode', {'for': 'python'}
+Plug 'davidhalter/jedi-vim', {'for': 'python', 'as': 'jedi'}
 Plug 'heavenshell/vim-pydocstring', {'for': 'python', 'as': 'pydocstring'}
 Plug 'tweekmonster/django-plus.vim', {'on': [], 'as': 'django-plus'}
 Plug 'jmcomets/vim-pony', {'on': [], 'as': 'pony'}
@@ -76,20 +114,10 @@ Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript', 'as': 'java
 "}}}
 "Utility===================================================================={{{
 
-Plug 'Shougo/deoplete.nvim', MaybeLoad(has('nvim'), {'do': ':UpdateRemotePlugins', 'as': 'deoplete'})
-            \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
-            \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'for': 'javascript', 'as': 'ternjs'}
-            \|Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
-            \|Plug 'zchee/deoplete-jedi', {'for': 'python'}
-            \|Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp']}
-            \|Plug 'Shougo/echodoc.vim', {'as': 'echodoc'}
-            \|Plug 'Shougo/context_filetype.vim', {'as': 'context_filetype'}
-
-Plug 'SirVer/ultisnips', MaybeLoad(has('python')) "| Plug 'honza/vim-snippets'
-
+Plug 'Valloric/YouCompleteMe', MaybeLoad(has('python'), {'do': function('BuildYCM'), 'on': []})
+Plug 'SirVer/ultisnips', MaybeLoad(has('python'))
 Plug 'ludovicchabant/vim-gutentags', MaybeLoad(executable('ctags'), {'for': ['c', 'cpp'], 'as': 'gutentags'})
 Plug 'majutsushi/tagbar', MaybeLoad(executable('ctags'), {'on': 'TagbarToggle'})
-
 Plug 'jeetsukumaran/vim-buffergator', {'on': ['BuffergatorToggle', 'BuffergatorMruCycleNext', 'BuffergatorMruCyclePrev'], 'as': 'buffergator'}
 Plug 'tpope/vim-vinegar', {'as': 'vinegar'}
 Plug 'godlygeek/tabular', {'on': 'Tabularize'}
@@ -137,16 +165,127 @@ call g:plug#end()
 "}}}
 "Settings==================================================================={{{
 
-"Plugins===================================================================={{{
-
 "Utils======================================================================{{{
 
-"define root directory using ProjectRoot
-let $ROOT=projectroot#guess()
+"Root======================================================================={{{
+let $PROJECT_ROOT=projectroot#guess()
 
 augroup Reset_Root_DIR
     au!
-    au BufReadPre * let $ROOT=projectroot#guess()
+    au BufReadPre * let $PROJECT_ROOT=projectroot#guess()
+augroup END
+
+"}}}
+"Functions=================================================================={{{
+"
+function! TryToLoadDjango() "{{{
+    if(filereadable(expand($PROJECT_ROOT . '/manage.py')))
+        call plug#load('vim-pony', 'django-plus')
+    endif
+endfunction
+"}}}
+function! TryToLoadGit() "{{{
+    if isdirectory(expand($PROJECT_ROOT . '/.git'))
+        call plug#load('fugitive', 'gitgutter')
+    endif
+endfunction
+"}}}
+function! AutoCDtoProjectRoot() "{{{
+    try
+        if &ft != 'help'
+            ProjectRootCD
+        endif
+    catch
+        "silently ignore invalid buffers
+    endtry
+endfun
+"}}}
+
+"
+"}}}
+"Augroups==================================================================={{{
+
+"Filetype Settings=========================================================={{{
+
+augroup Git
+    au!
+    au Filetype gitcommit set textwidth=72
+    au Filetype gitcommit set spell
+augroup END
+
+augroup Web
+    au!
+    au BufEnter *.html setlocal sw=2 sts=2 ts=2
+    au BufEnter *.pug setlocal sw=2 sts=2 ts=2
+augroup END
+
+augroup Tex
+    au!
+    au BufEnter *.tex setfiletype tex
+augroup END
+
+augroup Django
+    au!
+    au BufEnter $PROJECT_ROOT/*/templates/* setfiletype htmldjango
+    au FileType htmldjango let b:surround_{char2nr("v")} = "{{ \r }}"
+    au FileType htmldjango let b:surround_{char2nr("{")} = "{{ \r }}"
+    au FileType htmldjango let b:surround_{char2nr("%")} = "{% \r %}"
+    au FileType htmldjango let b:surround_{char2nr("b")} = "{% block \1block name: \1 %}\r{% endblock \1\1 %}"
+    au FileType htmldjango let b:surround_{char2nr("i")} = "{% if \1condition: \1 %}\r{% endif %}"
+    au FileType htmldjango let b:surround_{char2nr("w")} = "{% with \1with: \1 %}\r{% endwith %}"
+    au FileType htmldjango let b:surround_{char2nr("f")} = "{% for \1for loop: \1 %}\r{% endfor %}"
+    au FileType htmldjango let b:surround_{char2nr("c")} = "{% comment %}\r{% endcomment %}"
+    au FileType htmldjango inoremap {% {%  %}<left><left><left>
+    "}
+    "The above bracket fixes syntax highlighting, annoyingly enough
+augroup END
+"}}}
+"CDToProjectRoot============================================================{{{
+
+augroup Auto_CD_To_Project_Root
+    au!
+    au BufEnter * call AutoCDtoProjectRoot()
+augroup END
+
+"}}}
+"Lint======================================================================={{{
+
+augroup lint
+    au!
+    au BufWritePost * Neomake
+    au User NeomakeFinished call lightline#update()
+augroup END
+
+"}}}
+"Line Return================================================================{{{
+
+" Make sure Vim returns to the same line when you reopen a file.
+function! LineReturn()
+    if line("'\"") > 0 && line("'\"") <= line("$") |
+        execute 'normal! g`"zvzz' |
+    endif
+endfunction
+
+augroup line_return
+    au!
+    au BufReadPost * call LineReturn()
+augroup END
+
+"}}}
+"AutoResize Windows========================================================={{{
+
+augroup window
+    au!
+    au VimResized * :wincmd =
+augroup END
+
+"}}}
+"Lazy-Load=================================================================={{{
+
+augroup Load_YCM
+  autocmd!
+  autocmd InsertEnter * call plug#load('YouCompleteMe')
+                     \| autocmd! Load_YCM
 augroup END
 
 augroup Lazy_Load_Plugins
@@ -155,19 +294,13 @@ augroup Lazy_Load_Plugins
     au BufReadPre * call TryToLoadDjango()
 augroup END
 
-function! TryToLoadDjango()
-    if(filereadable(expand($ROOT . '/manage.py')))
-        call plug#load('vim-pony', 'django-plus')
-    endif
-endfunction
-
-function! TryToLoadGit()
-    if isdirectory(expand($ROOT . '/.git'))
-        call plug#load('fugitive', 'gitgutter')
-    endif
-endfunction
+"}}}
 
 "}}}
+
+"}}}
+"Plugins===================================================================={{{
+
 "Shorts====================================================================={{{
 
 "vim-Protodef
@@ -176,10 +309,16 @@ let g:disable_protodef_mapping=1
 let g:disable_protodef_sorting=1
 
 "ListToggle
-let g:lt_height = 5
+let g:lt_height=5
+let g:lt_location_list_toggle_map = '<leader>l'
+let g:lt_quickfix_list_toggle_map = '<leader>q'
+
+"vinegar
+nmap <F2> <Plug>VinegarVerticalSplitUp
+nmap <F3> <Plug>VinegarSplitUp
 
 "ProjectRoot
-let g:rootmarkers = ['.git', 'manage.py', 'package.json', 'CMakeLists.txt', 'Makefile', '.projectroot']
+let g:rootmarkers=['.projectroot', '.git', 'manage.py', 'package.json', 'CMakeLists.txt', 'Makefile']
 
 "Pydocstring
 let g:pydocstring_templates_dir=$EDITOR_ROOT . '/templates/'
@@ -190,10 +329,13 @@ let g:tcommentMapLeader1=''
 let g:tcommentMapLeader2=''
 
 "Colorizer
-let g:colorizer_nomap = 1
+let g:colorizer_nomap=1
 
 "Buffergator
 let g:buffergator_suppress_keymaps=0
+nnoremap <Leader>b :BuffergatorToggle<cr>
+nnoremap <silent> ]b :BuffergatorMruCyclePrev<cr>
+nnoremap <silent> [b :BuffergatorMruCycleNext<cr>
 
 "Taboo
 let g:taboo_tabline=1
@@ -203,11 +345,12 @@ let g:taboo_tab_format='[%N]%f%m'
 "Ctrlp======================================================================{{{
 
 let g:ctrlp_map = ''
+nnoremap <silent> <Leader>p :CtrlP<cr>
 
 let g:ctrlp_cache_dir=$EDITOR_ROOT . '/.cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit=0
 let g:ctrlp_regexp=0
-let g:ctrlp_root_markers=['.projectroot', 'package.json', 'CMakeLists.txt']
+let g:ctrlp_root_markers=['.projectroot', '.git', 'manage.py', 'package.json', 'CMakeLists.txt', 'Makefile']
 let g:ctrlp_show_hidden=1
 let g:ctrlp_max_files=10000
 let g:ctrlp_max_depth=40
@@ -231,13 +374,13 @@ let g:mta_filetypes = {
 "}}}
 "Gutentags=================================================================={{{
 
-let g:gutentags_project_root=['.projectroot', 'composer.json', 'package.json', '.git']
+let g:gutentags_project_root=['.projectroot', '.git', 'manage.py', 'package.json', 'CMakeLists.txt', 'Makefile']
 let g:gutentags_exclude=[]
 let g:gutentags_cache_dir=$EDITOR_ROOT . '/.tags'
 
 augroup SET_TAGS
    au!
-   au BufEnter * set tags+=$ROOT/tags
+   au BufEnter * set tags+=$PROJECT_ROOT/tags
 augroup END
 
 "}}}
@@ -259,7 +402,7 @@ let g:slime_python_ipython=1
 "}}}
 "Localvimrc================================================================={{{
 
-let g:localvimrc_name="lvimrc.vim"
+let g:localvimrc_name=".lvimrc.vim"
 let g:localvimrc_persistent=2
 let g:localvimrc_persistence_file=$EDITOR_ROOT . "/.localvimrc_persistent"
 
@@ -279,7 +422,7 @@ let g:neomake_info_sign = {'text': 'ℹ', 'texthl': 'NeomakeInfoSign'}
 
 let g:neomake_javascript_enable_makers=['jshint']
 let g:neomake_vim_enable_makers=['vint']
-let g:neomake_c_enable_makers=['gcc']
+let g:neomake_c_enable_makers=['clang']
 
 let g:neomake_python_enable_makers=['flake8']
 let g:neomake_python_flake8_args=['--format=default', '--ignore=F403', '--max-line-length=100']
@@ -297,6 +440,8 @@ let g:tagbar_autofocus=1
 let g:tagbar_compact=1
 let g:tagbar_show_linenumbers=1
 
+nnoremap <silent> <F4> :TagbarToggle<cr>
+
 augroup Tagbar
     au!
     au filetype tagbar setlocal nolist
@@ -312,44 +457,52 @@ let g:UltiSnipsJumpForwardTrigger='<C-k>'
 let g:UltiSnipsJumpBackwardTrigger='<C-j>'
 
 "}}}
-"Deoplete==================================================================={{{
-let g:deoplete#enable_at_startup=1
-let g:echodoc_enable_at_startup=1
+"YouCompleteMe=============================================================={{{
 
-let g:tern_request_timeout=1
-let g:tern_show_signature_in_pum=0
-let g:tern#command=["tern"]
-let g:tern#arguments=["--persistent"]
+let g:ycm_global_ycm_extra_conf=$EDITOR_ROOT . '/.ycm_extra_conf.py'
+let g:ycm_extra_conf_globlist=['~/my-workspace/*']
+let g:ycm_add_preview_to_completeopt=0
+let g:ycm_allow_changing_updatetime=0
+let g:ycm_auto_trigger=1
+let g:ycm_autoclose_preview_window_after_insertion=1
+let g:ycm_autoclose_preview_window_after_completion=0
+let g:ycm_key_detailed_diagnostics=''
+let g:ycm_enable_diagnostic_signs=0
+let g:ycm_enable_diagnostic_highlighting=0
+let g:ycm_python_binary_path = '/usr/bin/python3'
+let g:ycm_collect_identifiers_from_tags_files=1
 
-let g:deoplete#sources#jedi#show_docstring=1
-let g:deoplete#sources#clang#libclang_path='/usr/lib/libclang.so'
-let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
-let g:deoplete#sources#clang#std#cpp='c++1y'
-
-call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy', 'matcher_length'])
-call deoplete#custom#set('_', 'converters',
-            \ ['converter_auto_delimiter', 'converter_remove_overlap',
-            \  'converter_truncate_abbr', 'converter_truncate_menu'])
-
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr><S-tab> pumvisible() ? "\<c-p>" : "\<S-tab>"
-inoremap <expr><C-g> deoplete#undo_completion()
-inoremap <expr><C-l> deoplete#refresh()
-inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
-
-if !exists('g:deoplete#omni#input_patterns')
-  let g:deoplete#omni#input_patterns = {}
-endif
-
-if has("gui_running")
-    inoremap <silent><expr><C-Space> deoplete#mappings#manual_complete()
-else
-    inoremap <silent><expr><C-@> deoplete#mappings#manual_complete()
-endif
+let g:ycm_semantic_triggers =  {
+            \   'c' : ['->', '.'],
+            \   'cpp' : ['->', '.', '::'],
+            \   'java' : ['.'],
+            \   'python' : ['.', 'from ', 'import '],
+            \   'php' : ['.', '->', '::'],
+            \   'javascript' : ['.'],
+            \   'typescript' : ['.'],
+            \   'css' : ['.'],
+            \   'perl' : ['->'],
+            \   'ruby' : ['.', '::'],
+            \   'lua' : ['.', ':'],
+            \ }
 
 "}}}
-"Python Mode================================================================{{{
+"Jedi======================================================================={{{
+
+let g:jedi#completions_enabled=0
+let g:jedi#show_call_signatures=2
+let g:jedi#show_call_signatures_delay=0
+
+let g:jedi#completions_command=''
+let g:jedi#goto_command=''
+let g:jedi#goto_assignments_command=''
+let g:jedi#goto_definitions_command=''
+let g:jedi#documentation_command=''
+let g:jedi#rename_command=''
+let g:jedi#usages_command=''
+
+"}}}
+"Python-Mode================================================================{{{
 
 let g:pymode_python='python3'
 let g:pymode_syntax=1
@@ -391,6 +544,23 @@ let g:DoxygenToolkit_paramTag_pre="@Param "
 let g:DoxygenToolkit_returnTag="@Returns   "
 
 "}}}
+"Git========================================================================{{{
+
+nnoremap <silent> <Leader>ga :Git add %:p<CR><CR>
+nnoremap <silent> <Leader>gs :Gstatus<CR>
+nnoremap <silent> <Leader>gc :Gcommit -v -q<CR>
+nnoremap <silent> <Leader>gt :Gcommit -v -q %:p<CR>
+nnoremap <silent> <Leader>gd :Gdiff<CR>
+nnoremap <silent> <Leader>ge :Gedit<CR>
+nnoremap <silent> <Leader>gr :Gread<CR>
+nnoremap <silent> <Leader>gw :Gwrite<CR><CR>
+nnoremap <silent> <Leader>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <silent> <Leader>gp :Ggrep<Space>
+nnoremap <silent> <Leader>gm :Gmove<Space>
+nnoremap <silent> <Leader>gb :Git branch<Space>
+nnoremap <silent> <Leader>go :Git checkout<Space>
+
+"}}}
 
 "}}}
 "General===================================================================={{{
@@ -429,10 +599,6 @@ set foldnestmax=10
 set ruler
 set shortmess+=c
 set pumheight=10
-set timeout
-set ttimeout
-set timeoutlen=600
-set ttimeoutlen=0
 set showtabline=2
 set list
 set listchars=extends:>,precedes:<,trail:.,tab:▸\ ,eol:¬
@@ -440,6 +606,12 @@ set listchars=extends:>,precedes:<,trail:.,tab:▸\ ,eol:¬
 if has_key(g:plugs, 'lightline')
     set noshowmode
 endif
+"}}}
+"Timeout===================================================================={{{
+set timeout
+set ttimeout
+set timeoutlen=600
+set ttimeoutlen=0
 "}}}
 "Indentation================================================================{{{
 if !has('nvim')
@@ -532,8 +704,6 @@ if has('gui_running')
 endif
 
 "}}}
-
- "}}}
 "KeyMappings================================================================{{{
 
 "NOP========================================================================{{{
@@ -544,6 +714,9 @@ vnoremap <F1> <nop>
 nnoremap Q <nop>
 nnoremap q: <nop>
 
+"}}}
+"Commands==================================================================={{{
+command! PU PlugUpdate | PlugUpgrade
 "}}}
 "Leaders===================================================================={{{
 "
@@ -559,13 +732,28 @@ nnoremap <Leader>dD "_D
 nnoremap <Leader>dC "_C
 nnoremap <Leader>dx "_x
 
+nnoremap <silent> <Leader>- :split<cr>
+nnoremap <silent> <Leader>\ :vsplit<cr>
+
+nnoremap <silent> <Leader>qq  :q<cr>
+nnoremap <silent> <Leader>qn  :q!<cr>
+nnoremap <silent> <Leader>qa  :qa<cr>
+nnoremap <silent> <Leader>qan :qa!<cr>
+nnoremap <silent> <Leader>ww  :w<cr>
+nnoremap <silent> <Leader>wn  :w!<cr>
+nnoremap <silent> <Leader>wa  :wa<cr>
+nnoremap <silent> <Leader>wan :wa!<cr>
+nnoremap <silent> <Leader>wq  :wqa<cr>
+nnoremap <silent> <Leader>wqn :wqa!<cr>
+
+nnoremap <silent> <Leader>Sw  :SudoWrite<cr>
+nnoremap <Leader>Se  :SudoEdit<space>
+
 "delete trailing whitespace
 nnoremap <silent> <Leader>dw :%s/\s\+$//<cr>
 
 nnoremap <silent> <Leader>T :tabnew<cr>
-nnoremap <silent> <Leader>ws :SudoWrite<cr>
 
-"edits
 nnoremap <silent> <Leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <silent> <Leader>sv :source $MYVIMRC<cr> :nohl<cr>
 nnoremap <silent> <Leader>es :UltiSnipsEdit<cr>
@@ -620,43 +808,6 @@ nnoremap <silent> [q :cprevious<cr>
 
 nnoremap <silent> ]t :tabnext<cr>
 nnoremap <silent> [t :tabprevious<cr>
-"}}}
-"Plugins===================================================================={{{
-
-"CtrlP
-nnoremap <silent> <Leader>p :CtrlP<cr>
-
-"Vinegar
-nmap <F2> <Plug>VinegarVerticalSplitUp
-nmap <F3> <Plug>VinegarSplitUp
-
-"Tagbar
-nnoremap <silent> <F4> :TagbarToggle<cr>
-
-"Buffergater
-nnoremap <silent> <Leader>b :BuffergatorToggle<cr>
-nnoremap <silent> ]b :BuffergatorMruCyclePrev<cr>
-nnoremap <silent> [b :BuffergatorMruCycleNext<cr>
-
-"Fugitive
-nnoremap <silent> <Leader>ga :Git add %:p<CR><CR>
-nnoremap <silent> <Leader>gs :Gstatus<CR>
-nnoremap <silent> <Leader>gc :Gcommit -v -q<CR>
-nnoremap <silent> <Leader>gt :Gcommit -v -q %:p<CR>
-nnoremap <silent> <Leader>gd :Gdiff<CR>
-nnoremap <silent> <Leader>ge :Gedit<CR>
-nnoremap <silent> <Leader>gr :Gread<CR>
-nnoremap <silent> <Leader>gw :Gwrite<CR><CR>
-nnoremap <silent> <Leader>gl :silent! Glog<CR>:bot copen<CR>
-nnoremap <silent> <Leader>gp :Ggrep<Space>
-nnoremap <silent> <Leader>gm :Gmove<Space>
-nnoremap <silent> <Leader>gb :Git branch<Space>
-nnoremap <silent> <Leader>go :Git checkout<Space>
-
-"ListToggle
-let g:lt_location_list_toggle_map = '<leader>l'
-let g:lt_quickfix_list_toggle_map = '<leader>q'
-
 "}}}
 "Filetype Mappings=========================================================={{{
 
@@ -759,184 +910,101 @@ else
                 \ 'subseparator': { 'left': '|', 'right': '|' }
                 \ }
 
+"Functions=================================================================={{{
+
+function! LightLineModified() "{{{
+    return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfun "}}}
+function! LightLineReadonly() "{{{
+    return &ft !~? 'help' && &readonly ? 'RO' : ''
+endfun "}}}
+function! LightLineFileformat() "{{{
+    return winwidth(0) > 70 ? &fileformat : ''
+endfun "}}}
+function! LightLineFiletype() "{{{
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfun "}}}
+function! LightLineFileencoding() "{{{
+    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfun "}}}
+function! LightLineFugitive() "{{{
+    try
+        if expand('%:t') !~? 'Tagbar\|NERD' && exists('*fugitive#head')
+            let mark = ''
+            let _ = fugitive#head()
+            return strlen(_) ? mark._ : ''
+        endif
+    catch
+    endtry
+    return ''
+endfun "}}}
+function! LightLineFilename() "{{{
+    let fname = expand('%:t')
+    return fname == 'ControlP' ? g:lightline.ctrlp_item :
+                \ fname == '__Tagbar__' ? '' :
+                \ fname =~ 'NERD_tree\|undotree*\|diffpanel*' ? '' :
+                \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
+                \ ('' != fname ? fname : '[No Name]') .
+                \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+endfun "}}}
+function! LightLineMode() "{{{
+    let fname = expand('%:t')
+    return fname == '__Tagbar__' ? 'Tagbar' :
+                \ fname == 'ControlP' ? 'CtrlP' :
+                \ fname =~ 'undotree*' ? 'Undotree' :
+                \ fname =~ 'diffpanel*' ? 'Diffpanel' :
+                \ fname =~ 'NERD_tree' ? 'NERDTree' :
+                \ winwidth(0) > 60 ? lightline#mode() : ''
+endfun "}}}
+function! CtrlPMark() "{{{
+    if expand('%:t') =~ 'ControlP'
+        call lightline#link('iR'[g:lightline.ctrlp_regex])
+        return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+                    \ , g:lightline.ctrlp_next], 0)
+    else
+        return ''
+    endif
+endfun "}}}
+function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked) "{{{
+    let g:lightline.ctrlp_regex = a:regex
+    let g:lightline.ctrlp_prev = a:prev
+    let g:lightline.ctrlp_item = a:item
+    let g:lightline.ctrlp_next = a:next
+    return lightline#statusline(0)
+endfun "}}}
+function! CtrlPStatusFunc_2(str) "{{{
+    return lightline#statusline(0)
+endfun "}}}
+function! LightlineNeomake() "{{{
+    let errors = neomake#statusline#LoclistCounts()
+    let output = ''
+
+    if has_key(errors, 'E')
+        let output .= '[E:'.errors['E'].']'
+    endif
+    if has_key(errors, 'W')
+        let output .= '[W:'.errors['W'].']'
+    endif
+    if has_key(errors, 'x')
+        let output .= '[x:'.errors['x'].']'
+    endif
+
+    return output
+
+endfun "}}}
+function! TagbarStatusFunc(current, sort, fname, ...) abort "{{{
+    let g:lightline.fname = a:fname
+    return lightline#statusline(0)
+endfun "}}}
+
+"}}}
     let g:tagbar_status_func = 'TagbarStatusFunc'
     let g:ctrlp_status_func = {
                 \ 'main': 'CtrlPStatusFunc_1',
                 \ 'prog': 'CtrlPStatusFunc_2',
                 \ }
-    fun! LightLineModified() "{{{
-        return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-    endfun "}}}
-    fun! LightLineReadonly() "{{{
-        return &ft !~? 'help' && &readonly ? 'RO' : ''
-    endfun "}}}
-    fun! LightLineFileformat() "{{{
-        return winwidth(0) > 70 ? &fileformat : ''
-    endfun "}}}
-    fun! LightLineFiletype() "{{{
-        return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-    endfun "}}}
-    fun! LightLineFileencoding() "{{{
-        return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-    endfun "}}}
-    fun! LightLineFugitive() "{{{
-        try
-            if expand('%:t') !~? 'Tagbar\|NERD' && exists('*fugitive#head')
-                let mark = ''
-                let _ = fugitive#head()
-                return strlen(_) ? mark._ : ''
-            endif
-        catch
-        endtry
-        return ''
-    endfun "}}}
-    fun! LightLineFilename() "{{{
-        let fname = expand('%:t')
-        return fname == 'ControlP' ? g:lightline.ctrlp_item :
-                    \ fname == '__Tagbar__' ? '' :
-                    \ fname =~ 'NERD_tree\|undotree*\|diffpanel*' ? '' :
-                    \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
-                    \ ('' != fname ? fname : '[No Name]') .
-                    \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
-    endfun "}}}
-    fun! LightLineMode() "{{{
-          let fname = expand('%:t')
-            return fname == '__Tagbar__' ? 'Tagbar' :
-                    \ fname == 'ControlP' ? 'CtrlP' :
-                    \ fname =~ 'undotree*' ? 'Undotree' :
-                    \ fname =~ 'diffpanel*' ? 'Diffpanel' :
-                    \ fname =~ 'NERD_tree' ? 'NERDTree' :
-                    \ winwidth(0) > 60 ? lightline#mode() : ''
-    endfun "}}}
-    fun! CtrlPMark() "{{{
-        if expand('%:t') =~ 'ControlP'
-            call lightline#link('iR'[g:lightline.ctrlp_regex])
-            return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-                        \ , g:lightline.ctrlp_next], 0)
-        else
-            return ''
-        endif
-    endfun "}}}
-    fun! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked) "{{{
-        let g:lightline.ctrlp_regex = a:regex
-        let g:lightline.ctrlp_prev = a:prev
-        let g:lightline.ctrlp_item = a:item
-        let g:lightline.ctrlp_next = a:next
-        return lightline#statusline(0)
-    endfun "}}}
-    fun! CtrlPStatusFunc_2(str) "{{{
-        return lightline#statusline(0)
-    endfun "}}}
-    fun! LightlineNeomake() "{{{
-        let errors = neomake#statusline#LoclistCounts()
-        let output = ''
-
-        if has_key(errors, 'E')
-            let output .= '[E:'.errors['E'].']'
-        endif
-        if has_key(errors, 'W')
-            let output .= '[W:'.errors['W'].']'
-        endif
-        if has_key(errors, 'x')
-            let output .= '[x:'.errors['x'].']'
-        endif
-
-        return output
-
-    endfun "}}}
-    fun! TagbarStatusFunc(current, sort, fname, ...) abort "{{{
-        let g:lightline.fname = a:fname
-        return lightline#statusline(0)
-    endfun "}}}
 endif
 
 "}}}
-"Autocmd===================================================================={{{
 
-"Filetype Settings=========================================================={{{
-
-augroup Git
-    au!
-    au Filetype gitcommit set textwidth=72
-    au Filetype gitcommit set spell
-augroup END
-
-augroup Web
-    au!
-    au BufEnter *.html setlocal sw=2 sts=2 ts=2
-    au BufEnter *.pug setlocal sw=2 sts=2 ts=2
-augroup END
-
-augroup Tex
-    au!
-    au BufEnter *.tex setfiletype tex
-augroup END
-
-augroup Django
-    au!
-    au BufEnter $ROOT/*/templates/* setfiletype htmldjango
-    au FileType htmldjango let b:surround_{char2nr("v")} = "{{ \r }}"
-    au FileType htmldjango let b:surround_{char2nr("{")} = "{{ \r }}"
-    au FileType htmldjango let b:surround_{char2nr("%")} = "{% \r %}"
-    au FileType htmldjango let b:surround_{char2nr("b")} = "{% block \1block name: \1 %}\r{% endblock \1\1 %}"
-    au FileType htmldjango let b:surround_{char2nr("i")} = "{% if \1condition: \1 %}\r{% endif %}"
-    au FileType htmldjango let b:surround_{char2nr("w")} = "{% with \1with: \1 %}\r{% endwith %}"
-    au FileType htmldjango let b:surround_{char2nr("f")} = "{% for \1for loop: \1 %}\r{% endfor %}"
-    au FileType htmldjango let b:surround_{char2nr("c")} = "{% comment %}\r{% endcomment %}"
-    au FileType htmldjango inoremap {% {%  %}<left><left><left>
-    "}
-    "The above bracket fixes syntax highlighting, annoyingly enough
-augroup END
-"}}}
-"CDToProjectRoot============================================================{{{
-
-fun! AutoCDtoProjectRoot()
-    try
-        if &ft != 'help'
-            ProjectRootCD
-        endif
-    catch
-        "silently ignore invalid buffers
-    endtry
-endfun
-
-augroup Auto_CD_To_Project_Root
-    au!
-    au BufEnter * call AutoCDtoProjectRoot()
-augroup END
-
-"}}}
-"Lint======================================================================={{{
-
-augroup lint
-    au!
-    au BufWritePost * Neomake
-    au User NeomakeFinished call lightline#update()
-augroup END
-
-"}}}
-"Line Return================================================================{{{
-
-" Make sure Vim returns to the same line when you reopen a file.
-function! LineReturn()
-    if line("'\"") > 0 && line("'\"") <= line("$") |
-        execute 'normal! g`"zvzz' |
-    endif
-endfunction
-
-augroup line_return
-    au!
-    au BufReadPost * call LineReturn()
-augroup END
-
-"}}}
-"AutoResize Windows========================================================={{{
-
-augroup window
-    au!
-    au VimResized * :wincmd =
-augroup END
-
-"}}}
-
-"}}}
+ "}}}
