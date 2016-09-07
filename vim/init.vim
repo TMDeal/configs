@@ -83,7 +83,6 @@ call g:plug#begin(expand('$EDITOR_ROOT/bundle'))
 
 "python
 Plug 'klen/python-mode', {'for': 'python'}
-Plug 'davidhalter/jedi-vim', {'for': 'python', 'as': 'jedi'}
 Plug 'heavenshell/vim-pydocstring', {'for': 'python', 'as': 'pydocstring'}
 Plug 'tweekmonster/django-plus.vim', {'on': [], 'as': 'django-plus'}
 Plug 'jmcomets/vim-pony', {'on': [], 'as': 'pony'}
@@ -114,7 +113,15 @@ Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript', 'as': 'java
 "}}}
 "Utility===================================================================={{{
 
-Plug 'Valloric/YouCompleteMe', MaybeLoad(has('python'), {'do': function('BuildYCM'), 'on': []})
+Plug 'Shougo/deoplete.nvim', MaybeLoad(has('nvim'), {'do': ':UpdateRemotePlugins', 'as': 'deoplete'})
+            \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
+            \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'for': 'javascript', 'as': 'ternjs'}
+            \|Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
+            \|Plug 'zchee/deoplete-jedi', {'for': 'python'}
+            \|Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp']}
+            \|Plug 'Shougo/echodoc.vim', {'as': 'echodoc'}
+            \|Plug 'Shougo/context_filetype.vim', {'as': 'context_filetype'}
+
 Plug 'SirVer/ultisnips', MaybeLoad(has('python'))
 Plug 'ludovicchabant/vim-gutentags', MaybeLoad(executable('ctags'), {'for': ['c', 'cpp'], 'as': 'gutentags'})
 Plug 'majutsushi/tagbar', MaybeLoad(executable('ctags'), {'on': 'TagbarToggle'})
@@ -282,12 +289,6 @@ augroup END
 "}}}
 "Lazy-Load=================================================================={{{
 
-augroup Load_YCM
-  autocmd!
-  autocmd InsertEnter * call plug#load('YouCompleteMe')
-                     \| autocmd! Load_YCM
-augroup END
-
 augroup Lazy_Load_Plugins
     au!
     au BufReadPre * call TryToLoadGit()
@@ -303,43 +304,83 @@ augroup END
 
 "Shorts====================================================================={{{
 
-"vim-Protodef
+"vim-Protodef{{{
 let g:protodefprotogetter=$EDITOR_ROOT . '/bundle/vim-protodef/pullproto.pl'
 let g:disable_protodef_mapping=1
 let g:disable_protodef_sorting=1
-
-"ListToggle
+"}}}
+"ListToggle{{{
 let g:lt_height=5
 let g:lt_location_list_toggle_map = '<leader>l'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
-
-"vinegar
+"}}}
+"vinegar{{{
 nmap <F2> <Plug>VinegarVerticalSplitUp
 nmap <F3> <Plug>VinegarSplitUp
-
-"ProjectRoot
+"}}}
+"ProjectRoot{{{
 let g:rootmarkers=['.projectroot', '.git', 'manage.py', 'package.json', 'CMakeLists.txt', 'Makefile']
-
-"Pydocstring
+"}}}
+"Pydocstring{{{
 let g:pydocstring_templates_dir=$EDITOR_ROOT . '/templates/'
 let g:pydocstring_enable_mapping=0
-
-"tcomment
+"}}}
+"tcomment{{{
 let g:tcommentMapLeader1=''
 let g:tcommentMapLeader2=''
-
-"Colorizer
+"}}}
+"Colorizer{{{
 let g:colorizer_nomap=1
-
-"Buffergator
+"}}}
+"Buffergator{{{
 let g:buffergator_suppress_keymaps=0
 nnoremap <Leader>b :BuffergatorToggle<cr>
 nnoremap <silent> ]b :BuffergatorMruCyclePrev<cr>
 nnoremap <silent> [b :BuffergatorMruCycleNext<cr>
-
-"Taboo
+"}}}
+"Taboo{{{
 let g:taboo_tabline=1
 let g:taboo_tab_format='[%N]%f%m'
+"}}}
+"Yankring==================================================================={{{
+
+let g:yankring_history_dir=$EDITOR_ROOT
+let g:yankring_history_file='yankring'
+let g:yankring_replace_n_pkey='<C-p>'
+let g:yankring_replace_n_nkey='<C-n>'
+
+"}}}
+"Slime======================================================================{{{
+"
+let g:slime_target="tmux"
+let g:slime_paste_file=$EDITOR_ROOT . '/.slime_paste'
+let g:slime_default_config={"socket_name": "default", "target_pane": "1.2"}
+let g:slime_python_ipython=1
+
+"}}}
+"Localvimrc================================================================={{{
+
+let g:localvimrc_name=".lvimrc.vim"
+let g:localvimrc_persistent=2
+let g:localvimrc_persistence_file=$EDITOR_ROOT . "/.localvimrc_persistent"
+
+"}}}
+"Ultisnips=================================================================={{{
+
+let g:UltiSnipsExpandTrigger='<C-k>'
+let g:UltiSnipsJumpForwardTrigger='<C-k>'
+let g:UltiSnipsJumpBackwardTrigger='<C-j>'
+
+"}}}
+"Doxygen===================================================================={{{
+
+let g:DoxygenToolkit_authorName='Trent Deal'
+let g:DoxygenToolkit_licenseTag=''
+let g:DoxygenToolkit_briefTag_pre="@Brief  "
+let g:DoxygenToolkit_paramTag_pre="@Param "
+let g:DoxygenToolkit_returnTag="@Returns   "
+
+"}}}
 
 "}}}
 "Ctrlp======================================================================{{{
@@ -382,29 +423,6 @@ augroup SET_TAGS
    au!
    au BufEnter * set tags+=$PROJECT_ROOT/tags
 augroup END
-
-"}}}
-"Yankring==================================================================={{{
-
-let g:yankring_history_dir=$EDITOR_ROOT
-let g:yankring_history_file='yankring'
-let g:yankring_replace_n_pkey='<C-p>'
-let g:yankring_replace_n_nkey='<C-n>'
-
-"}}}
-"Slime======================================================================{{{
-"
-let g:slime_target="tmux"
-let g:slime_paste_file=$EDITOR_ROOT . '/.slime_paste'
-let g:slime_default_config={"socket_name": "default", "target_pane": "1.2"}
-let g:slime_python_ipython=1
-
-"}}}
-"Localvimrc================================================================={{{
-
-let g:localvimrc_name=".lvimrc.vim"
-let g:localvimrc_persistent=2
-let g:localvimrc_persistence_file=$EDITOR_ROOT . "/.localvimrc_persistent"
 
 "}}}
 "Neomake===================================================================={{{
@@ -450,56 +468,40 @@ augroup Tagbar
 augroup END
 
 "}}}
-"Ultisnips=================================================================={{{
+"Deoplete==================================================================={{{
+let g:deoplete#enable_at_startup=1
+let g:echodoc_enable_at_startup=1
 
-let g:UltiSnipsExpandTrigger='<C-k>'
-let g:UltiSnipsJumpForwardTrigger='<C-k>'
-let g:UltiSnipsJumpBackwardTrigger='<C-j>'
+let g:tern_request_timeout=1
+let g:tern_show_signature_in_pum=0
+let g:tern#command=["tern"]
+let g:tern#arguments=["--persistent"]
 
-"}}}
-"YouCompleteMe=============================================================={{{
+let g:deoplete#sources#clang#libclang_path='/usr/lib/libclang.so'
+let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
+let g:deoplete#sources#clang#std#cpp='c++1y'
+let g:deoplete#sources#clang#flags=['-I./include', '-I../include']
 
-let g:ycm_global_ycm_extra_conf=$EDITOR_ROOT . '/.ycm_extra_conf.py'
-let g:ycm_extra_conf_globlist=['~/my-workspace/*']
-let g:ycm_add_preview_to_completeopt=0
-let g:ycm_allow_changing_updatetime=0
-let g:ycm_auto_trigger=1
-let g:ycm_autoclose_preview_window_after_insertion=1
-let g:ycm_autoclose_preview_window_after_completion=0
-let g:ycm_key_detailed_diagnostics=''
-let g:ycm_enable_diagnostic_signs=0
-let g:ycm_enable_diagnostic_highlighting=0
-let g:ycm_python_binary_path = '/usr/bin/python3'
-let g:ycm_collect_identifiers_from_tags_files=1
+call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy', 'matcher_length'])
+call deoplete#custom#set('_', 'converters',
+            \ ['converter_remove_overlap', 'converter_truncate_abbr', 'converter_truncate_menu'])
 
-let g:ycm_semantic_triggers =  {
-            \   'c' : ['->', '.'],
-            \   'cpp' : ['->', '.', '::'],
-            \   'java' : ['.'],
-            \   'python' : ['.', 'from ', 'import '],
-            \   'php' : ['.', '->', '::'],
-            \   'javascript' : ['.'],
-            \   'typescript' : ['.'],
-            \   'css' : ['.'],
-            \   'perl' : ['->'],
-            \   'ruby' : ['.', '::'],
-            \   'lua' : ['.', ':'],
-            \ }
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr><S-tab> pumvisible() ? "\<c-p>" : "\<S-tab>"
+inoremap <expr><C-g> deoplete#undo_completion()
+inoremap <expr><C-l> deoplete#refresh()
+inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
 
-"}}}
-"Jedi======================================================================={{{
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
 
-let g:jedi#completions_enabled=0
-let g:jedi#show_call_signatures=2
-let g:jedi#show_call_signatures_delay=0
-
-let g:jedi#completions_command=''
-let g:jedi#goto_command=''
-let g:jedi#goto_assignments_command=''
-let g:jedi#goto_definitions_command=''
-let g:jedi#documentation_command=''
-let g:jedi#rename_command=''
-let g:jedi#usages_command=''
+if has("gui_running")
+    inoremap <silent><expr><C-Space> deoplete#mappings#manual_complete()
+else
+    inoremap <silent><expr><C-@> deoplete#mappings#manual_complete()
+endif
 
 "}}}
 "Python-Mode================================================================{{{
@@ -533,15 +535,6 @@ let g:delimitMate_expand_space=1
 let g:delimitMate_expand_inside_quotes = 1
 let g:delimitMate_jump_expansion=1
 let g:delimitMate_balance_matchpairs=1
-
-"}}}
-"Doxygen===================================================================={{{
-
-let g:DoxygenToolkit_authorName='Trent Deal'
-let g:DoxygenToolkit_licenseTag=''
-let g:DoxygenToolkit_briefTag_pre="@Brief  "
-let g:DoxygenToolkit_paramTag_pre="@Param "
-let g:DoxygenToolkit_returnTag="@Returns   "
 
 "}}}
 "Git========================================================================{{{
