@@ -22,7 +22,7 @@ set $FONT pango:Anonymous Pro 12
 set $CLIENT_BACKGROUND #3E3E3E
 set $CLIENT_TEXT       #FFFFFF
 set $CLIENT_INACTIVE   #4B6849
-set $CLIENT_FOCUS      #7EAE7A
+set $CLIENT_FOCUS      #888888
 
 set $BAR_BACKGROUND #2D2E30 
 set $BAR_TEXT       #FFFFFF
@@ -53,14 +53,13 @@ set $ws10 10:X
 font $FONT
 
 # background
-set $WALLPAPER_PICTURE $HOME/.config/i3/backgrounds/gardevoir.jpg
+set $WALLPAPER_PICTURE $HOME/.config/i3/backgrounds/jpg/ninjask.jpg
 
 # startup programs
 exec --no-startup-id compton --config $HOME/.config/compton.conf
 # exec --no-startup-id $HOME/.config/i3/scripts/auto_lock
 exec --no-startup-id feh --bg-scale $WALLPAPER_PICTURE
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-# exec --no-startup-id volumeicon
 exec --no-startup-id nm-applet
 
 # colors

@@ -2,7 +2,7 @@
 BACKGROUND=#3E3E3E
 TEXT=#FFFFFF
 INACTIVE=#4B6849
-FOCUS=#7EAE7A
+FOCUS=#888888
 FONT="pango:Anonymous Pro 12"
 
 j4-dmenu-desktop --term="termite" --no-generic --use-xdg-de --dmenu=\
