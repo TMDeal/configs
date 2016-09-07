@@ -119,6 +119,7 @@ alias c="clear"
 alias links="xlinks"
 alias vimn="vim -u NONE"
 alias gpp="g++ -std=c++1y -Wall -Wextra -g"
+alias mongo="mongo --quiet"
 
 alias ev="vim ~/.vimrc"
 alias eb="vim ~/.bashrc"
