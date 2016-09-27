@@ -1,5 +1,0 @@
-tint2 &
-nm-applet &
-volumeicon &
-compton --config $HOME/.config/compton.conf &
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
