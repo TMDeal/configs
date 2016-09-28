@@ -7,7 +7,7 @@
     trustctime = false
     editor = nvim
     filemode = false
-	excludesfile = .gitignore
+	excludesfile = ~/.gitignore
 [color]
     ui = true
 [credential]
