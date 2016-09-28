@@ -95,13 +95,10 @@ bindsym $DEFMOD+Return exec --no-startup-id termite
 bindsym $DEFMOD+p exec --no-startup-id scrot ~/Pictures/screenshots/screenshot_%Y_%m_%d_%H_%M_%S.png && notify-send "SREENSHOT TAKEN"
 
 # kill focused window
-bindsym $DEFMOD+Shift+q kill
+bindsym $mod+Shift+q kill
 
-# start rofi
-# bindsym $DEFMOD+d exec --no-startup-id j4-dmenu-desktop --term="termite" --no-generic --use-xdg-de --dmenu=\
-# "rofi -dmenu -i -p 'run:' -terminal termite -fuzzy -opacity "80" -eh 1 -location 0 -lines 10 -width 40 -bw 0 -bc '$CLIENT_BACKGROUND' -bg '$CLIENT_BACKGROUND' -hlbg '$CLIENT_BACKGROUND' -fg '$CLIENT_TEXT' -hlfg '$FOCUS' -font '$FONT'"
-
-bindsym $DEFMOD+d exec --no-startup-id $HOME/.config/i3/scripts/my_rofi
+# rofi
+bindsym $mod+d exec --no-startup-id j4-dmenu-desktop --term="termite" --no-generic --use-xdg-de --dmenu="rofi -dmenu -i -p 'run:'"
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% && pkill -RTMIN+1 i3blocks
