@@ -65,7 +65,7 @@ Plug 'moll/vim-node', {'for': 'javascript', 'as': 'node'}
 Plug 'neomake/neomake', {'on': 'Neomake'}
 
 "filetype syntax/indent
-let g:polyglot_disabled=['jsx']
+" let g:polyglot_disabled=['jsx']
 Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
 Plug 'othree/javascript-libraries-syntax.vim', {'as': 'javascript-libraries-syntax'}
 
@@ -372,7 +372,7 @@ let g:neomake_message_sign = {'text': '➤', 'texthl': 'NeomakeMessageSign'}
 let g:neomake_info_sign = {'text': 'ℹ', 'texthl': 'NeomakeInfoSign'}
 
 let g:neomake_javascript_enabled_makers=['jshint']
-" let g:neomake_vim_enabled_makers=['vint']
+let g:neomake_jsx_enabled_makers=['jshint']
 let g:neomake_c_enabled_makers=['clang']
 let g:neomake_tex_enabled_makers=['chktex']
 
