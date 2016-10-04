@@ -56,8 +56,8 @@ if [ -f /etc/bash_completion ]; then
 fi
 
 export TERM=xterm-256color
-export VISUAL=vim
-export EDITOR=vim
+export VISUAL=nvim
+export EDITOR=nvim
 
 if [[ -f /usr/share/fzf/key-bindings.bash ]]; then
     source /usr/share/fzf/key-bindings.bash
@@ -104,13 +104,13 @@ if $( command_exists nvim ); then
 fi
 
 if [ -x /usr/bin/dircolors ]; then
-    alias ls='ls --color=auto --group-directories-first'
+    alias ls='ls -A --color=auto --group-directories-first'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
 
-alias l="ls -alh"
+alias l="ls -Alh"
 alias tmux="tmux -2"
 alias ..="cd .."
 alias q="exit"
@@ -120,6 +120,7 @@ alias links="xlinks"
 alias vimn="vim -u NONE"
 alias gpp="g++ -std=c++1y -Wall -Wextra -g"
 alias mongo="mongo --quiet"
+alias orphansdel="sudo pacman -Rns $(pacman -Qtdq)"
 
 alias ev="vim ~/.vimrc"
 alias eb="vim ~/.bashrc"
