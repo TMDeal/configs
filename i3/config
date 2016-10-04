@@ -16,7 +16,6 @@ set $mod Mod4
 set $alt Mod1
 
 # font variables
-<<<<<<< HEAD
 set $font pango:Anonymous Pro 12
 
 # color variables
@@ -57,7 +56,7 @@ set $dark_cyan    #6eb5f3
 set $cyan         #32dddd
 set $dark_white   #a9a9a9
 set $white        #e9e9e7
-=======
+
 set $FONT pango:Anonymous Pro 12
 
 # color variablse
@@ -72,7 +71,6 @@ set $BAR_SEPARATOR  #888888
 set $BAR_INACTIVE   #999999
 
 set $URGENT #E16B79
->>>>>>> refs/remotes/origin/master
 
 # direction variables
 set $left  h
@@ -96,11 +94,8 @@ set $ws10 10:X
 font $font
 
 # background
-<<<<<<< HEAD
 set $wallpaper_picture $HOME/.config/i3/backgrounds/jpg/relicanth.jpg
-=======
 set $WALLPAPER_PICTURE $HOME/.config/i3/backgrounds/jpg/ninjask.jpg
->>>>>>> refs/remotes/origin/master
 
 # autostart
 exec --no-startup-id compton --config $HOME/.config/compton.conf
