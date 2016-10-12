@@ -3,19 +3,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-
-#COLORS
-TC='\e['
-RESET="${TC}0m"
-BLACK="${TC}30m";
-RED="${TC}31m";
-GREEN="${TC}32m";
-YELLOW="${TC}33m";
-BLUE="${TC}34m";
-PURPLE="${TC}35m";
-CYAN="${TC}36m";
-WHITE="${TC}37m";
-
 command_exists(){
     if command -v "$1" > /dev/null; then
         true
@@ -94,17 +81,12 @@ else
     PS1='[\u@\h: \w]\$ '
 fi
 
-#alias settings
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 if $( command_exists nvim ); then
    alias vim="nvim"
 fi
 
 if [ -x /usr/bin/dircolors ]; then
-    alias ls='ls -A --color=auto --group-directories-first'
+    alias ls='ls --color=auto --group-directories-first'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
