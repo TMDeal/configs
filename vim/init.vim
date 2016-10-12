@@ -1,4 +1,4 @@
-"Init======================================================================={{{
+"Init{{{
 if !has('nvim')
     set nocompatible
     filetype plugin indent on
@@ -28,14 +28,14 @@ for dir in ['.tags', 'templates', '.cache', 'tmp/backup', 'tmp/undo', 'tmp/swap'
     endif
 endfor
 "}}}
-"Plug======================================================================={{{
+"Plug{{{
 call g:plug#begin(expand('$EDITOR_ROOT/bundle'))
 function! MaybeLoad(condition, ...) "{{{
   let opts = get(a:000, 0, {})
   return a:condition ? opts : extend(opts, { 'on': [], 'for': [] })
 endfunction
 "}}}
-"Plugs======================================================================{{{
+"Plugs{{{
 "python
 Plug 'klen/python-mode', {'for': 'python'}
 Plug 'heavenshell/vim-pydocstring', {'for': 'python', 'as': 'pydocstring'}
@@ -52,29 +52,34 @@ Plug 'richq/vim-cmake-completion', {'for': 'cmake', 'as': 'cmake-completion'}
 
 "TeX
 Plug 'lervag/vimtex', {'for': 'tex'}
+Plug 'xuhdev/vim-latex-live-preview', {'for': 'tex', 'as': 'latex-live-preview'}
+Plug 'rhysd/vim-grammarous'
 
 "Web
-Plug 'vim-scripts/Emmet.vim', {'for': ['html', 'htmldjango', 'php', 'javascript', 'jinja'], 'as': 'Emmet'}
-Plug 'alvan/vim-closetag', {'for': ['html', 'htmldjango', 'php', 'javascript', 'jinja'], 'as': 'closetag'}
+Plug 'vim-scripts/Emmet.vim', {'for': ['html', 'htmldjango', 'php', 'javascript', 'javascript.jsx', 'jinja'], 'as': 'Emmet'}
+Plug 'alvan/vim-closetag', {'as': 'closetag'}
 
 "Javascript
-Plug 'heavenshell/vim-jsdoc', {'for': 'javascript', 'as': 'jsdoc'}
-Plug 'moll/vim-node', {'for': 'javascript', 'as': 'node'}
+Plug 'heavenshell/vim-jsdoc', {'for': ['javascript', 'javascript.jsx'], 'as': 'jsdoc'}
+Plug 'moll/vim-node', {'for': ['javascript', 'javascript.jsx'], 'as': 'node'}
+Plug 'othree/jspc.vim', {'for': ['javascript', 'javascript.jsx'], 'as': 'jspc'}
+Plug 'alampros/vim-react-keywords', {'for': ['javascript', 'javascript.jsx'], 'as': 'react-keywords'}
 
 "Lint
 Plug 'neomake/neomake', {'on': 'Neomake'}
 
 "filetype syntax/indent
-" let g:polyglot_disabled=['jsx']
-Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
+" let g:polyglot_disabled=[]
+Plug 'jason0x43/vim-js-indent'
 Plug 'othree/javascript-libraries-syntax.vim', {'as': 'javascript-libraries-syntax'}
+Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
 
 "Completion
 Plug 'SirVer/ultisnips', MaybeLoad(has('python'))
 Plug 'Shougo/deoplete.nvim', MaybeLoad(has('nvim'), {'do': ':UpdateRemotePlugins', 'as': 'deoplete'})
-            \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'for': 'javascript', 'as': 'ternjs'}
+            \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'for': ['javascript', 'javascript.jsx'], 'as': 'ternjs'}
+            \|Plug 'carlitux/deoplete-ternjs', {'for': ['javascript', 'javascript.jsx']}
             \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
-            \|Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
             \|Plug 'zchee/deoplete-jedi', {'for': 'python'}
             \|Plug 'davidhalter/jedi-vim', {'for': 'python', 'as': 'jedi'}
             \|Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp']}
@@ -89,7 +94,8 @@ Plug 'vim-scripts/YankRing.vim', {'as': 'yankring'}
 Plug 'christoomey/vim-tmux-navigator', {'as': 'tmux-navigator'}
 Plug 'jpalardy/vim-slime', {'as': 'slime'}
 
-Plug 'tpope/vim-vinegar', {'as': 'vinegar'}
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
 Plug 'dbakker/vim-projectroot', {'as': 'projectroot'}
 Plug 'tpope/vim-eunuch', {'as': 'eunuch'}
 Plug 'tomtom/tcomment_vim', {'as': 'tcomment'}
@@ -118,8 +124,8 @@ Plug 'itchyny/lightline.vim', {'as': 'lightline'}
 "}}}
 call g:plug#end()
 "}}}
-"Utils======================================================================{{{
-"Root======================================================================={{{
+"Utils{{{
+"Root{{{
 let g:project_root=projectroot#guess()
 let g:root_markers=['.projectroot', '.git', 'manage.py', 'package.json', 'CMakeLists.txt', 'Makefile']
 
@@ -128,7 +134,7 @@ augroup Reset_Root_DIR
     au BufReadPre * let g:project_root=projectroot#guess()
 augroup END
 "}}}
-"Functions=================================================================={{{
+"Functions{{{
 function! TryToLoadDjango() "{{{
     if(filereadable(expand(g:project_root . '/manage.py')))
         call plug#load('pony')
@@ -160,12 +166,12 @@ endfun
 "}}}
 "
 "}}}
-"Augroups==================================================================={{{
-"Filetype Settings=========================================================={{{
+"Augroups{{{
+"Filetype Settings{{{
 augroup Git
     au!
-    au Filetype gitcommit set textwidth=72
-    au Filetype gitcommit set spell
+    au Filetype gitcommit setlocal textwidth=72
+    au Filetype gitcommit setlocal spell
 augroup END
 
 augroup Web
@@ -178,6 +184,7 @@ augroup END
 augroup Tex
     au!
     au Filetype tex setlocal wrap
+    au Filetype tex setlocal spell
     au Filetype tex setlocal textwidth=80
     au User VimtexEventQuit VimtexClean
 augroup END
@@ -198,32 +205,33 @@ augroup Django
     "The above bracket fixes syntax highlighting, annoyingly enough
 augroup END
 "}}}
-"CDToProjectRoot============================================================{{{
+"CDToProjectRoot{{{
 augroup Auto_CD_To_Project_Root
     au!
     au BufEnter * call AutoCDtoProjectRoot()
 augroup END
 "}}}
-"Lint======================================================================={{{
+"Lint{{{
 augroup lint
     au!
+    au! VimLeave * let g:neomake_verbose=0
     au BufWritePost * Neomake
     au User NeomakeFinished call lightline#update()
 augroup END
 "}}}
-"Line Return================================================================{{{
+"Line Return{{{
 augroup line_return
     au!
     au BufReadPost * call LineReturn()
 augroup END
 "}}}
-"AutoResize Windows========================================================={{{
+"AutoResize Windows{{{
 augroup window
     au!
     au VimResized * :wincmd =
 augroup END
 "}}}
-"Lazy-Load=================================================================={{{
+"Lazy-Load{{{
 augroup Lazy_Load_Plugins
     au!
     au BufReadPre * call TryToLoadGit()
@@ -232,12 +240,19 @@ augroup END
 "}}}
 "}}}
 "}}}
-"Plugins===================================================================={{{
-"Shorts====================================================================={{{
-"closetag==================================================================={{{
-let g:closetag_filenames = "*.html,*.php"
+"Plugins{{{
+"Shorts{{{
+"Web{{{
+let g:html_indent_script1="inc"
+let g:html_indent_style1="inc"
 "}}}
-"autotag===================================================================={{{
+"latex-live-preview{{{
+let g:livepreview_previewer='zathura'
+"}}}
+"closetag{{{
+let g:closetag_filenames="*.html,*.php,*.xhtml,*.xml,*.jsx,*.js"
+"}}}
+"autotag{{{
 let g:autotagCtagsCmd='ctags'
 "}}}
 "vim-Protodef{{{
@@ -249,10 +264,6 @@ let g:disable_protodef_sorting=1
 let g:lt_height=5
 let g:lt_location_list_toggle_map = '<leader>l'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
-"}}}
-"vinegar{{{
-nmap <F2> <Plug>VinegarVerticalSplitUp
-nmap <F3> <Plug>VinegarSplitUp
 "}}}
 "ProjectRoot{{{
 let g:rootmarkers=g:root_markers
@@ -270,54 +281,36 @@ let g:colorizer_nomap=1
 "}}}
 "Buffergator{{{
 let g:buffergator_suppress_keymaps=0
-nnoremap <Leader>b :BuffergatorToggle<cr>
-nnoremap <silent> ]b :BuffergatorMruCyclePrev<cr>
-nnoremap <silent> [b :BuffergatorMruCycleNext<cr>
 "}}}
 "Taboo{{{
 let g:taboo_tabline=1
 let g:taboo_tab_format='[%N]%f%m'
 "}}}
-"Yankring==================================================================={{{
-
+"Yankring{{{
 let g:yankring_history_dir=$EDITOR_ROOT
 let g:yankring_history_file='yankring'
-let g:yankring_replace_n_pkey='<C-p>'
-let g:yankring_replace_n_nkey='<C-n>'
-
+" let g:yankring_replace_n_pkey='<C-p>'
+" let g:yankring_replace_n_nkey='<C-n>'
 "}}}
-"Slime======================================================================{{{
-"
+"Slime{{{
 let g:slime_target="tmux"
 let g:slime_paste_file=$EDITOR_ROOT . '/.slime_paste'
 let g:slime_default_config={"socket_name": "default", "target_pane": "1.2"}
 let g:slime_python_ipython=1
-
 "}}}
-"Localvimrc================================================================={{{
-
+"Localvimrc{{{
 let g:localvimrc_name=".lvimrc"
 let g:localvimrc_persistent=2
 let g:localvimrc_persistence_file=$EDITOR_ROOT . "/.localvimrc_persistent"
-
 "}}}
-"Ultisnips=================================================================={{{
-
-let g:UltiSnipsExpandTrigger='<C-k>'
-let g:UltiSnipsJumpForwardTrigger='<C-k>'
-let g:UltiSnipsJumpBackwardTrigger='<C-j>'
-
-"}}}
-"Doxygen===================================================================={{{
-
+"Doxygen{{{
 let g:DoxygenToolkit_authorName='Trent Deal'
 let g:DoxygenToolkit_licenseTag=''
 let g:DoxygenToolkit_briefTag_pre="@Brief  "
 let g:DoxygenToolkit_paramTag_pre="@Param "
 let g:DoxygenToolkit_returnTag="@Returns   "
-
 "}}}
-"vimtex====================================================================={{{
+"vimtex{{{
 let g:vimtex_enabled=1
 let g:vimtex_fold_enabled=0
 let g:vimtex_indent_enabled=1
@@ -326,7 +319,7 @@ let g:vimtex_mappings_enabled=0
 let g:vimtex_view_general_viewer='zathura'
 let g:tex_flavor='latex'
 "}}}
-"MatchTagAlways============================================================={{{
+"MatchTagAlways{{{
 let g:mta_filetypes = {
     \ 'html' : 1,
     \ 'xhtml' : 1,
@@ -336,18 +329,14 @@ let g:mta_filetypes = {
     \ 'htmldjango' : 1,
     \}
 "}}}
-"JSDoc======================================================================{{{
-
+"JSDoc{{{
 let g:jsdoc_allow_input_prompt=1
 let g:jsdoc_input_description=1
 let g:jsdoc_enable_es6=1
-
 "}}}
 "}}}
-"Ctrlp======================================================================{{{
+"Ctrlp{{{
 let g:ctrlp_map = ''
-nnoremap <silent> <Leader>p :CtrlP<cr>
-
 let g:ctrlp_cache_dir=$EDITOR_ROOT . '/.cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit=0
 let g:ctrlp_regexp=0
@@ -360,7 +349,7 @@ let g:ctrlp_arg_map=1
 let g:ctrlp_follow_symlinks=1
 let g:ctrlp_lazy_update=0
 "}}}
-"Neomake===================================================================={{{
+"Neomake{{{
 let g:neomake_list_height=6
 let g:neomake_place_signs=1
 let g:neomake_verbose=1
@@ -371,8 +360,8 @@ let g:neomake_warning_sign = {'text': '⚠', 'texthl': 'NeomakeWarningSign'}
 let g:neomake_message_sign = {'text': '➤', 'texthl': 'NeomakeMessageSign'}
 let g:neomake_info_sign = {'text': 'ℹ', 'texthl': 'NeomakeInfoSign'}
 
-let g:neomake_javascript_enabled_makers=['jshint']
-let g:neomake_jsx_enabled_makers=['jshint']
+let g:neomake_javascript_enabled_makers=['eslint']
+let g:neomake_jsx_enabled_makers=['eslint']
 let g:neomake_c_enabled_makers=['clang']
 let g:neomake_tex_enabled_makers=['chktex']
 
@@ -385,12 +374,10 @@ let g:neomake_cpp_clang_args=['-I../include', '-I./include', '-std=c++1y', '-fsy
 let g:neomake_sh_enable_makers=['shellcheck']
 let g:neomake_sh_shellcheck_args=['-x']
 "}}}
-"Tagbar====================================================================={{{
+"Tagbar{{{
 let g:tagbar_autofocus=1
 let g:tagbar_compact=1
 let g:tagbar_show_linenumbers=1
-
-nnoremap <silent> <F4> :TagbarToggle<cr>
 
 augroup Tagbar
     au!
@@ -399,7 +386,35 @@ augroup Tagbar
     au filetype tagbar nnoremap <buffer> H :vertical resize +5<cr>
 augroup END
 "}}}
-"Deoplete==================================================================={{{
+"Nerdtree{{{
+let g:NERDTreeHijackNetrw=1
+let g:NERDTreeMouseMode=2
+let g:NERDTreeRespectWildIgnore=1
+let g:NERDTreeWinPos="left"
+let g:NERDTreeMinimalUI=1
+let g:NERDTreeAutoDeleteBuffer=1
+let g:NERDTreeQuitOnOpen=1
+
+augroup Nerdtree
+    au!
+    au filetype Nerdtree setlocal nolist
+    au filetype Nerdtree nnoremap <buffer> L :vertical resize -5<cr>
+    au filetype Nerdtree nnoremap <buffer> H :vertical resize +5<cr>
+augroup END
+
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "*",
+    \ "Staged"    : "+",
+    \ "Untracked" : "!",
+    \ "Renamed"   : "R",
+    \ "Unmerged"  : "=",
+    \ "Deleted"   : "-",
+    \ "Dirty"     : "X",
+    \ "Clean"     : "C",
+    \ "Unknown"   : "?"
+    \ }
+"}}}
+"Deoplete{{{
 if has_key(g:plugs, 'deoplete') && has('nvim')
     let g:deoplete#enable_at_startup=1
     let g:echodoc_enable_at_startup=1
@@ -433,6 +448,17 @@ if has_key(g:plugs, 'deoplete') && has('nvim')
     if !exists('g:deoplete#omni#input_patterns')
         let g:deoplete#omni#input_patterns = {}
     endif
+    if !exists('g:deoplete#omni#functions')
+        let g:deoplete#omni#functions = {}
+    endif
+    if !exists('g:deoplete#sources')
+        let g:deoplete#sources = {}
+    endif
+
+    let g:deoplete#omni#functions.javascript = [
+                \ 'tern#Complete',
+                \ 'jspc#omni'
+                \]
 
     let g:deoplete#omni#input_patterns.php='\w+|[^. \t]->\w*|\w+::\w*'
     let g:deoplete#omni#input_patterns.tex = '\\(?:'
@@ -453,7 +479,7 @@ if has_key(g:plugs, 'deoplete') && has('nvim')
     endif
 endif
 "}}}
-"Jedi======================================================================={{{
+"Jedi{{{
 let g:jedi#completions_enabled=0
 let g:jedi#show_call_signatures=2
 let g:jedi#show_call_signatures_delay=0
@@ -466,7 +492,7 @@ let g:jedi#documentation_command=''
 let g:jedi#rename_command=''
 let g:jedi#usages_command=''
 "}}}
-"Python-Mode================================================================{{{
+"Python-Mode{{{
 let g:pymode_python='python3'
 let g:pymode_syntax_all=1
 let g:pymode_trim_whitespaces=1
@@ -484,7 +510,7 @@ let g:pymode_lint=0
 let g:pymode_rope_completion=0
 let g:pymode_rope_lookup_project=0
 "}}}
-"Delimitmate================================================================{{{
+"Delimitmate{{{
 let g:delimitMate_matchpairs="(:),[:],{:}"
 let g:delimitMate_quotes="\" ' `"
 let g:delimitMate_nesting_quotes=['"']
@@ -494,7 +520,10 @@ let g:delimitMate_expand_inside_quotes = 1
 let g:delimitMate_jump_expansion=1
 let g:delimitMate_balance_matchpairs=1
 "}}}
-"Git========================================================================{{{
+"}}}
+"Mappings{{{
+"Plugins{{{
+"Git{{{
 nnoremap <silent> <Leader>ga :Git add %:p<CR><CR>
 nnoremap <silent> <Leader>gs :Gstatus<CR>
 nnoremap <silent> <Leader>gc :Gcommit -v -q<CR>
@@ -509,153 +538,41 @@ nnoremap <silent> <Leader>gm :Gmove<Space>
 nnoremap <silent> <Leader>gb :Git branch<Space>
 nnoremap <silent> <Leader>go :Git checkout<Space>
 "}}}
+"ListToggle{{{
+let g:lt_location_list_toggle_map='<leader>l'
+let g:lt_quickfix_list_toggle_map='<leader>q'
 "}}}
-"General===================================================================={{{
-let g:python_host_prog='/usr/bin/python2'
-let g:python3_host_prog='/usr/bin/python3'
-
-if !has('nvim')
-    set encoding=utf-8
-    set backspace=indent,eol,start
-    set history=10000
-    set autoread
-    set laststatus=2
-    set mouse=a
-    set t_vb=
-    set t_u7=
-endif
-
-set completeopt-=preview
-set number
-set relativenumber
-set sidescroll=1
-set showcmd
-set title
-set autowrite
-set hidden
-set nowrap
-set cmdheight=1
-set mousehide
-set noerrorbells
-set novisualbell
-set splitbelow
-set splitright
-set foldmethod=marker
-set foldnestmax=10
-set ruler
-set shortmess+=c
-set pumheight=10
-set showtabline=2
-set list
-set listchars=extends:>,precedes:<,trail:.,tab:▸\ ,eol:¬
-
-if has_key(g:plugs, 'lightline')
-    set noshowmode
-endif
-
-"Timeout===================================================================={{{
-set timeout
-set ttimeout
-set timeoutlen=600
-set ttimeoutlen=0
+"Nerdtree{{{
+nnoremap <silent> <F2> :ProjectRootExe NERDTreeToggle<CR>
 "}}}
-"Indentation================================================================{{{
-if !has('nvim')
-    set autoindent
-    set smarttab
-endif
-set expandtab
-set shiftround
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
+"buffergator{{{
+nnoremap <Leader>b :BuffergatorToggle<cr>
+nnoremap <silent> ]b :BuffergatorMruCyclePrev<cr>
+nnoremap <silent> [b :BuffergatorMruCycleNext<cr>
 "}}}
-"Search====================================================================={{{
-if !has('nvim')
-    set hlsearch
-    set incsearch
-endif
-set ignorecase
-set smartcase
-set gdefault
-set showmatch
+"Ultisnips{{{
+let g:UltiSnipsExpandTrigger='<C-k>'
+let g:UltiSnipsJumpForwardTrigger='<C-k>'
+let g:UltiSnipsJumpBackwardTrigger='<C-j>'
 "}}}
-"Backup====================================================================={{{
-set undofile
-set undoreload=10000
-set undodir=$EDITOR_ROOT/tmp/undo//
-set backupdir=$EDITOR_ROOT/tmp/backup//
-set directory=$EDITOR_ROOT/tmp/swap//
-set backup
-set noswapfile
+"Ctrlp{{{
+nnoremap <silent> <Leader>p :CtrlP<cr>
 "}}}
-"Wildmenu==================================================================={{{
-set wildmenu
-set wildmode=list:longest
-set wildignorecase
-set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
-set wildignore+=*.mp3,*.wav,*.wav
-set wildignore+=*.class,*.o,*.pyc
+"tagbar{{{
+nnoremap <silent> <F3> :TagbarToggle<cr>
+""}}}
 "}}}
-"Gui========================================================================{{{
-if has('gui_running')
-    set guioptions-=T
-    set guioptions-=l
-    set guioptions-=L
-    set guioptions-=r
-    set guioptions-=R
-    set guifont=Monospace\ 11
-endif
-"}}}
-"}}}
-"Colors====================================================================={{{
-set background=dark
-set t_Co=256
-
-if has($TMUX) && has('termguicolors')
-    set termguicolors
-endif
-"Colorscheme================================================================{{{
-let g:jellybeans_use_lowcolor_black=0
-let g:jellybeans_use_term_italics=0
-let g:jellybeans_use_gui_italics=0
-colorscheme jellybeans
-"}}}
-"Highlighting==============================================================={{{
-fun! Transparency()
-    hi Normal ctermbg=NONE guibg=NONE
-    hi SignColumn ctermbg=NONE guibg=NONE
-    hi NonText ctermbg=NONE guibg=NONE
-    hi LineNr ctermbg=NONE guibg=NONE
-    hi Folded ctermbg=NONE ctermfg=7 guibg=NONE guifg=#888888
-    hi SpecialKey ctermbg=NONE guibg=NONE
-endfun
-
-hi TabLine ctermbg=0 ctermfg=15 guibg=#373b37
-hi TabLineFill ctermbg=0 guibg=#373b37
-hi TabLineSel ctermbg=8 ctermfg=15 guibg=#989898 guifg=#ffffff
-
-hi Error NONE
-hi ErrorMsg NONE
-
-if !has('gui_running')
-    call Transparency()
-endif
-"}}}
-
-"}}}
-"KeyMappings================================================================{{{
-"NOP========================================================================{{{
+"NOP{{{
 inoremap <F1> <nop>
 nnoremap <F1> <nop>
 vnoremap <F1> <nop>
 nnoremap Q <nop>
 nnoremap q: <nop>
 "}}}
-"Commands==================================================================={{{
+"Commands{{{
 command! PU PlugUpdate | PlugUpgrade
 "}}}
-"Leaders===================================================================={{{
+"Leaders{{{
 if has('nvim')
     :tnoremap <Esc> <C-\><C-n>
     nnoremap <Leader>o :below 10sp term://$SHELL<cr>i
@@ -694,7 +611,7 @@ nnoremap <silent> <Leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <silent> <Leader>sv :source $MYVIMRC<cr> :nohl<cr>
 nnoremap <silent> <Leader>es :UltiSnipsEdit<cr>
 "}}}
-"Movement/Extras============================================================{{{
+"Movement/Extras{{{
 nnoremap H ^
 vnoremap H ^
 nnoremap L $
@@ -731,16 +648,20 @@ nnoremap Y y$
 nnoremap zo za
 nnoremap <cr> o<esc>
 "}}}
-"Pairs======================================================================{{{
+"Pairs{{{
 nnoremap <silent> ]l :lnext<cr>
 nnoremap <silent> [l :lprevious<cr>
 nnoremap <silent> ]q :cnext<cr>
 nnoremap <silent> [q :cprevious<cr>
 
+"grammmarous
+nmap ]g <Plug>(grammarous-move-to-next-error)
+nmap [g <Plug>(grammarous-move-to-previous-error)
+
 nnoremap <silent> ]t :tabnext<cr>
 nnoremap <silent> [t :tabprevious<cr>
 "}}}
-"Filetype Mappings=========================================================={{{
+"Filetype Mappings{{{
 augroup C_CPP_Mappings
     au!
     "generate doxygen docstrings
@@ -788,7 +709,138 @@ augroup Python_Mappings
 augroup END
 "}}}
 "}}}
-"Statusline================================================================={{{
+"General{{{
+let g:python_host_prog='/usr/bin/python2'
+let g:python3_host_prog='/usr/bin/python3'
+
+if !has('nvim')
+    set encoding=utf-8
+    set backspace=indent,eol,start
+    set history=10000
+    set autoread
+    set laststatus=2
+    set mouse=a
+    set t_vb=
+    set t_u7=
+endif
+
+set completeopt-=preview
+set number
+set relativenumber
+set sidescroll=1
+set showcmd
+set title
+set autowrite
+set hidden
+set nowrap
+set cmdheight=1
+set mousehide
+set noerrorbells
+set novisualbell
+set splitbelow
+set splitright
+set foldmethod=marker
+set foldnestmax=10
+set updatetime=1000
+set ruler
+set shortmess+=c
+set pumheight=10
+set showtabline=2
+set list
+set listchars=extends:>,precedes:<,trail:.,tab:▸\ ,eol:¬
+
+if has_key(g:plugs, 'lightline')
+    set noshowmode
+endif
+
+"Timeout{{{
+set timeout
+set ttimeout
+set timeoutlen=600
+set ttimeoutlen=0
+"}}}
+"Indentation{{{
+if !has('nvim')
+    set autoindent
+    set smarttab
+endif
+set expandtab
+set shiftround
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+"}}}
+"Search{{{
+if !has('nvim')
+    set hlsearch
+    set incsearch
+endif
+set ignorecase
+set smartcase
+set gdefault
+set showmatch
+"}}}
+"Backup{{{
+set undofile
+set undoreload=10000
+set undodir=$EDITOR_ROOT/tmp/undo//
+set backupdir=$EDITOR_ROOT/tmp/backup//
+set directory=$EDITOR_ROOT/tmp/swap//
+set backup
+set noswapfile
+"}}}
+"Wildmenu{{{
+set wildmenu
+set wildmode=list:longest
+set wildignorecase
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
+set wildignore+=*.mp3,*.wav,*.wav
+set wildignore+=*.class,*.o,*.pyc
+"}}}
+"Gui{{{
+if has('gui_running')
+    set guioptions-=T
+    set guioptions-=l
+    set guioptions-=L
+    set guioptions-=r
+    set guioptions-=R
+    set guifont=Monospace\ 11
+endif
+"}}}
+"}}}
+"Colors{{{
+set background=dark
+set t_Co=256
+
+if has($TMUX) && has('termguicolors')
+    set termguicolors
+endif
+"Colorscheme{{{
+let g:jellybeans_use_lowcolor_black=0
+let g:jellybeans_use_term_italics=0
+let g:jellybeans_use_gui_italics=0
+colorscheme jellybeans
+"}}}
+"Highlighting{{{
+fun! Transparency()
+    hi Normal ctermbg=NONE
+    hi SignColumn ctermbg=NONE
+    hi NonText ctermbg=NONE
+    hi LineNr ctermbg=NONE
+    hi Folded ctermbg=NONE ctermfg=7
+    hi SpecialKey ctermbg=NONE
+endfun
+
+hi TabLine ctermbg=0 ctermfg=15 guibg=#373b37
+hi TabLineFill ctermbg=0 guibg=#373b37
+hi TabLineSel ctermbg=8 ctermfg=15 guibg=#989898 guifg=#ffffff
+
+hi Error NONE
+hi ErrorMsg NONE
+call Transparency()
+"}}}
+"}}}
+"Statusline{{{
 set titlestring=%t
 
 if !has_key(g:plugs, 'lightline')
@@ -842,8 +894,7 @@ else
                 \ 'subseparator': { 'left': '|', 'right': '|' }
                 \ }
 
-"Functions=================================================================={{{
-
+"Functions{{{
 function! LightLineModified() "{{{
     return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfun "}}}
@@ -928,7 +979,6 @@ function! TagbarStatusFunc(current, sort, fname, ...) abort "{{{
     let g:lightline.fname = a:fname
     return lightline#statusline(0)
 endfun "}}}
-
 "}}}
     let g:tagbar_status_func = 'TagbarStatusFunc'
     let g:ctrlp_status_func = {
