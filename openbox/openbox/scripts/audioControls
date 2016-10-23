@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ `pgrep cmus` ]; then
+    case "$1" in
+        u) cmus-remote -u ;;
+        n) cmus-remote -n ;;
+        r) cmus-remote -r ;;
+        s) cmus-remote -s ;;
+    esac
+fi

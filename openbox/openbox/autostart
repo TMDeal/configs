@@ -1,0 +1,7 @@
+tint2 &
+nm-applet &
+volumeicon &
+conky &
+feh --bg-scale $HOME/.config/openbox/backgrounds/jpg/relicanth.jpg
+compton --config $HOME/.config/compton.conf
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
