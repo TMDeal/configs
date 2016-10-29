@@ -9,9 +9,10 @@
 
 tmp
 bundle
-autoload
 yankring*
 bookmarks
 history
 backgrounds
-spell
+
+cache.db
+icons.db
