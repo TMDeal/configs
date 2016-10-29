@@ -17,8 +17,8 @@ visible_bell        = false
 urgent_on_bell      = true
 
 [colors]
-background  = rgba(0, 0, 0, 0.70)
-#background = #121212
+#background  = rgba(0, 0, 0, 0.70)
+background = #121212
 foreground  = #d7d7d7
 cursorColor = #d7d7d7
 color0      = #393939
