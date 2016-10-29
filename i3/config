@@ -104,7 +104,7 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id nm-applet
 
 # class                 border     background   text         indicator    child_border
-client.focused          $black     $black       $dark_white  $dark_black  $dark_black
+client.focused          $black     $black       $dark_white  $dark_white  $dark_white
 client.focused_inactive $black     $dark_black  $white       $dark_black  $dark_black
 client.unfocused        $black     $black       $white       $dark_black  $dark_black
 client.urgent           $dark_red  $dark_red    $black       $dark_red    $dark_red
