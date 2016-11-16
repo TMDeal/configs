@@ -265,6 +265,11 @@
         <command>~/.config/openbox/scripts/i3lock-wrapper</command>
       </action>
     </keybind>
+    <keybind key="W-p">
+      <action name="Execute">
+        <command>~/configs/scripts/screenshot</command>
+      </action>
+    </keybind>
   </keyboard>
   <mouse>
     <dragThreshold>2</dragThreshold>
