@@ -4,11 +4,7 @@
 [[ $- != *i* ]] && return
 
 command_exists(){
-    if command -v "$1" > /dev/null; then
-        true
-    else
-        false
-    fi
+    command -v "$1" > /dev/null
 }
 
 md(){
@@ -85,6 +81,10 @@ if $( command_exists nvim ); then
    alias vim="nvim"
 fi
 
+if $( command_exists tmuxinator ); then
+    alias mux="tmuxinator"
+fi
+
 if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto --group-directories-first'
     alias grep='grep --color=auto'
@@ -93,7 +93,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 alias l="ls -Alh"
-alias tmux="tmux -2"
+alias t="tmux -2"
 alias ..="cd .."
 alias q="exit"
 alias :q="exit"
@@ -112,4 +112,3 @@ alias ei3="vim ~/.config/i3/config"
 alias ei3b="vim ~/.config/i3/i3blocks.conf"
 alias ei3s="vim ~/.config/i3/i3status.conf"
 alias ehttp="vim /etc/httpd/conf/httpd.conf"
-
