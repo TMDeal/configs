@@ -76,7 +76,14 @@ Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
 
 "Completion
 Plug 'SirVer/ultisnips', functions#MaybeLoad(has('python'))
-Plug 'Valloric/YouCompleteMe', functions#MaybeLoad(has('python'), {'do': function('functions#BuildYCM')})
+" Plug 'Valloric/YouCompleteMe', functions#MaybeLoad(has('python'), {'do': function('functions#BuildYCM')})
+Plug 'Shougo/deoplete.nvim', functions#MaybeLoad(has('nvim'), {'do': ':UpdateRemotePlugins', 'as': 'deoplete'})
+            \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'as': 'ternjs'}
+            \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
+            \|Plug 'carlitux/deoplete-ternjs'
+            \|Plug 'mhartington/deoplete-typescript'
+            \|Plug 'zchee/deoplete-jedi'
+            \|Plug 'zchee/deoplete-clang'
 
 Plug 'ludovicchabant/vim-gutentags', functions#MaybeLoad(executable('ctags'), {'for': ['c', 'cpp'], 'as': 'gutentags'})
 Plug 'majutsushi/tagbar', functions#MaybeLoad(executable('ctags'), {'on': 'TagbarToggle'})
