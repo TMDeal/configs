@@ -26,7 +26,7 @@ if functions#PluginExists('neomake')
     let g:neomake_tex_enabled_makers=['chktex']
 
     let g:neomake_python_enabled_makers=['flake8']
-    let g:neomake_python_flake8_args=['--format=default', '--ignore=F403,W391', '--max-line-length=100']
+    let g:neomake_python_flake8_args=['--format=default', '--ignore=F403,F401,W391', '--max-line-length=100']
 
     let g:neomake_cpp_enable_makers=['clang++']
     let g:neomake_cpp_clang_args=['-I../include', '-I./include', '-std=c++1y', '-fsyntax-only', '-Wall', '-Wextra']
