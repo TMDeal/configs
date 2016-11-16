@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ ! -d $HOME/Pictures/screenshots ]; then
+    mkdir -p $HOME/Pictures/screenshots
+fi
+
+DIRECTORY="$HOME/Pictures/screenshots"
+FORMAT="screenshot-%Y_%m_%d_%H_%M_%S.png"
+
+scrot $DIRECTORY/$FORMAT && notify-send "SREENSHOT TAKEN"
