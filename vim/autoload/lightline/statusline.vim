@@ -89,7 +89,7 @@ function! lightline#statusline#CtrlPStatusFunc_2(str)
     return lightline#statusline(0)
 endfunction
 
-function! lightline#statusline#TagbarStatusFunc(current, sort, fname, ...) abort "{{{
+function! lightline#statusline#TagbarStatusFunc(current, sort, fname, ...) abort
     let g:lightline.fname = a:fname
     return lightline#statusline(0)
 endfunction

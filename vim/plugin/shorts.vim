@@ -1,6 +1,7 @@
 "Web{{{
 let g:html_indent_script1="inc"
 let g:html_indent_style1="inc"
+let g:jsx_ext_required=0
 "}}}
 "latex-live-preview{{{
 let g:livepreview_previewer='zathura'
@@ -10,13 +11,17 @@ let g:lt_location_list_toggle_map='<leader>l'
 let g:lt_quickfix_list_toggle_map='<leader>q'
 "}}}
 "Ultisnips{{{
-let g:UltiSnipsExpandTrigger='<C-k>'
-let g:UltiSnipsJumpForwardTrigger='<C-k>'
-let g:UltiSnipsJumpBackwardTrigger='<C-j>'
-let g:UltiSnipsSnippetDirectories=['ultisnips']
+if functions#PluginExists('ultisnips')
+    nnoremap <silent> <Leader>es :UltiSnipsEdit<cr>
+
+    let g:UltiSnipsExpandTrigger='<C-k>'
+    let g:UltiSnipsJumpForwardTrigger='<C-k>'
+    let g:UltiSnipsJumpBackwardTrigger='<C-j>'
+    let g:UltiSnipsSnippetDirectories=['ultisnips']
+endif
 "}}}
 "closetag{{{
-let g:closetag_filenames="*.html,*.php,*.xhtml,*.xml,*.jsx,*.js,*.hbs,*.handlebars"
+let g:closetag_filenames="*.html,*.php,*.xhtml,*.xml,*.jsx,*.js,*.hbs,*.handlebars,*.jinja"
 "}}}
 "autotag{{{
 let g:autotagCtagsCmd='ctags'
@@ -46,7 +51,14 @@ let g:tcommentMapLeader2=''
 let g:colorizer_nomap=1
 "}}}
 "Buffergator{{{
-let g:buffergator_suppress_keymaps=0
+if !functions#PluginExists('buffergator')
+    nnoremap gb :ls<CR>:buffer<Space>
+else
+    let g:buffergator_suppress_keymaps=0
+    nnoremap <silent> <Leader>b :BuffergatorToggle<cr>
+    nnoremap <silent> ]b :BuffergatorMruCyclePrev<cr>
+    nnoremap <silent> [b :BuffergatorMruCycleNext<cr>
+endif
 "}}}
 "Taboo{{{
 let g:taboo_tabline=1
@@ -66,6 +78,7 @@ let g:slime_python_ipython=1
 "}}}
 "Localvimrc{{{
 let g:localvimrc_name=".lvimrc"
+let g:localvimrc_event=['BufWinEnter', 'BufNewFile', 'BufRead']
 let g:localvimrc_persistent=2
 let g:localvimrc_persistence_file=$EDITOR_ROOT . "/.localvimrc_persistent"
 "}}}
@@ -110,3 +123,16 @@ let g:delimitMate_expand_inside_quotes = 1
 let g:delimitMate_jump_expansion=1
 let g:delimitMate_balance_matchpairs=1
 "}}}
+
+let g:gutentags_project_root=g:root_markers
+let g:gutentags_cache_dir=$EDITOR_ROOT . "/tmp/tags"
+
+if functions#PluginExists('eunuch')
+    nnoremap <silent> <Leader>Sw  :SudoWrite<cr>
+    nnoremap <Leader>Se  :SudoEdit<space>
+endif
+
+if functions#PluginExists('grammarous')
+    nmap ]g <Plug>(grammarous-move-to-next-error)
+    nmap [g <Plug>(grammarous-move-to-previous-error)
+endif

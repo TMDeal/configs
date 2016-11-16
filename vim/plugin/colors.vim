@@ -5,10 +5,12 @@ if has($TMUX) && has('termguicolors')
     set termguicolors
 endif
 
-let g:jellybeans_use_lowcolor_black=0
-let g:jellybeans_use_term_italics=0
-let g:jellybeans_use_gui_italics=0
-colorscheme jellybeans
+if functions#PluginExists('jellybeans')
+    let g:jellybeans_use_lowcolor_black=0
+    let g:jellybeans_use_term_italics=0
+    let g:jellybeans_use_gui_italics=0
+    colorscheme jellybeans
+endif
 
 hi Normal ctermbg=NONE
 hi SignColumn ctermbg=NONE

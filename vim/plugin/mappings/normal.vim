@@ -14,10 +14,6 @@ nnoremap <silent> - :silent edit <C-R>=empty(expand('%')) ? '.' : fnameescape(ex
 "file search/replace template
 nnoremap gs :%s//c<left><left>
 
-if !has_key(g:plugs, 'buffergator')
-    nnoremap gb :ls<CR>:buffer<Space>
-endif
-
 "removes highlighting.
 nnoremap <silent> \ :nohl<cr>
 
@@ -34,16 +30,6 @@ nnoremap <silent> ]l :lnext<cr>
 nnoremap <silent> [l :lprevious<cr>
 nnoremap <silent> ]q :cnext<cr>
 nnoremap <silent> [q :cprevious<cr>
-
-"grammmarous
-nmap ]g <Plug>(grammarous-move-to-next-error)
-nmap [g <Plug>(grammarous-move-to-previous-error)
-
-nnoremap <silent> ]b :BuffergatorMruCyclePrev<cr>
-nnoremap <silent> [b :BuffergatorMruCycleNext<cr>
-
-nnoremap <silent> <F2> :ProjectRootExe NERDTreeToggle<CR>
-nnoremap <silent> <F3> :TagbarToggle<cr>
 
 nnoremap <silent> ]t :tabnext<cr>
 nnoremap <silent> [t :tabprevious<cr>

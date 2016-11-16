@@ -4,5 +4,7 @@ setlocal textwidth=80
 
 augroup tex
     au!
-    au User VimtexEventQuit VimtexClean
+    if functions#PluginExists('vimtex')
+        au User VimtexEventQuit VimtexClean
+    endif
 augroup END

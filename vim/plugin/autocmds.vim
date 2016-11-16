@@ -3,9 +3,11 @@ augroup my_autocmds
     au!
 
     "Lint
-    au! VimLeave * let g:neomake_verbose=0
-    au BufWritePost * Neomake
-    au User NeomakeFinished call lightline#update()
+    if functions#PluginExists('lightline') && functions#PluginExists('neomake')
+        au User NeomakeFinished call lightline#update()
+        au! VimLeave * let g:neomake_verbose=0
+        au BufWritePost * Neomake
+    endif
 
     "resize automatically
     au VimResized * execute "normal! \<c-w>="
@@ -15,6 +17,9 @@ augroup my_autocmds
     au BufReadPre * call lazy#LoadDjango()
 
     au BufReadPost * call functions#LineReturn()
-    au BufEnter * call functions#AutoCDtoProjectRoot()
+
+    if functions#PluginExists('projectroot')
+        au BufEnter * call functions#AutoCDtoProjectRoot()
+    endif
 
 augroup END

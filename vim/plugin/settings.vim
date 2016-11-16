@@ -78,6 +78,7 @@ set wildignorecase
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
 set wildignore+=*.mp3,*.wav,*.wav
 set wildignore+=*.class,*.o,*.pyc
+set wildignore+=.tern-port
 "
 if has('gui_running')
     set guioptions-=T

@@ -1,8 +1,10 @@
-if !has_key(g:plugs, 'lightline')
+if !functions#PluginExists('lightline')
     set statusline=
     set statusline+=\%{statusline#Mode()}
     set statusline+=\ %{statusline#Filename()}
-    set statusline+=\ %{statusline#Git()}
+    if functions#PluginExists('fugitive')
+        set statusline+=\ %{statusline#Git()}
+    endif
     set statusline+=%=
     set statusline+=\ %{statusline#Fileformat()}
     set statusline+=\ %{statusline#Fileencoding()}
@@ -11,7 +13,9 @@ if !has_key(g:plugs, 'lightline')
     set statusline+=\ [%P]
     "display line:column number
     set statusline+=\ [%l:%c]
-    set statusline+=\ %#ErrorMsg#%{statusline#Neomake()}
+    if functions#PluginExists('neomake')
+        set statusline+=\ %#ErrorMsg#%{statusline#Neomake()}
+    endif
 else
     let g:lightline = {
                 \ 'colorscheme': 'jellybeans',

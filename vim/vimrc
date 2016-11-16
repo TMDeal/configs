@@ -13,6 +13,7 @@ if has('nvim')
 else
     let $EDITOR_ROOT=expand("$HOME/.vim")
 endif
+
 let g:root_markers=['.projectroot', '.git', 'manage.py', 'package.json', 'CMakeLists.txt', 'Makefile']
 
 if !filereadable(expand($EDITOR_ROOT . '/autoload/plug.vim'))
@@ -33,11 +34,12 @@ call g:plug#begin(expand('$EDITOR_ROOT/bundle'))
 Plug 'klen/python-mode', {'for': 'python'}
 Plug 'heavenshell/vim-pydocstring', {'for': 'python', 'as': 'pydocstring'}
 Plug 'jmcomets/vim-pony', {'on': [], 'as': 'pony'}
-Plug 'tweekmonster/django-plus.vim', {'as': 'django-plus'}
+" Plug 'tweekmonster/django-plus.vim', {'as': 'django-plus'}
 Plug 'tweekmonster/impsort.vim', {'for': 'python', 'as': 'impsort'}
+Plug 'davidhalter/jedi-vim', {'for': 'python', 'as': 'jedi'}
 
 "C/C++
-Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp'], 'as': 'DoxygenToolkit'}
+Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp'], 'as': 'doxygenToolkit'}
 Plug 'derekwyatt/vim-fswitch', {'for': ['c', 'cpp'], 'as': 'fswitch'}
 Plug 'drmikehenry/vim-headerguard', {'for': ['c', 'cpp'], 'as': 'headerguard'}
 Plug 'derekwyatt/vim-protodef', {'for': ['c', 'cpp'], 'as': 'protodef'}
@@ -49,12 +51,11 @@ Plug 'xuhdev/vim-latex-live-preview', {'for': 'tex', 'as': 'latex-live-preview'}
 Plug 'rhysd/vim-grammarous', {'for': 'tex', 'as': 'grammarous'}
 
 "Web
-Plug 'vim-scripts/Emmet.vim', {'for': ['html', 'htmldjango', 'php', 'javascript', 'javascript.jsx', 'jinja'], 'as': 'Emmet'}
+Plug 'vim-scripts/Emmet.vim', {'for': ['html', 'htmldjango', 'php', 'javascript', 'javascript.jsx', 'jinja'], 'as': 'emmet'}
 Plug 'alvan/vim-closetag', {'as': 'closetag'}
 
 "Javascript
 Plug 'heavenshell/vim-jsdoc', {'for': ['javascript', 'javascript.jsx', 'html'], 'as': 'jsdoc'}
-Plug 'moll/vim-node', {'for': ['javascript', 'javascript.jsx'], 'as': 'node'}
 Plug 'othree/jspc.vim', {'for': ['javascript', 'javascript.jsx', 'html'], 'as': 'jspc'}
 Plug 'alampros/vim-react-keywords', {'for': ['javascript', 'javascript.jsx'], 'as': 'react-keywords'}
 
@@ -63,23 +64,21 @@ Plug 'neomake/neomake', {'on': 'Neomake'}
 
 "filetype syntax/indent
 " I just want indent
-Plug 'vim-scripts/Better-Javascript-Indentation', {'do': 'rm -r syntax'}
+Plug 'vim-scripts/Better-Javascript-Indentation', {'for': ['html'], 'do': 'rm -r syntax'}
+
 Plug 'othree/javascript-libraries-syntax.vim', {'as': 'javascript-libraries-syntax'}
-" let g:polyglot_disabled=[]
+Plug 'mxw/vim-jsx', {'as': 'jsx'}
+Plug 'lepture/vim-jinja', {'as': 'jinja'}
+Plug 'pangloss/vim-javascript', {'as': 'javascript'}
+
+let g:polyglot_disabled=['javascript', 'jsx']
 Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
 
 "Completion
 Plug 'SirVer/ultisnips', functions#MaybeLoad(has('python'))
-Plug 'Shougo/deoplete.nvim', functions#MaybeLoad(has('nvim'), {'do': ':UpdateRemotePlugins', 'as': 'deoplete'})
-            \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'for': ['javascript', 'javascript.jsx', 'html'], 'as': 'ternjs'}
-            \|Plug 'carlitux/deoplete-ternjs', {'for': ['javascript', 'javascript.jsx', 'html']}
-            \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
-            \|Plug 'zchee/deoplete-jedi', {'for': 'python'}
-            \|Plug 'davidhalter/jedi-vim', {'for': 'python', 'as': 'jedi'}
-            \|Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp']}
+Plug 'Valloric/YouCompleteMe', functions#MaybeLoad(has('python'), {'do': function('functions#BuildYCM')})
 
-Plug 'Shougo/context_filetype.vim', {'as': 'context_filetype'}
-Plug 'craigemery/vim-autotag', functions#MaybeLoad(executable('ctags'), {'for': ['c', 'cpp', 'php'], 'as': 'autotag'})
+Plug 'ludovicchabant/vim-gutentags', functions#MaybeLoad(executable('ctags'), {'for': ['c', 'cpp'], 'as': 'gutentags'})
 Plug 'majutsushi/tagbar', functions#MaybeLoad(executable('ctags'), {'on': 'TagbarToggle'})
 Plug 'jeetsukumaran/vim-buffergator', {'on': ['BuffergatorToggle', 'BuffergatorMruCycleNext', 'BuffergatorMruCyclePrev'], 'as': 'buffergator'}
 Plug 'godlygeek/tabular', {'on': 'Tabularize'}
@@ -88,14 +87,16 @@ Plug 'vim-scripts/YankRing.vim', {'as': 'yankring'}
 Plug 'christoomey/vim-tmux-navigator', {'as': 'tmux-navigator'}
 Plug 'jpalardy/vim-slime', {'as': 'slime'}
 
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin', {'as': 'nerdtree-git'}
+Plug 'scrooloose/nerdtree' | Plug 'Xuyuanp/nerdtree-git-plugin', {'as': 'nerdtree-git'}
+
 Plug 'dbakker/vim-projectroot', {'as': 'projectroot'}
 Plug 'tpope/vim-eunuch', {'as': 'eunuch'}
 Plug 'tomtom/tcomment_vim', {'as': 'tcomment'}
 Plug 'henrik/vim-qargs', {'as': 'qargs'}
 Plug 'embear/vim-localvimrc', {'as': 'localvimrc'}
 Plug 'gcmt/taboo.vim', {'as': 'taboo'}
+Plug 'tpope/vim-endwise', {'as': 'endwise'}
+Plug 'AndrewRadev/inline_edit.vim', {'on': 'InlineEdit', 'as': 'inlineEdit'}
 Plug 'Valloric/ListToggle'
 Plug 'Raimondi/delimitMate'
 Plug 'lilydjwg/colorizer'
@@ -104,7 +105,7 @@ Plug 'Konfekt/FastFold'
 
 Plug 'tpope/vim-surround', {'as': 'surround'}
 Plug 'tpope/vim-repeat', {'as': 'repeat'}
-Plug 'edsono/vim-matchit', {'as': 'matchit'}
+Plug 'adelarsq/vim-matchit', {'as': 'matchit'}
 Plug 'wellle/targets.vim', {'as': 'targets'}
 Plug 'kana/vim-textobj-user'
             \|Plug 'mjbrownie/django-template-textobjects', {'for': ['python', 'htmldjango', 'jinja']}
