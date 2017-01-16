@@ -14,6 +14,12 @@ if [ -d $HOME/.tmux/sessions ]; then
     PATH=$PATH:$HOME/.tmux/sessions
 fi
 
+if [ -d /opt/android-sdk ]; then
+    export ANDROID_HOME=~/Android/Sdk
+    PATH=$PATH:$ANDROID_HOME/tools
+    PATH=$PATH:$ANDROID_HOME/platform-tools
+fi
+
 if [ -x /usr/bin/npm ]; then
     NPM_PREFIX=$HOME/.npm_packages
     if [ ! -d $NPM_PREFIX ]; then
