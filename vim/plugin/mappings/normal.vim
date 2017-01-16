@@ -26,10 +26,13 @@ nnoremap Y y$
 nnoremap zo za
 nnoremap <cr> o<esc>
 
-nnoremap <silent> ]l :lnext<cr>
-nnoremap <silent> [l :lprevious<cr>
+nnoremap <silent> ]l :call functions#LocNext()<cr>
+nnoremap <silent> [l :call functions#LocPrev()<cr>
 nnoremap <silent> ]q :cnext<cr>
 nnoremap <silent> [q :cprevious<cr>
+
+nmap <silent> [a <Plug>(ale_previous_wrap)
+nmap <silent> ]a <Plug>(ale_next_wrap)
 
 nnoremap <silent> ]t :tabnext<cr>
 nnoremap <silent> [t :tabprevious<cr>

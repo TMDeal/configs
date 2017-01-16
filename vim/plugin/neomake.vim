@@ -1,6 +1,8 @@
 if functions#PluginExists('neomake')
-    let g:neomake_list_height=6
+    let g:neomake_list_height=5
+    let g:neomake_open_list=0
     let g:neomake_place_signs=1
+    let g:neomake_echo_current_error=1
     let g:neomake_verbose=1
     let g:neomake_logfile=$EDITOR_ROOT . '/.neomake_log'
 
@@ -12,14 +14,14 @@ if functions#PluginExists('neomake')
     let g:neomake_javascript_enabled_makers=['eslint']
 
     let g:neomake_typescript_enabled_makers=['tsc']
-    let g:neomake_typescript_tsc_maker = {
-                \ 'args': ['--module', 'system', '--moduleResolution', 'node', '--target', 'ES5', '--experimentalDecorators', '--noEmit'],
-                \ 'errorformat':
-                \ '%E%f %#(%l\,%c): error %m,' .
-                \ '%E%f %#(%l\,%c): %m,' .
-                \ '%Eerror %m,' .
-                \ '%C%\s%\+%m'
-                \}
+    " let g:neomake_typescript_tsc_maker={
+    "             \ 'args': ['--noEmit'],
+    "             \ 'errorformat':
+    "             \ '%E%f %#(%l\,%c): error %m,' .
+    "             \ '%E%f %#(%l\,%c): %m,' .
+    "             \ '%Eerror %m,' .
+    "             \ '%C%\s%\+%m'
+    "             \ }
 
     let g:neomake_c_enabled_makers=['clang']
 

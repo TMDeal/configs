@@ -20,8 +20,6 @@ if functions#PluginExists('deoplete')
     let g:tern#command=["tern"]
     let g:tern#arguments=["--persistent"]
 
-    " let g:deoplete#sources#jedi#show_docstring=1
-
     let g:deoplete#sources#clang#libclang_path='/usr/lib/libclang.so'
     let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
     let g:deoplete#sources#clang#std#cpp='c++1y'

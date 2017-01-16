@@ -13,15 +13,18 @@ if !functions#PluginExists('lightline')
     set statusline+=\ [%P]
     "display line:column number
     set statusline+=\ [%l:%c]
-    if functions#PluginExists('neomake')
-        set statusline+=\ %#ErrorMsg#%{statusline#Neomake()}
+    " if functions#PluginExists('neomake')
+    "     set statusline+=\ %#ErrorMsg#%{statusline#Neomake()}
+    " endif
+    if functions#PluginExists('ale')
+        set statusline+=\ %{ale#statusline#Status()}
     endif
 else
     let g:lightline = {
                 \ 'colorscheme': 'jellybeans',
                 \ 'active': {
                 \   'left': [ [ 'mode', 'paste' ], [ 'git', 'filename' ], ['ctrlpmark'] ],
-                \   'right': [ [ 'neomake', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+                \   'right': [ [ 'ale', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
                 \ },
                 \ 'component_function': {
                 \   'git': 'lightline#statusline#Git',
@@ -33,10 +36,10 @@ else
                 \   'ctrlpmark': 'lightline#statusline#CtrlPMark',
                 \ },
                 \ 'component_expand': {
-                \   'neomake' : 'lightline#statusline#Neomake',
+                \   'ale' : 'ale#statusline#Status',
                 \ },
                 \ 'component_type': {
-                \   'neomake' : 'error',
+                \   'ale' : 'error',
                 \ },
                 \ 'subseparator': { 'left': '|', 'right': '|' }
                 \ }

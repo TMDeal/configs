@@ -34,7 +34,7 @@ call g:plug#begin(expand('$EDITOR_ROOT/bundle'))
 Plug 'klen/python-mode', {'for': 'python'}
 Plug 'heavenshell/vim-pydocstring', {'for': 'python', 'as': 'pydocstring'}
 Plug 'jmcomets/vim-pony', {'on': [], 'as': 'pony'}
-" Plug 'tweekmonster/django-plus.vim', {'as': 'django-plus'}
+Plug 'tweekmonster/django-plus.vim', {'as': 'django-plus'}
 Plug 'tweekmonster/impsort.vim', {'for': 'python', 'as': 'impsort'}
 Plug 'davidhalter/jedi-vim', {'for': 'python', 'as': 'jedi'}
 
@@ -60,7 +60,7 @@ Plug 'othree/jspc.vim', {'for': ['javascript', 'javascript.jsx', 'html'], 'as': 
 Plug 'alampros/vim-react-keywords', {'for': ['javascript', 'javascript.jsx'], 'as': 'react-keywords'}
 
 "Lint
-Plug 'neomake/neomake', {'on': 'Neomake'}
+Plug 'w0rp/ale'
 
 "filetype syntax/indent
 " I just want indent
@@ -80,6 +80,7 @@ Plug 'SirVer/ultisnips', functions#MaybeLoad(has('python'))
 Plug 'Shougo/deoplete.nvim', functions#MaybeLoad(has('nvim'), {'do': ':UpdateRemotePlugins', 'as': 'deoplete'})
             \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'as': 'ternjs'}
             \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
+            \|Plug 'Shougo/context_filetype.vim', {'as': 'context_filetype'}
             \|Plug 'carlitux/deoplete-ternjs'
             \|Plug 'mhartington/deoplete-typescript'
             \|Plug 'zchee/deoplete-jedi'
@@ -95,14 +96,13 @@ Plug 'christoomey/vim-tmux-navigator', {'as': 'tmux-navigator'}
 Plug 'jpalardy/vim-slime', {'as': 'slime'}
 
 Plug 'scrooloose/nerdtree' | Plug 'Xuyuanp/nerdtree-git-plugin', {'as': 'nerdtree-git'}
-
 Plug 'dbakker/vim-projectroot', {'as': 'projectroot'}
 Plug 'tpope/vim-eunuch', {'as': 'eunuch'}
 Plug 'tomtom/tcomment_vim', {'as': 'tcomment'}
 Plug 'henrik/vim-qargs', {'as': 'qargs'}
 Plug 'embear/vim-localvimrc', {'as': 'localvimrc'}
 Plug 'gcmt/taboo.vim', {'as': 'taboo'}
-Plug 'tpope/vim-endwise', {'as': 'endwise'}
+" Plug 'tpope/vim-endwise', {'as': 'endwise'}
 Plug 'AndrewRadev/inline_edit.vim', {'on': 'InlineEdit', 'as': 'inlineEdit'}
 Plug 'Valloric/ListToggle'
 Plug 'Raimondi/delimitMate'
@@ -113,7 +113,7 @@ Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-surround', {'as': 'surround'}
 Plug 'tpope/vim-repeat', {'as': 'repeat'}
 Plug 'adelarsq/vim-matchit', {'as': 'matchit'}
-Plug 'wellle/targets.vim', {'as': 'targets'}
+" Plug 'wellle/targets.vim', {'as': 'targets'}
 Plug 'kana/vim-textobj-user'
             \|Plug 'mjbrownie/django-template-textobjects', {'for': ['python', 'htmldjango', 'jinja']}
 

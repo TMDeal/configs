@@ -3,11 +3,19 @@ augroup my_autocmds
     au!
 
     "Lint
-    if functions#PluginExists('lightline') && functions#PluginExists('neomake')
-        au User NeomakeFinished call lightline#update()
+    if functions#PluginExists('neomake')
+        if functions#PluginExists('lightline')
+            au User NeomakeFinished call lightline#update()
+        endif
         au! VimLeave * let g:neomake_verbose=0
         au BufWritePost * Neomake
     endif
+    if functions#PluginExists('ale')
+        if functions#PluginExists('lightline')
+            au User ALELint call lightline#update()
+        endif
+    endif
+
 
     "resize automatically
     au VimResized * execute "normal! \<c-w>="

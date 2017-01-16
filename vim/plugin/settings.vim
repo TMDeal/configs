@@ -12,6 +12,10 @@ if !has('nvim')
     set t_u7=
 endif
 
+if exists('&inccommand')
+  set inccommand=split
+endif
+
 set titlestring=%t
 
 set completeopt-=preview

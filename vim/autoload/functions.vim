@@ -15,6 +15,22 @@ function! functions#AutoCDtoProjectRoot()
     endtry
 endfun
 
+function! functions#LocNext()
+    try
+        lnext
+    catch
+        try | lfirst | catch | endtry
+    endtry
+endfunction
+
+function! functions#LocPrev()
+    try
+        lprev
+    catch
+        try | llast | catch | endtry
+    endtry
+endfunction
+
 function! functions#MaybeLoad(condition, ...)
     let opts = get(a:000, 0, {})
     return a:condition ? opts : extend(opts, { 'on': [], 'for': [] })
@@ -39,7 +55,7 @@ function! functions#BuildYCM(info)
     let install_command='python2 install.py'
 
     if executable('clang')
-        if system("clang --version | grep 3.[8-9] >/dev/null && echo $?")==0 
+        if system("clang --version | grep 3.[8-9] >/dev/null && echo $?")==0
             let install_command.=' --system-libclang'
         endif
         let install_command.=' --clang-completer'
@@ -58,7 +74,7 @@ function! functions#BuildYCM(info)
         for exe in executables
             if !executable(exe)
                 let can_install_completer=0
-                break 
+                break
             endif
         endfor
         if can_install_completer==1
