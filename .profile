@@ -15,7 +15,7 @@ if [ -d $HOME/.tmux/sessions ]; then
 fi
 
 if [ -d /opt/android-sdk ]; then
-    export ANDROID_HOME=~/Android/Sdk
+    export ANDROID_HOME=/opt/android-sdk
     PATH=$PATH:$ANDROID_HOME/tools
     PATH=$PATH:$ANDROID_HOME/platform-tools
 fi
