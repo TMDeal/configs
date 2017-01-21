@@ -38,6 +38,7 @@ set foldnestmax=10
 set updatetime=1000
 set ruler
 set shortmess+=c
+set diffopt+=vertical
 set pumheight=10
 set showtabline=2
 set list

@@ -16,7 +16,6 @@ augroup my_autocmds
         endif
     endif
 
-
     "resize automatically
     au VimResized * execute "normal! \<c-w>="
 

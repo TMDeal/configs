@@ -45,3 +45,7 @@ hi User7  guifg=#6EB5F3 guibg=#222222
 hi User15 guifg=#32DDDD guibg=#222222
 hi User8  guifg=#A9A9A9 guibg=#222222
 hi User16 guifg=#E9E9E7 guibg=#222222
+
+if functions#PluginExists('colorizer')
+    let g:colorizer_nomap=1
+endif
