@@ -6,8 +6,8 @@ if [ -d $HOME/.config/composer/vendor/bin ]; then
     PATH=$PATH:$HOME/.config/composer/vendor/bin
 fi
 
-if [ -d $HOME/.gem/ruby/2.3.0/bin ]; then
-    PATH=$PATH:$HOME/.gem/ruby/2.3.0/bin
+if [ -d $HOME/.gem/ruby/2.4.0/bin ]; then
+    PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin
 fi
 
 if [ -d $HOME/.tmux/sessions ]; then
