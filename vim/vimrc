@@ -53,10 +53,11 @@ Plug 'rhysd/vim-grammarous', {'for': 'tex', 'as': 'grammarous'}
 Plug 'vim-scripts/Emmet.vim', {'for': ['html', 'htmldjango', 'php', 'javascript', 'javascript.jsx', 'jinja'], 'as': 'emmet'}
 Plug 'alvan/vim-closetag', {'as': 'closetag'}
 
-"Javascript
+"Javascript/Typescript
 Plug 'heavenshell/vim-jsdoc', {'for': ['javascript', 'javascript.jsx', 'html'], 'as': 'jsdoc'}
 Plug 'othree/jspc.vim', {'for': ['javascript', 'javascript.jsx', 'html'], 'as': 'jspc'}
 Plug 'alampros/vim-react-keywords', {'for': ['javascript', 'javascript.jsx'], 'as': 'react-keywords'}
+Plug 'bdauria/angular-cli.vim', {'as': 'angular-cli'}
 
 "Lint
 Plug 'w0rp/ale'
@@ -75,15 +76,14 @@ Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
 
 "Completion
 Plug 'SirVer/ultisnips', functions#MaybeLoad(has('python'))
-Plug 'Valloric/YouCompleteMe', functions#MaybeLoad(has('python'), {'do': function('functions#BuildYCM')})
-" Plug 'Shougo/deoplete.nvim', functions#MaybeLoad(has('nvim'), {'do': ':UpdateRemotePlugins', 'as': 'deoplete'})
-"             \|Plug 'Shougo/context_filetype.vim', {'as': 'context_filetype'}
-"             \|Plug 'zchee/deoplete-jedi', {'for': ['python']}
-"             \|Plug 'zchee/deoplete-clang'
-"             \|Plug 'carlitux/deoplete-ternjs'
-"             \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'as': 'ternjs'}
-"             \|Plug 'mhartington/nvim-typescript', {'as': 'deoplete-typescript'}
-"             \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
+Plug 'Shougo/deoplete.nvim', functions#MaybeLoad(has('nvim'), {'do': ':UpdateRemotePlugins', 'as': 'deoplete'})
+            \|Plug 'Shougo/context_filetype.vim', {'as': 'context_filetype'}
+            \|Plug 'zchee/deoplete-jedi', {'for': ['python']}
+            \|Plug 'zchee/deoplete-clang'
+            \|Plug 'carlitux/deoplete-ternjs'
+            \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'as': 'ternjs'}
+            \|Plug 'mhartington/nvim-typescript', {'as': 'deoplete-typescript'}
+            \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
             " \|Plug 'quramy/tsuquyomi', {'for': ['typescript']}
             " \|Plug 'Shougo/vimproc.vim', {'do' : 'make', 'as': 'vimproc'}
 
