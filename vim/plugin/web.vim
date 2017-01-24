@@ -9,3 +9,7 @@ endif
 if functions#PluginExists('closetag')
     let g:closetag_filenames="*.html,*.php,*.xhtml,*.xml,*.jsx,*.js,*.hbs,*.handlebars,*.jinja"
 endif
+
+if functions#PluginExists('angular-cli')
+    let g:angular_cli_stylesheet_format='scss'
+endif
