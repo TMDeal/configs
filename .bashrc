@@ -53,6 +53,16 @@ if [ -f /usr/bin/virtualenvwrapper.sh ]; then
     source /usr/bin/virtualenvwrapper.sh
 fi
 
+if $( command_exists ng ); then
+    if [ -f $HOME/.ng.sh ]; then
+        source $HOME/.ng.sh
+    fi
+fi
+
+if [ -f $HOME/.tnsrc ]; then 
+    source $HOME/.tnsrc 
+fi
+
 # don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth
 
@@ -70,7 +80,7 @@ shopt -s checkwinsize
 # set -o vi
 
 if [ -f $HOME/.git-prompt.sh ]; then
-    source ~/.git-prompt.sh
+    source $HOME/.git-prompt.sh
     export GIT_PS1_SHOWDIRTYSTATE=1
     PS1='[\u@\h: \w]$(__git_ps1 "(%s)")\$ '
 else
@@ -112,3 +122,4 @@ alias ei3="vim ~/.config/i3/config"
 alias ei3b="vim ~/.config/i3/i3blocks.conf"
 alias ei3s="vim ~/.config/i3/i3status.conf"
 alias ehttp="vim /etc/httpd/conf/httpd.conf"
+
