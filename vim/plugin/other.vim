@@ -17,6 +17,7 @@ endif
 if functions#PluginExists('yankring')
     let g:yankring_history_dir=$EDITOR_ROOT . '/tmp'
     let g:yankring_history_file='yankring'
+    let g:yankring_clipboard_monitor=0
 endif
 
 if functions#PluginExists('slime')
