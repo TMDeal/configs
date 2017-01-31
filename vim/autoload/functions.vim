@@ -5,11 +5,6 @@ function! functions#LineReturn()
     endif
 endfunction
 
-function! functions#CheckBackSpace() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
 function! functions#AutoCDtoProjectRoot()
     try
         if &ft != 'help'
