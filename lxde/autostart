@@ -2,7 +2,6 @@
 @nm-applet
 @volumeicon
 @compton -b
-@feh --bg-scale /usr/share/pixmaps/relicanth.jpg
-@pcmanfm --desktop-off
-@lxde_init
+#@feh --bg-scale /usr/share/pixmaps/relicanth.jpg
+@pcmanfm --desktop --profile LXDE
 @~/.config/lxsession/LXDE/init
