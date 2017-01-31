@@ -40,7 +40,7 @@ set ruler
 set shortmess+=c
 set diffopt+=vertical
 set pumheight=10
-set showtabline=2
+set showtabline=1
 set list
 set listchars=extends:>,precedes:<,trail:.,tab:▸\ ,eol:¬
 set noshowmode
