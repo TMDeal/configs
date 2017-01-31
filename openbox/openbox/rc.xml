@@ -206,7 +206,7 @@
     </keybind>
     <keybind key="W-d">
       <action name="Execute">
-        <command>~/.config/openbox/scripts/rofi</command>
+        <command>/usr/local/bin/my-rofi</command>
       </action>
     </keybind>
     <keybind key="Super-Shift-1">
