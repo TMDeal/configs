@@ -1,0 +1,5 @@
+#!/bin/bash
+
+xset -dpms
+xset s 1800 1800
+xset b off

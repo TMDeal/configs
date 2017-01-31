@@ -1,0 +1,8 @@
+@tint2
+@nm-applet
+@volumeicon
+@compton -b
+@feh --bg-scale /usr/share/pixmaps/relicanth.jpg
+@pcmanfm --desktop-off
+@lxde_init
+@~/.config/lxsession/LXDE/init
