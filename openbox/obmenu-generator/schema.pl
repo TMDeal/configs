@@ -31,7 +31,7 @@ our $SCHEMA = [
 
     #          COMMAND                 LABEL                ICON
     {item => ['xdg-open .',        'File Manager',      'file-manager']},
-    {item => ['xterm',             'Terminal',          'terminal']},
+    {item => ['termite',           'Terminal',          'terminal']},
     {item => ['xdg-open http://',  'Web Browser',       'web-browser']},
     {item => ['gmrun',             'Run command',       'system-run']},
 
@@ -103,12 +103,7 @@ our $SCHEMA = [
     {end_cat => undef},
     {sep => undef},
 
-    ## The xscreensaver lock command
-    {item => ['xscreensaver-command -lock', 'Lock', 'lock']},
+    {item => ['lxlock', 'Lock', 'lock']},
 
-    ## This option uses the default Openbox's action "Exit"
-    {exit => ['Exit', 'exit']},
-
-    ## This uses the 'oblogout' menu
-    # {item => ['oblogout', 'Exit', 'exit']},
+    {item => ['lxsession-logout', 'Exit', 'exit']},
 ]
