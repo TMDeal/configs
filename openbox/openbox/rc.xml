@@ -206,7 +206,7 @@
     </keybind>
     <keybind key="W-d">
       <action name="Execute">
-        <command>/usr/local/bin/my-rofi</command>
+        <command>my-rofi</command>
       </action>
     </keybind>
     <keybind key="Super-Shift-1">
@@ -262,12 +262,12 @@
     </keybind>
     <keybind key="XF86ScreenSaver">
       <action name="Execute">
-        <command>~/.config/openbox/scripts/i3lock-wrapper</command>
+        <command>i3lock-wrapper -e</command>
       </action>
     </keybind>
     <keybind key="W-p">
       <action name="Execute">
-        <command>~/configs/scripts/screenshot</command>
+        <command>my-screenshot</command>
       </action>
     </keybind>
   </keyboard>
