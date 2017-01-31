@@ -11,7 +11,6 @@ rofi.lines: 10
 rofi.opacity: 80
 rofi.bw: 0
 rofi.location: 0
-rofi.fuzzy: true
 rofi.terminal: termite
 rofi.hide-scrollbar: true
 
