@@ -84,8 +84,6 @@ Plug 'Shougo/deoplete.nvim', functions#MaybeLoad(has('nvim'), {'do': ':UpdateRem
             \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'as': 'ternjs'}
             \|Plug 'mhartington/nvim-typescript', {'as': 'deoplete-typescript'}
             \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
-            " \|Plug 'quramy/tsuquyomi', {'for': ['typescript']}
-            " \|Plug 'Shougo/vimproc.vim', {'do' : 'make', 'as': 'vimproc'}
 
 Plug 'ludovicchabant/vim-gutentags', functions#MaybeLoad(executable('ctags'), {'for': ['c', 'cpp'], 'as': 'gutentags'})
 Plug 'majutsushi/tagbar', functions#MaybeLoad(executable('ctags'), {'on': 'TagbarToggle'})
