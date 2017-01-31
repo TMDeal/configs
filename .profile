@@ -36,5 +36,9 @@ if [ -d $HOME/.go ]; then
     PATH=$PATH:$GOPATH/bin
 fi
 
+if [ -d $HOME/bin ]; then
+    PATH=$PATH:$HOME/bin
+fi
+
 export PATH
 export SWT_GTK3=0
