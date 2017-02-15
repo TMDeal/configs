@@ -56,23 +56,21 @@ Plug 'alvan/vim-closetag', {'as': 'closetag'}
 "Javascript/Typescript
 Plug 'heavenshell/vim-jsdoc', {'for': ['javascript', 'javascript.jsx', 'html'], 'as': 'jsdoc'}
 Plug 'othree/jspc.vim', {'for': ['javascript', 'javascript.jsx', 'html'], 'as': 'jspc'}
-Plug 'alampros/vim-react-keywords', {'for': ['javascript', 'javascript.jsx'], 'as': 'react-keywords'}
-Plug 'bdauria/angular-cli.vim', {'on': [], 'as': 'angular-cli'}
-" Plug 'Quramy/vim-js-pretty-template', {'on': ['JsPreTmpl', 'JsPreTmplClear'], 'as': 'js-pretty-templates'}
+Plug 'bdauria/angular-cli.vim', {'as': 'angular-cli'}
 
 "Lint
 Plug 'w0rp/ale'
 
 "filetype syntax/indent
-" I just want indent
-Plug 'vim-scripts/Better-Javascript-Indentation', {'for': ['html'], 'do': 'rm -r syntax'}
-
+Plug 'jason0x43/vim-js-indent', {'as': 'js-indent'}
 Plug 'othree/javascript-libraries-syntax.vim', {'as': 'javascript-libraries-syntax'}
-Plug 'mxw/vim-jsx', {'as': 'jsx'}
+Plug 'alampros/vim-react-keywords', {'for': ['javascript', 'javascript.jsx'], 'as': 'react-keywords'}
 Plug 'lepture/vim-jinja', {'as': 'jinja'}
 Plug 'pangloss/vim-javascript', {'as': 'javascript'}
+Plug 'mxw/vim-jsx', {'as': 'jsx'}
+Plug 'leafgarland/typescript-vim', {'as': 'typescript'}
 
-let g:polyglot_disabled=['javascript', 'jsx']
+let g:polyglot_disabled=['javascript', 'jsx', 'typescript']
 Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
 
 "Completion
@@ -82,8 +80,9 @@ Plug 'Shougo/deoplete.nvim', functions#MaybeLoad(has('nvim'), {'do': ':UpdateRem
             \|Plug 'zchee/deoplete-jedi', {'for': ['python']}
             \|Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp']}
             \|Plug 'carlitux/deoplete-ternjs'
+            \|Plug 'steelsojka/deoplete-flow'
             \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'as': 'ternjs'}
-            \|Plug 'mhartington/nvim-typescript', {'for': ['typescript'], 'as': 'deoplete-typescript'}
+            \|Plug 'mhartington/nvim-typescript', {'as': 'deoplete-typescript'}
             \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
 
 Plug 'ludovicchabant/vim-gutentags', functions#MaybeLoad(executable('ctags'), {'for': ['c', 'cpp'], 'as': 'gutentags'})
