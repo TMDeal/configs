@@ -22,7 +22,6 @@ augroup my_autocmds
     "Lazy load plugins
     au BufReadPre * call lazy#LoadGit()
     au BufReadPre * call lazy#LoadDjango()
-    au BufReadPre * call lazy#LoadAngular()
     au BufReadPre * call lazy#LoadLvimrc()
     au BufReadPre * call lazy#LoadEditorconfig()
     au VimEnter * silent! au! FileExplorer
