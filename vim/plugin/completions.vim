@@ -7,12 +7,17 @@ if functions#PluginExists('deoplete')
     let g:deoplete#enable_at_startup=1
     let g:deoplete#enable_smart_case=0
     let g:deoplete#max_menu_width=80
+    let g:deoplete#file#enable_buffer_path=1
 
     let g:tern_request_timeout=1
     let g:tern_show_signature_in_pum=0
-    let g:deoplete#sources['javascript.jsx'] = ['file', 'ultisnips', 'ternjs']
     let g:tern#command=["tern"]
     let g:tern#arguments=["--persistent"]
+
+    let g:flow_path = functions#StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
+    if g:flow_path != 'flow not found'
+        let g:deoplete#sources#flow#flow_bin = g:flow_path
+    endif
 
     let g:deoplete#sources#clang#libclang_path='/usr/lib/libclang.so'
     let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
@@ -29,8 +34,8 @@ if functions#PluginExists('deoplete')
     inoremap <expr><C-g> deoplete#undo_completion()
     inoremap <expr><C-l> deoplete#refresh()
     inoremap <silent><expr><C-Space> deoplete#mappings#manual_complete()
-    inoremap <silent><expr><C-h> deoplete#smart_close_popup()."\<C-h>"
-    inoremap <silent><expr><BS> deoplete#smart_close_popup()."\<C-h>"
+    " inoremap <silent><expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+    " inoremap <silent><expr><BS> deoplete#smart_close_popup()."\<C-h>"
     "
     let g:deoplete#omni#functions.javascript=[
                 \ 'tern#Complete',

@@ -5,6 +5,10 @@ function! functions#LineReturn()
     endif
 endfunction
 
+function! functions#StrTrim(txt)
+  return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
+endfunction
+
 function! functions#AutoCDtoProjectRoot()
     try
         if &ft != 'help'
