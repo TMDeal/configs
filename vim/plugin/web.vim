@@ -7,7 +7,7 @@ if functions#PluginExists('emmet')
 endif
 
 if functions#PluginExists('closetag')
-    let g:closetag_filenames="*.html,*.php,*.xhtml,*.xml,*.jsx,*.js,*.hbs,*.handlebars,*.jinja"
+    let g:closetag_filenames="*.html,*.php,*.xhtml,*.xml,*.jsx,*.js,*.hbs,*.handlebars,*.jinja,*.ts,*.tsx"
 endif
 
 if functions#PluginExists('angular-cli')
