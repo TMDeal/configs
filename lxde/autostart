@@ -2,6 +2,10 @@
 @nm-applet
 @volumeicon
 @compton -b
-#@feh --bg-scale /usr/share/pixmaps/relicanth.jpg
 @pcmanfm --desktop --profile LXDE
 @~/.config/lxsession/LXDE/init
+@xset -dpms
+@xset s 1800 1800
+xset b off
+#@conky
+@xss-lock -- i3lock-wrapper -e
