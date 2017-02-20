@@ -80,6 +80,7 @@ set noswapfile
 set wildmenu
 set wildmode=list:longest
 set wildignorecase
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
 set wildignore+=*.mp3,*.wav,*.wav
 set wildignore+=*.class,*.o,*.pyc
