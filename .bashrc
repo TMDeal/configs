@@ -54,9 +54,7 @@ if [ -f /usr/bin/virtualenvwrapper.sh ]; then
 fi
 
 if $( command_exists ng ); then
-    if [ -f $HOME/.ng.sh ]; then
-        source $HOME/.ng.sh
-    fi
+    ng completion | bash
 fi
 
 if [ -f $HOME/.tnsrc ]; then 
