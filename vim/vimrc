@@ -62,7 +62,6 @@ Plug 'bdauria/angular-cli.vim', {'as': 'angular-cli'}
 Plug 'w0rp/ale'
 
 "filetype syntax/indent
-Plug 'jason0x43/vim-js-indent', {'as': 'js-indent'}
 Plug 'othree/javascript-libraries-syntax.vim', {'as': 'javascript-libraries-syntax'}
 Plug 'alampros/vim-react-keywords', {'for': ['javascript', 'javascript.jsx'], 'as': 'react-keywords'}
 Plug 'lepture/vim-jinja', {'as': 'jinja'}
@@ -73,6 +72,7 @@ Plug 'itchyny/vim-haskell-indent', {'as': 'haskell-indent'}
 
 let g:polyglot_disabled=['javascript', 'jsx', 'typescript']
 Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
+Plug 'jason0x43/vim-js-indent', {'as': 'js-indent'}
 
 "Completion
 Plug 'SirVer/ultisnips', functions#MaybeLoad(has('python'))
