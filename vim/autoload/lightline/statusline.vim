@@ -7,15 +7,15 @@ function! lightline#statusline#Readonly()
 endfunction
 
 function! lightline#statusline#Fileformat()
-    return winwidth(0) > 70 ? &fileformat : ''
+    return winwidth(0) > 80 ? &fileformat : ''
 endfunction
 
 function! lightline#statusline#Filetype()
-    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+    return winwidth(0) > 80 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
 endfunction
 
 function! lightline#statusline#Fileencoding()
-    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+    return winwidth(0) > 80 ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
 
 function! lightline#statusline#Git()
