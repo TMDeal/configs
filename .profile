@@ -21,7 +21,7 @@ if [ -d /opt/android-sdk ]; then
 fi
 
 if [ -x /usr/bin/npm ]; then
-    NPM_PREFIX=$HOME/.npm_packages
+    NPM_PREFIX=$HOME/.npm-packages
     if [ ! -d $NPM_PREFIX ]; then
         mkdir $NPM_PREFIX
     fi
@@ -36,8 +36,8 @@ if [ -d $HOME/.go ]; then
     PATH=$PATH:$GOPATH/bin
 fi
 
-if [ -d $HOME/bin ]; then
-    PATH=$PATH:$HOME/bin
+if [ -d $HOME/.local/bin ]; then
+    PATH=$PATH:$HOME/.local/bin
 fi
 
 export PATH
