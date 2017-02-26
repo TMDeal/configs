@@ -2,6 +2,7 @@ if functions#PluginExists('ale')
     let g:ale_lint_delay=200
     let g:ale_lint_on_text_changed=1
     let g:ale_lint_on_enter=1
+    let g:ale_set_highlights=0
     let g:ale_lint_on_save=0
     let g:ale_set_loclist=1
     let g:ale_set_signs=1
