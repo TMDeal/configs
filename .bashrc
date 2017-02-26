@@ -39,8 +39,8 @@ if [ -f /etc/bash_completion ]; then
 fi
 
 export TERM=xterm-256color
-export VISUAL=nvim
-export EDITOR=nvim
+export VISUAL="nvim-qt --nofork"
+export EDITOR="nvim"
 
 if [[ -f /usr/share/fzf/key-bindings.bash ]]; then
     source /usr/share/fzf/key-bindings.bash
