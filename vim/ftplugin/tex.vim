@@ -4,12 +4,12 @@ setlocal textwidth=80
 
 augroup tex
     au!
-    if functions#PluginExists('vimtex')
+    if dein#tap('vimtex')
         au User VimtexEventQuit VimtexClean
     endif
 augroup END
 
-if functions#PluginExists('vimtex')
+if dein#tap('vimtex')
     let g:vimtex_enabled=1
     let g:vimtex_fold_enabled=0
     let g:vimtex_indent_enabled=1
@@ -19,6 +19,6 @@ if functions#PluginExists('vimtex')
     let g:tex_flavor='latex'
 endif
 
-if functions#PluginExists('latex-live-preview')
+if dein#tap('latex-live-preview')
     let g:livepreview_previewer='zathura'
 endif

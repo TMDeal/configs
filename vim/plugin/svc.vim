@@ -1,4 +1,4 @@
-if functions#PluginExists('fugitive')
+if dein#tap('fugitive')
     nnoremap <silent> <Leader>ga :Git add %:p<CR><CR>
     nnoremap <silent> <Leader>gs :Gstatus<CR>
     nnoremap <silent> <Leader>gc :Gcommit -v -q<CR>

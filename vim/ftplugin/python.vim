@@ -1,4 +1,4 @@
-if functions#PluginExists('python-mode')
+if dein#tap('python-mode')
     let g:pymode_python='python3'
     let g:pymode_syntax_all=1
     let g:pymode_trim_whitespaces=1
@@ -33,7 +33,7 @@ if functions#PluginExists('python-mode')
     let g:pymode_breakpoint_bind             = '<Leader>mb'
 endif
 
-if functions#PluginExists('jedi')
+if dein#tap('jedi')
     let g:jedi#completions_enabled=0
     let g:jedi#show_call_signatures=2
     let g:jedi#show_call_signatures_delay=0
@@ -47,7 +47,7 @@ if functions#PluginExists('jedi')
     let g:jedi#usages_command=''
 endif
 
-if functions#PluginExists('pydocstring')
+if dein#tap('pydocstring')
     nnoremap <buffer><silent> <Leader>md :Pydocstring<cr>
     let g:pydocstring_templates_dir=$EDITOR_ROOT . '/templates/'
     let g:pydocstring_enable_mapping=0

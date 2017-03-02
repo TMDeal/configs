@@ -1,8 +1,8 @@
-if !functions#PluginExists('lightline')
+if !dein#tap('lightline')
     set statusline=
     set statusline+=\%{statusline#Mode()}
     set statusline+=\ %{statusline#Filename()}
-    if functions#PluginExists('fugitive')
+    if dein#tap('fugitive')
         set statusline+=\ %{statusline#Git()}
     endif
     set statusline+=%=
@@ -13,10 +13,10 @@ if !functions#PluginExists('lightline')
     set statusline+=\ [%P]
     "display line:column number
     set statusline+=\ [%l:%c]
-    " if functions#PluginExists('neomake')
+    " if dein#tap('neomake')
     "     set statusline+=\ %#ErrorMsg#%{statusline#Neomake()}
     " endif
-    if functions#PluginExists('ale')
+    if dein#tap('ale')
         set statusline+=\ %{ale#statusline#Status()}
     endif
 else

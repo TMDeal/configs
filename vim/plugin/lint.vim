@@ -1,4 +1,4 @@
-if functions#PluginExists('ale')
+if dein#tap('ale')
     let g:ale_lint_delay=200
     let g:ale_lint_on_text_changed=1
     let g:ale_lint_on_enter=1
@@ -33,7 +33,7 @@ if functions#PluginExists('ale')
     let g:ale_c_gcc_options='-I../include -I./include -std=c11 -fsyntax-only -Wall -Wextra'
 endif
 
-if functions#PluginExists('neomake')
+if dein#tap('neomake')
     let g:neomake_list_height=5
     let g:neomake_open_list=0
     let g:neomake_place_signs=1
