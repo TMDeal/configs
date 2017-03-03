@@ -29,7 +29,7 @@ if dein#load_state(expand('$EDITOR_ROOT/bundle'))
   call dein#add(expand('$EDITOR_ROOT/bundle/repos/github.com/Shougo/dein.vim'))
 
   "python
-  call dein#add('klen/python-mode', {
+  call dein#add('python-mode/python-mode', {
               \'on_ft': ['python'] 
               \})
 
@@ -303,10 +303,10 @@ if dein#load_state(expand('$EDITOR_ROOT/bundle'))
               \'on_cmd': 'Neoformat'
               \})
 
-  call dein#add('brooth/far.vim', {
-              \'name': 'far',
-              \'on_cmd': ['Far', 'Farp', 'Fardo', 'Refar', 'Farundo', 'F']
-              \})
+  " call dein#add('brooth/far.vim', {
+  "             \'name': 'far',
+  "             \'on_cmd': ['Far', 'Farp', 'Fardo', 'Refar', 'Farundo', 'F']
+  "             \})
 
   call dein#add('scrooloose/nerdtree', {
               \'on_if': 'isdirectory(expand("<amatch>"))'
