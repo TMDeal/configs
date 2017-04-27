@@ -19,6 +19,7 @@ endif
 set titlestring=%t
 
 set completeopt-=preview
+" set completeopt+=noinsert
 set number
 set relativenumber
 set sidescroll=1

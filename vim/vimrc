@@ -1,8 +1,4 @@
-if !has('nvim')
-    set nocompatible
-    filetype plugin indent on
-    syntax on
-endif
+set nocompatible
 
 nnoremap <SPACE> <NOP>
 let g:mapleader="\<SPACE>"
@@ -14,13 +10,12 @@ else
     let $EDITOR_ROOT=expand("$HOME/.vim")
 endif
 
+set runtimepath+=$EDITOR_ROOT/bundle/repos/github.com/Shougo/dein.vim
+
 let g:root_markers=['.projectroot', '.git', 'manage.py', 'package.json', 'CMakeLists.txt', 'Makefile']
 
-if !filereadable(expand($EDITOR_ROOT . '/autoload/plug.vim'))
-    !curl -fLo $EDITOR_ROOT/autoload/plug.vim --create-dirs
-                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    call mkdir(expand($EDITOR_ROOT . '/bundle'), "p")
-    au VimEnter * PlugInstall | source $MYVIMRC
+if !isdirectory(expand('$EDITOR_ROOT/bundle/repos/github.com/Shougo/dein.vim'))
+    !curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh | bash -s -- $EDITOR_ROOT/bundle
 endif
 
 for dir in ['tmp/tags', 'templates', 'tmp/cache', 'tmp/backup', 'tmp/undo', 'tmp/swap']
@@ -29,99 +24,428 @@ for dir in ['tmp/tags', 'templates', 'tmp/cache', 'tmp/backup', 'tmp/undo', 'tmp
     endif
 endfor
 
-call g:plug#begin(expand('$EDITOR_ROOT/bundle'))
-"python
-Plug 'klen/python-mode', {'for': 'python'}
-Plug 'heavenshell/vim-pydocstring', {'for': 'python', 'as': 'pydocstring'}
-Plug 'jmcomets/vim-pony', {'on': [], 'as': 'pony'}
-Plug 'tweekmonster/impsort.vim', {'for': 'python', 'as': 'impsort'}
-Plug 'davidhalter/jedi-vim', {'for': 'python', 'as': 'jedi'}
+if dein#load_state(expand('$EDITOR_ROOT/bundle'))
+    call dein#begin(expand('$EDITOR_ROOT/bundle'))
+    call dein#add(expand('$EDITOR_ROOT/bundle/repos/github.com/Shougo/dein.vim'))
 
-"C/C++
-Plug 'vim-scripts/DoxygenToolkit.vim', {'for': ['c', 'cpp'], 'as': 'doxygen'}
-Plug 'derekwyatt/vim-fswitch', {'for': ['c', 'cpp'], 'as': 'fswitch'}
-Plug 'drmikehenry/vim-headerguard', {'for': ['c', 'cpp'], 'as': 'headerguard'}
-Plug 'derekwyatt/vim-protodef', {'for': ['c', 'cpp'], 'as': 'protodef'}
-Plug 'richq/vim-cmake-completion', {'for': 'cmake', 'as': 'cmake-completion'}
+    "python
+    call dein#add('python-mode/python-mode', {
+                \'on_ft': ['python'] 
+                \})
 
-"TeX
-Plug 'lervag/vimtex', {'for': 'tex'}
-Plug 'xuhdev/vim-latex-live-preview', {'for': 'tex', 'as': 'latex-live-preview'}
-Plug 'rhysd/vim-grammarous', {'for': 'tex', 'as': 'grammarous'}
+    call dein#add('heavenshell/vim-pydocstring', {
+                \'name': 'pydocstring',
+                \'on_ft': ['python']
+                \})
 
-"Web
-Plug 'vim-scripts/Emmet.vim', {'for': ['html', 'htmldjango', 'php', 'javascript', 'javascript.jsx', 'jinja'], 'as': 'emmet'}
-Plug 'alvan/vim-closetag', {'as': 'closetag'}
+    call dein#add('jmcomets/vim-pony', {
+                \'name': 'pony',
+                \'on_if': 'filereadable(expand(projectroot#guess() . "/manage.py"))'
+                \})
 
-"Javascript/Typescript
-Plug 'heavenshell/vim-jsdoc', {'for': ['javascript', 'javascript.jsx', 'html'], 'as': 'jsdoc'}
-Plug 'othree/jspc.vim', {'for': ['javascript', 'javascript.jsx', 'html'], 'as': 'jspc'}
-Plug 'bdauria/angular-cli.vim', {'as': 'angular-cli'}
+    call dein#add('tweekmonster/django-plus.vim', {
+                \'name': 'django-plus',
+                \})
 
-"Lint
-Plug 'w0rp/ale'
+    call dein#add('tweekmonster/impsort.vim', {
+                \'name': 'impsort',
+                \'on_ft': ['python']
+                \})
 
-"filetype syntax/indent
-Plug 'othree/javascript-libraries-syntax.vim', {'as': 'javascript-libraries-syntax'}
-Plug 'alampros/vim-react-keywords', {'for': ['javascript', 'javascript.jsx'], 'as': 'react-keywords'}
-Plug 'lepture/vim-jinja', {'as': 'jinja'}
-Plug 'pangloss/vim-javascript', {'as': 'javascript'}
-Plug 'mxw/vim-jsx', {'as': 'jsx'}
-Plug 'leafgarland/typescript-vim', {'as': 'typescript'}
-Plug 'itchyny/vim-haskell-indent', {'as': 'haskell-indent'}
+    " call dein#add('davidhalter/jedi-vim', {
+    "             \'name': 'jedi',
+    "             \'on_ft': ['python']
+    "             \})
 
-let g:polyglot_disabled=['javascript', 'jsx', 'typescript']
-Plug 'sheerun/vim-polyglot', {'as': 'polyglot'}
-Plug 'jason0x43/vim-js-indent', {'as': 'js-indent'}
+    "C/C++
+    call dein#add('vim-scripts/DoxygenToolkit.vim', {
+                \'name': 'DoxygenToolkit',
+                \'on_ft': ['c', 'cpp']
+                \})
 
-"Completion
-Plug 'SirVer/ultisnips', functions#MaybeLoad(has('python'))
-Plug 'Shougo/deoplete.nvim', functions#MaybeLoad(has('nvim'), {'do': ':UpdateRemotePlugins', 'as': 'deoplete'})
-            \|Plug 'Shougo/context_filetype.vim', {'as': 'context_filetype'}
-            \|Plug 'zchee/deoplete-jedi', {'for': ['python']}
-            \|Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp']}
-            \|Plug 'carlitux/deoplete-ternjs'
-            \|Plug 'steelsojka/deoplete-flow'
-            \|Plug 'ternjs/tern_for_vim', {'do': 'npm install', 'as': 'ternjs'}
-            \|Plug 'mhartington/nvim-typescript', {'as': 'deoplete-typescript'}
-            \|Plug 'eagletmt/neco-ghc'
-            \|Plug 'Shougo/neoinclude.vim', {'as': 'neoinclude'}
+    call dein#add('derekwyatt/vim-fswitch', {
+                \'name': 'fswitch',
+                \'on_ft': ['c', 'cpp']
+                \})
 
-Plug 'ludovicchabant/vim-gutentags', functions#MaybeLoad(executable('ctags'), {'for': ['c', 'cpp'], 'as': 'gutentags'})
-Plug 'majutsushi/tagbar', functions#MaybeLoad(executable('ctags'), {'on': 'TagbarToggle'})
-Plug 'jeetsukumaran/vim-buffergator', {'on': ['BuffergatorToggle', 'BuffergatorMruCycleNext', 'BuffergatorMruCyclePrev'], 'as': 'buffergator'}
-Plug 'godlygeek/tabular', {'on': 'Tabularize'}
-Plug 'ctrlpvim/ctrlp.vim', {'on': 'CtrlP', 'as': 'ctrlp'}
-Plug 'vim-scripts/YankRing.vim', {'as': 'yankring'}
-Plug 'christoomey/vim-tmux-navigator', {'as': 'tmux-navigator'}
-Plug 'jpalardy/vim-slime', {'as': 'slime'}
-Plug 'sbdchd/neoformat', {'on': ['Neoformat']}
-Plug 'brooth/far.vim', {'on': ['Far', 'Farp', 'Fardo', 'Refar', 'Farundo', 'F']}
+    call dein#add('drmikehenry/vim-headerguard', {
+                \'name': 'headerguard',
+                \'on_ft': ['c', 'cpp']
+                \})
 
-Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle']}
-            \| Plug 'Xuyuanp/nerdtree-git-plugin', {'on': [], 'as': 'nerdtree-git'}
+    call dein#add('derekwyatt/vim-protodef', {
+                \'name': 'protodef',
+                \'on_ft': ['c', 'cpp'],
+                \'hook_add': join([
+                \"let g:protodefprotogetter=$EDITOR_ROOT . '/bundle/vim-protodef/pullproto.pl'",
+                \"let g:disable_protodef_mapping=1",
+                \"let g:disable_protodef_sorting=1"
+                \], "\n")
+                \})
 
-Plug 'dbakker/vim-projectroot', {'as': 'projectroot'}
-Plug 'editorconfig/editorconfig-vim', {'on': [], 'as': 'editorconfig'}
-Plug 'tpope/vim-eunuch', {'as': 'eunuch'}
-Plug 'tomtom/tcomment_vim', {'as': 'tcomment'}
-Plug 'embear/vim-localvimrc', {'on': [], 'as': 'localvimrc'}
-Plug 'gcmt/taboo.vim', {'as': 'taboo'}
-Plug 'Valloric/ListToggle', {'as': 'list-toggle'}
-Plug 'Raimondi/delimitMate'
-Plug 'lilydjwg/colorizer'
-Plug 'EinfachToll/DidYouMean', {'as': 'did-you-mean'}
-Plug 'Konfekt/FastFold', {'as': 'fast-fold'}
+    call dein#add('richq/vim-cmake-completion', {
+                \'name': 'cmake-completion',
+                \'on_ft': ['cmake']
+                \})
 
-Plug 'tpope/vim-surround', {'as': 'surround'}
-Plug 'tpope/vim-repeat', {'as': 'repeat'}
-Plug 'adelarsq/vim-matchit', {'as': 'matchit'}
-Plug 'kana/vim-textobj-user'
-            \|Plug 'mjbrownie/django-template-textobjects', {'for': ['python', 'htmldjango', 'jinja']}
+    "TeX
+    call dein#add('lervag/vimtex', {
+                \'on_ft': ['tex']
+                \})
 
-Plug 'tpope/vim-fugitive', {'on': [], 'as': 'fugitive'}
-Plug 'airblade/vim-gitgutter', {'on': [], 'as': 'gitgutter'}
+    call dein#add('xuhdev/vim-latex-live-preview', {
+                \'name': 'latex-live-preview',
+                \'on_ft': ['tex']
+                \})
 
-Plug 'nanotech/jellybeans.vim', {'as': 'jellybeans'}
-Plug 'itchyny/lightline.vim', {'as': 'lightline'}
-call g:plug#end()
+    call dein#add('rhysd/vim-grammarous', {
+                \'name': 'grammarous',
+                \'on_ft': ['tex'],
+                \'hook_add': join([
+                \"nmap ]g <Plug>(grammarous-move-to-next-error)",
+                \"nmap ]g <Plug>(grammarous-move-to-previous-error)"
+                \], "\n")
+                \})
+
+    "Web
+    call dein#add('vim-scripts/Emmet.vim', {
+                \'name': 'emmet',
+                \'on_ft': ['html', 'htmldjango', 'php', 'javascript', 'javascript.jsx', 'jinja'],
+                \'on_event': 'InsertEnter'
+                \})
+
+    call dein#add('alvan/vim-closetag', {
+                \'name': 'closetag',
+                \'hook_add': 'let g:closetag_filenames="*.html,*.php,*.xhtml,*.xml,*.jsx,,*.hbs,*.handlebars,*.jinja,,*.tsx,*.vue"'
+                \})
+
+    "Javascript/Typescript
+    call dein#add('moll/vim-node', {
+                \'on_ft': ['javascript', 'javascript.jsx']
+                \})
+
+    call dein#add('heavenshell/vim-jsdoc', {
+                \'name': 'jsdoc',
+                \'on_ft': ['javascript', 'javascript.jsx', 'typescript']
+                \})
+
+    call dein#add('othree/jspc.vim', {
+                \'name': 'jspc',
+                \'on_ft': ['javascript', 'javascript.jsx', 'typescript']
+                \})
+
+    call dein#add('bdauria/angular-cli.vim', {
+                \'name': 'angular-cli',
+                \'on_if': 'filereadable(expand(projectroot#guess() . "/angular-cli.json"))',
+                \'hook_add': 'let g:angular_cli_stylesheet_format="scss"'
+                \})
+
+    "Lint
+    call dein#add('w0rp/ale')
+
+    "filetype syntax/indent
+    call dein#add('othree/javascript-libraries-syntax.vim', {
+                \'name': 'javascript-libraries-syntax'
+                \})
+
+    call dein#add('alampros/vim-react-keywords', {
+                \'name': 'react-keywords',
+                \'on_ft': ['javascript', 'javascript.jsx']
+                \})
+
+    call dein#add('lepture/vim-jinja', {
+                \'name': 'jinja'
+                \})
+
+    call dein#add('pangloss/vim-javascript', {
+                \'name': 'javascript'
+                \})
+
+    call dein#add('mxw/vim-jsx', {
+                \'name': 'jsx'
+                \})
+
+    call dein#add('leafgarland/typescript-vim', {
+                \'name': 'typescript'
+                \})
+
+    call dein#add('itchyny/vim-haskell-indent', {
+                \'name': 'haskell-indent'
+                \})
+
+    call dein#add('sheerun/vim-polyglot', {
+                \'name': 'polyglot',
+                \'hook_source': "let g:polyglot_disabled=['javascript', 'jsx', 'typescript']"
+                \})
+
+    call dein#add('jason0x43/vim-js-indent', {
+                \'name': 'js-indent'
+                \})
+
+    "Completion
+    call dein#add('SirVer/ultisnips', {
+                \'if': has('python'),
+                \'on_ft': ['snippet'],
+                \'on_event': 'InsertEnter'
+                \})
+
+    " call dein#add('Valloric/YouCompleteMe', {
+    "             \'name': 'YouCompleteMe',
+    "             \'build': functions#YCMBuildCommand(),
+    "             \'on_event': 'InsertEnter',
+    "             \'hook_source': 'source $EDITOR_ROOT/plugin/youcompleteme.vim'
+    "             \})
+
+    call dein#add('Shougo/deoplete.nvim', {
+                \'name': 'deoplete',
+                \'if': has('nvim'),
+                \'build': 'UpdateRemotePlugins',
+                \'on_event': 'InsertEnter',
+                \'hook_source': 'source $EDITOR_ROOT/plugin/deoplete.vim'
+                \})
+
+    call dein#add('Shougo/context_filetype.vim', {
+                \'name': 'context-filetype',
+                \'on_source': 'deoplete',
+                \'depends': 'deoplete'
+                \})
+
+    call dein#add('zchee/deoplete-jedi', {
+                \'on_ft': ['python'],
+                \'if': has('nvim'),
+                \'on_source': 'deoplete',
+                \'depends': 'deoplete'
+                \})
+
+    call dein#add('zchee/deoplete-clang', {
+                \'on_ft': ['c', 'cpp'],
+                \'if': has('nvim'),
+                \'on_source': 'deoplete',
+                \'depends': 'deoplete'
+                \})
+
+    " call dein#add('tweekmonster/deoplete-clang2', {
+    "             \'on_ft': ['c', 'cpp'],
+    "             \'if': has('nvim'),
+    "             \'on_source': 'deoplete',
+    "             \'depends': 'deoplete'
+    "             \})
+
+    call dein#add('carlitux/deoplete-ternjs', {
+                \'on_ft': ['javascript', 'javascript.jsx', 'html'],
+                \'if': executable('npm') && has('nvim'),
+                \'on_source': 'deoplete',
+                \'depends': 'deoplete'
+                \})
+
+    call dein#add('steelsojka/deoplete-flow', {
+                \'on_ft': ['javascript', 'javascript.jsx', 'html'],
+                \'if': executable('npm') && has('nvim'),
+                \'on_source': 'deoplete',
+                \'depends': 'deoplete'
+                \})
+
+    call dein#add('mhartington/nvim-typescript', {
+                \'name': 'deoplete-typescript',
+                \'on_ft': ['typescript'],
+                \'on_source': 'deoplete',
+                \'depends': 'deoplete'
+                \})
+
+    call dein#add('Shougo/neoinclude.vim', {
+                \'name': 'neoinclude',
+                \'on_source': 'deoplete',
+                \'depends': 'deoplete'
+                \})
+
+    call dein#add('ternjs/tern_for_vim', {
+                \'name': 'ternjs',
+                \'if': executable('npm'),
+                \'build': 'npm install',
+                \'on_event': 'InsertEnter',
+                \'on_ft': ['javascript', 'javascript.jsx'],
+                \})
+
+    call dein#add('eagletmt/neco-ghc', {
+                \'on_ft': ['haskell']
+                \})
+
+    call dein#add('ludovicchabant/vim-gutentags', {
+                \'name': 'gutentags',
+                \'on_ft': ['c', 'cpp'],
+                \'if': executable('ctags')
+                \})
+
+    call dein#add('majutsushi/tagbar', {
+                \'on_cmd': ['TagbarToggle'],
+                \'if': executable('ctags')
+                \})
+
+    call dein#add('jeetsukumaran/vim-buffergator', {
+                \'name': 'buffergator',
+                \'on_cmd': ['BuffergatorToggle', 'BuffergatorMruCycleNext', 'BuffergatorMruCyclePrev']
+                \})
+
+    call dein#add('godlygeek/tabular', {
+                \'on_cmd': ['Tabularize']
+                \})
+
+    call dein#add('ctrlpvim/ctrlp.vim', {
+                \'name': 'ctrlp',
+                \'on_cmd': ['CtrlP']
+                \})
+
+    call dein#add('vim-scripts/YankRing.vim', {
+                \'name': 'yankring',
+                \'hook_add': join([
+                \"let g:yankring_history_dir=$EDITOR_ROOT . '/tmp'",
+                \"let g:yankring_history_file='yankring'",
+                \"let g:yankring_clipboard_monitor=0"
+                \], "\n")
+                \})
+
+    call dein#add('christoomey/vim-tmux-navigator', {
+                \'name': 'tmux-navigator'
+                \})
+
+    call dein#add('jpalardy/vim-slime', {
+                \'name': 'slime',
+                \'hook_add': join([
+                \"let g:slime_target='tmux'",
+                \"let g:slime_paste_file=$EDITOR_ROOT . '/.slime_paste'",
+                \"let g:slime_default_config={'socket_name': 'default', 'target_pane': '1.2'}",
+                \"let g:slime_python_ipython=1"
+                \], "\n")
+                \})
+
+    call dein#add('sbdchd/neoformat', {
+                \'on_cmd': 'Neoformat'
+                \})
+
+    " call dein#add('brooth/far.vim', {
+    "             \'name': 'far',
+    "             \'on_cmd': ['Far', 'Farp', 'Fardo', 'Refar', 'Farundo', 'F']
+    "             \})
+
+    call dein#add('scrooloose/nerdtree', {
+                \'on_if': 'isdirectory(expand("<amatch>"))'
+                \})
+
+    call dein#add('Xuyuanp/nerdtree-git-plugin', {
+                \'name': 'nerdtree-git',
+                \'depends': 'nerdtree'
+                \})
+
+    call dein#add('dbakker/vim-projectroot', {
+                \'name': 'projectroot',
+                \'hook_add': "let g:rootmarkers=g:root_markers"
+                \})
+
+    call dein#add('editorconfig/editorconfig-vim', {
+                \'name': 'editorconfig',
+                \'on_if': 'filereadable(expand(projectroot#guess() . "/.editorconfig"))',
+                \'hook_add': "let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']"
+                \})
+
+    call dein#add('tpope/vim-eunuch', {
+                \'name': 'eunuch',
+                \'hook_add': join([
+                \"nnoremap <silent><Leader>Sw :SudoWrite<cr>",
+                \"nnoremap <Leader>Se :SudoEdit<space>"
+                \], "\n")
+                \})
+
+    call dein#add('tomtom/tcomment_vim', {
+                \'name': 'tcomment',
+                \'hook_add': join([
+                \"let g:tcommentMapLeader1=''",
+                \"let g:tcommentMapLeader2=''"
+                \], "\n")
+                \})
+
+    call dein#add('embear/vim-localvimrc', {
+                \'name': 'localvimrc',
+                \'on_if': 'filereadable(expand(projectroot#guess() . "/.lvimrc"))',
+                \'hook_add': join([
+                \'let g:localvimrc_name=".lvimrc"',
+                \'let g:localvimrc_event=["BufWinEnter", "BufNewFile", "BufRead"]',
+                \'let g:localvimrc_persistent=2',
+                \'let g:localvimrc_persistence_file=$EDITOR_ROOT . "/.localvimrc_persistent"'
+                \], "\n")
+                \})
+
+    call dein#add('gcmt/taboo.vim', {
+                \'name': 'taboo',
+                \'hook_add': join([
+                \"let g:taboo_tabline=1",
+                \"let g:taboo_tab_format='[%N]%f%m'"
+                \], "\n")
+                \})
+
+    call dein#add('Valloric/ListToggle', {
+                \'name': 'list-toggle'
+                \})
+
+    call dein#add('Raimondi/delimitMate', {
+                \'on_event': 'InsertEnter'
+                \})
+
+    call dein#add('lilydjwg/colorizer', {
+                \'hook_add': "let g:colorizer_nomap=1"
+                \})
+
+    call dein#add('EinfachToll/DidYouMean', {
+                \'name': 'did-you-mean'
+                \})
+
+    call dein#add('Konfekt/FastFold', {
+                \'name': 'fast-fold'
+                \})
+
+    call dein#add('tpope/vim-surround', {
+                \'name': 'surround'
+                \})
+
+    call dein#add('tpope/vim-repeat', {
+                \'name': 'repeat'
+                \})
+
+    call dein#add('adelarsq/vim-matchit', {
+                \'name': 'matchit'
+                \})
+
+    call dein#add('kana/vim-textobj-user', {
+                \'name': 'textobj-user'
+                \})
+
+    call dein#add('mjbrownie/django-template-textobjects', {
+                \'on_ft': ['python', 'htmldjango'],
+                \'depends': 'textobj-user'
+                \})
+
+    call dein#add('tpope/vim-fugitive', {
+                \'name': 'fugitive'
+                \})
+
+    call dein#add('airblade/vim-gitgutter', {
+                \'name': 'gitgutter'
+                \})
+
+    call dein#add('nanotech/jellybeans.vim', {
+                \'name': 'jellybeans'
+                \})
+
+    call dein#add('itchyny/lightline.vim', {
+                \'name': 'lightline'
+                \})
+
+    call dein#end()
+    call dein#save_state()
+endif
+
+if dein#check_install()
+    call dein#install()
+endif
+
+filetype plugin indent on
+syntax on

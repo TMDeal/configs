@@ -35,27 +35,7 @@ function! functions#LocPrev()
     endtry
 endfunction
 
-function! functions#MaybeLoad(condition, ...)
-    let opts = get(a:000, 0, {})
-    return a:condition ? opts : extend(opts, { 'on': [], 'for': [] })
-endfunction
-
-function! functions#PluginExists(name)
-    let dir = $EDITOR_ROOT . '/bundle/' . a:name
-    return isdirectory(dir) && has_key(g:plugs, a:name)
-endfunction
-
-function! functions#EditInCurrentDir(file)
-    let curDir = expand('%:h') . '/'
-    execute 'e ' . curDir . a:file
-endfunction
-
-function! functions#EditInCurrentDirCompletion(ArgLead, CmdLine, CursorPos)
-    let curDir = expand('%:h')
-    return map(split(globpath(curDir, a:ArgLead . '*'),"\n"), 'v:val[strlen(curDir)+1: -1]')
-endfunction
-
-function! functions#BuildYCM(info)
+function! functions#YCMBuildCommand()
     let install_command='python2 install.py'
 
     if executable('clang')
@@ -88,7 +68,5 @@ function! functions#BuildYCM(info)
 
     let install_command.=args_list
 
-    if a:info.status == 'installed' || a:info.force
-        execute "!" . install_command
-    endif
+    return install_command
 endfunction

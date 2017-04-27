@@ -3,15 +3,15 @@ augroup my_autocmds
     au!
 
     "Lint
-    if functions#PluginExists('neomake')
-        if functions#PluginExists('lightline')
+    if dein#tap('neomake')
+        if dein#tap('lightline')
             au User NeomakeFinished call lightline#update()
         endif
         au! VimLeave * let g:neomake_verbose=0
         au BufWritePost * Neomake
     endif
-    if functions#PluginExists('ale')
-        if functions#PluginExists('lightline')
+    if dein#tap('ale')
+        if dein#tap('lightline')
             au User ALELint call lightline#update()
         endif
     endif
@@ -19,17 +19,11 @@ augroup my_autocmds
     "resize automatically
     au VimResized * execute "normal! \<c-w>="
 
-    "Lazy load plugins
-    au BufReadPre * call lazy#LoadGit()
-    au BufReadPre * call lazy#LoadDjango()
-    au BufReadPre * call lazy#LoadLvimrc()
-    au BufReadPre * call lazy#LoadEditorconfig()
     au VimEnter * silent! au! FileExplorer
-    au BufEnter,BufNew * call lazy#LoadNERDTree()
 
     au BufReadPost * call functions#LineReturn()
 
-    if functions#PluginExists('projectroot')
+    if dein#tap('projectroot')
         au BufEnter * call functions#AutoCDtoProjectRoot()
     endif
 

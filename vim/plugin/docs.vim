@@ -1,4 +1,4 @@
-if functions#PluginExists('doxygen')
+if dein#tap('doxygen')
     let g:DoxygenToolkit_authorName='Trent Deal'
     let g:DoxygenToolkit_licenseTag=''
     let g:DoxygenToolkit_briefTag_pre="@Brief  "
@@ -6,7 +6,7 @@ if functions#PluginExists('doxygen')
     let g:DoxygenToolkit_returnTag="@Returns   "
 endif
 
-if functions#PluginExists('jsdoc')
+if dein#tap('jsdoc')
     let g:jsdoc_allow_input_prompt=1
     let g:jsdoc_input_description=1
     let g:jsdoc_enable_es6=1

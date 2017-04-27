@@ -1,4 +1,4 @@
-if functions#PluginExists('nerdtree')
+if dein#tap('nerdtree')
     nnoremap <silent> <F2> :ProjectRootExe NERDTreeToggle<CR>
 
     let g:NERDTreeHijackNetrw=1
@@ -23,7 +23,7 @@ if functions#PluginExists('nerdtree')
                 \ }
 endif
 
-if functions#PluginExists('ctrlp')
+if dein#tap('ctrlp')
     nnoremap <silent> <Leader>p :CtrlP<cr>
 
     let g:ctrlp_map = ''
@@ -44,7 +44,7 @@ if functions#PluginExists('ctrlp')
                 \ }
 endif
 
-if !functions#PluginExists('buffergator')
+if !dein#tap('buffergator')
     nnoremap gb :ls<CR>:buffer<Space>
 else
     let g:buffergator_suppress_keymaps=0
@@ -53,7 +53,7 @@ else
     nnoremap <silent> [b :BuffergatorMruCycleNext<cr>
 endif
 
-if functions#PluginExists('list-toggle')
+if dein#tap('list-toggle')
     let g:lt_height=5
     let g:lt_location_list_toggle_map = '<leader>l'
     let g:lt_quickfix_list_toggle_map = '<leader>q'
