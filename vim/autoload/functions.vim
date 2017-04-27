@@ -35,12 +35,38 @@ function! functions#LocPrev()
     endtry
 endfunction
 
-function! functions#EditInCurrentDir(file)
-    let curDir = expand('%:h') . '/'
-    execute 'e ' . curDir . a:file
-endfunction
+function! functions#YCMBuildCommand()
+    let install_command='python2 install.py'
 
-function! functions#EditInCurrentDirCompletion(ArgLead, CmdLine, CursorPos)
-    let curDir = expand('%:h')
-    return map(split(globpath(curDir, a:ArgLead . '*'),"\n"), 'v:val[strlen(curDir)+1: -1]')
+    if executable('clang')
+        if system("clang --version | grep 3.[8-9] >/dev/null && echo $?")==0
+            let install_command.=' --system-libclang'
+        endif
+        let install_command.=' --clang-completer'
+    endif
+
+    let args_list=''
+    let args_info={
+                \'--omnisharp-completer': ['mono'],
+                \'--gocode-completer': ['go'],
+                \'--tern-completer': ['node', 'npm'],
+                \'--racer-completer': ['rustc', 'cargo'],
+                \}
+
+    for [completer, executables] in items(args_info)
+        let can_install_completer=1
+        for exe in executables
+            if !executable(exe)
+                let can_install_completer=0
+                break
+            endif
+        endfor
+        if can_install_completer==1
+            let args_list .= ' ' . completer
+        endif
+    endfor
+
+    let install_command.=args_list
+
+    return install_command
 endfunction
