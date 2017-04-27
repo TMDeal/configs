@@ -233,14 +233,14 @@ if dein#load_state(expand('$EDITOR_ROOT/bundle'))
 
     call dein#add('carlitux/deoplete-ternjs', {
                 \'on_ft': ['javascript', 'javascript.jsx', 'html'],
-                \'if': executable('npm') && has('nvim'),
+                \'if': executable('npm'),
                 \'on_source': 'deoplete',
                 \'depends': 'deoplete'
                 \})
 
     call dein#add('steelsojka/deoplete-flow', {
                 \'on_ft': ['javascript', 'javascript.jsx', 'html'],
-                \'if': executable('npm') && has('nvim'),
+                \'if': executable('npm'),
                 \'on_source': 'deoplete',
                 \'depends': 'deoplete'
                 \})
