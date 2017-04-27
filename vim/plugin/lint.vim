@@ -22,15 +22,15 @@ if dein#tap('ale')
 
     let g:ale_linters={
                 \   'c': ['gcc'],
-                \   'cpp': ['g++'],
+                \   'cpp': ['clang'],
                 \   'tex': ['chktex'],
                 \   'python': ['flake8'],
                 \   'javascript': ['eslint']
                 \}
 
     let g:ale_python_flake8_args='--format=default --ignore=F403,F401,W391,E125 --max-line-length=100'
-    let g:ale_cpp_gcc_options='-I../include -I./include -std=c++1y -fsyntax-only -Wall -Wextra'
-    let g:ale_c_gcc_options='-I../include -I./include -std=c11 -fsyntax-only -Wall -Wextra'
+    let g:ale_cpp_clang_options='-I. -I../include -I./include -std=c++1y -fsyntax-only -Wall -Wextra'
+    let g:ale_c_gcc_options='-I./ -I../include -I./include -std=c11 -fsyntax-only -Wall -Wextra'
 endif
 
 if dein#tap('neomake')
