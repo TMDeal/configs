@@ -7,7 +7,6 @@ if !has('nvim')
     set history=10000
     set autoread
     set laststatus=2
-    set mouse=a
     set t_vb=
     set t_u7=
 endif
@@ -18,6 +17,11 @@ endif
 
 set titlestring=%t
 
+if executable('rg')
+    set grepprg=rg\ --vimgrep
+endif
+
+set mouse=a
 set completeopt-=preview
 " set completeopt+=noinsert
 set number
@@ -43,7 +47,9 @@ set diffopt+=vertical
 set pumheight=10
 set showtabline=1
 set list
-set listchars=extends:>,precedes:<,trail:.,tab:▸\ ,eol:¬
+set listchars=extends:»,precedes:«
+set listchars+=tab:│·,eol:¬
+set listchars+=nbsp:.,trail:.
 set noshowmode
 
 set timeout
@@ -72,9 +78,9 @@ set showmatch
 
 set undofile
 set undoreload=10000
-set undodir=$EDITOR_ROOT/tmp/undo//
-set backupdir=$EDITOR_ROOT/tmp/backup//
-set directory=$EDITOR_ROOT/tmp/swap//
+set undodir=$EDITOR_ROOT/.cache/undo//
+set backupdir=$EDITOR_ROOT/.cache/backup//
+set directory=$EDITOR_ROOT/.cache/swap//
 set backup
 set noswapfile
 

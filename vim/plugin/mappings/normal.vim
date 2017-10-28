@@ -3,13 +3,13 @@ nnoremap L $
 nnoremap j gj
 nnoremap k gk
 
-set pastetoggle=<F10>
+set pastetoggle=<F2>
 
 "Keep search matches in the middle of the window.
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-nnoremap <silent> - :silent edit <C-R>=empty(expand('%')) ? '.' : fnameescape(expand('%:p:h'))<CR><CR>
+" nnoremap <silent> - :silent edit <C-R>=empty(expand('%')) ? '.' : fnameescape(expand('%:p:h'))<CR><CR>
 
 "file search/replace template
 nnoremap gs :%s//c<left><left>
@@ -22,7 +22,7 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-h> <C-w>h 
 nnoremap <C-l> <C-w>l 
 
-nnoremap Y y$
+nmap Y y$
 nnoremap zo za
 nnoremap <cr> o<esc>
 

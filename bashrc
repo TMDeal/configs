@@ -42,9 +42,13 @@ export TERM=xterm-256color
 export VISUAL="nvim-qt --nofork"
 export EDITOR="nvim"
 
-if [[ -f /usr/share/fzf/key-bindings.bash ]]; then
-    source /usr/share/fzf/key-bindings.bash
-    export FZF_DEFAULT_OPTS="--extended"
+if [[ -f ~/.fzf.bash ]]; then
+    export FZF_DEFAULT_OPTS="--reverse --border"
+    # export FZF_DEFAULT_COMMAND='ag -g ""'
+    export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules,build,dist}/*" 2> /dev/null'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    bind -x '"\C-p": vim $(fzf --height 40%);'
+    source ~/.fzf.bash
 fi
 
 if [ -f /usr/bin/virtualenvwrapper.sh ]; then
@@ -54,7 +58,7 @@ if [ -f /usr/bin/virtualenvwrapper.sh ]; then
 fi
 
 if $( command_exists ng ); then
-    ng completion | bash
+    source <(ng completion --bash)
 fi
 
 if [ -f $HOME/.tnsrc ]; then 
@@ -80,13 +84,18 @@ shopt -s checkwinsize
 if [ -f $HOME/.git-prompt.sh ]; then
     source $HOME/.git-prompt.sh
     export GIT_PS1_SHOWDIRTYSTATE=1
-    PS1='[\u@\h: \w]$(__git_ps1 "(%s)")\$ '
+    PS1='[\u@\h: \W]$(__git_ps1 "(%s)")\$ '
 else
     PS1='[\u@\h: \w]\$ '
 fi
 
 if $( command_exists nvim ); then
    alias vim="nvim"
+
+   if $( command_exists nvim-qt ); then
+       alias vimq="nvim-qt"
+   fi
+
 fi
 
 if $( command_exists tmuxinator ); then
@@ -110,6 +119,7 @@ alias links="xlinks"
 alias vimn="vim -u NONE"
 alias gpp="g++ -std=c++1y -Wall -Wextra -g"
 alias mongo="mongo --quiet"
+alias open="xdg-open"
 
 alias ev="vim ~/configs/vim/vimrc"
 alias eb="vim ~/.bashrc"
@@ -120,4 +130,3 @@ alias ei3="vim ~/.config/i3/config"
 alias ei3b="vim ~/.config/i3/i3blocks.conf"
 alias ei3s="vim ~/.config/i3/i3status.conf"
 alias ehttp="vim /etc/httpd/conf/httpd.conf"
-

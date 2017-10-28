@@ -47,23 +47,3 @@ function! statusline#Git()
     endtry
     return ''
 endfunction
-
-function! statusline#Neomake()
-    let output = ''
-    if exists("*neomake#statusline#LoclistStatus()")
-        let errors = neomake#statusline#LoclistCounts()
-
-        if has_key(errors, 'E')
-            let output .= '[E:'.errors['E'].']'
-        endif
-        if has_key(errors, 'W')
-            let output .= '[W:'.errors['W'].']'
-        endif
-        if has_key(errors, 'x')
-            let output .= '[x:'.errors['x'].']'
-        endif
-    endif
-
-    return output
-
-endfunction

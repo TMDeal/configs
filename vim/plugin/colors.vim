@@ -1,7 +1,7 @@
 set background=dark
 set t_Co=256
 
-if has($TMUX) && has('termguicolors')
+if !has($TMUX) && has('termguicolors')
     set termguicolors
 endif
 

@@ -1,6 +1,4 @@
 if dein#tap('ultisnips')
-    nnoremap <silent> <Leader>es :UltiSnipsEdit<cr>
-
     let g:UltiSnipsExpandTrigger='<C-k>'
     let g:UltiSnipsJumpForwardTrigger='<C-k>'
     let g:UltiSnipsJumpBackwardTrigger='<C-j>'

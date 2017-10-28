@@ -1,6 +1,4 @@
 if dein#tap('nerdtree')
-    nnoremap <silent> <F2> :ProjectRootExe NERDTreeToggle<CR>
-
     let g:NERDTreeHijackNetrw=1
     let g:NERDTreeMouseMode=2
     let g:NERDTreeRespectWildIgnore=1
@@ -9,52 +7,58 @@ if dein#tap('nerdtree')
     let g:NERDTreeMinimalUI=1
     let g:NERDTreeAutoDeleteBuffer=1
     " let g:NERDTreeQuitOnOpen=1
-
     let g:NERDTreeIndicatorMapCustom = {
-                \ "Modified"  : "*",
-                \ "Staged"    : "+",
-                \ "Untracked" : "!",
-                \ "Renamed"   : "R",
-                \ "Unmerged"  : "=",
-                \ "Deleted"   : "-",
-                \ "Dirty"     : "X",
-                \ "Clean"     : "C",
-                \ "Unknown"   : "?"
+                \ 'Modified':  '·',
+                \ 'Staged':    '‧',
+                \ 'Untracked': '?',
+                \ 'Renamed':   '≫',
+                \ 'Unmerged':  '≠',
+                \ 'Deleted':   '✃',
+                \ 'Dirty':     '⁖',
+                \ 'Clean':     '✓',
+                \ 'Unknown':   '⁇'
                 \ }
 endif
 
-if dein#tap('ctrlp')
-    nnoremap <silent> <Leader>p :CtrlP<cr>
+if dein#tap('fzf')
+    let g:fzf_command_prefix='Fzf'
+    let g:fzf_history_dir = '~/.local/share/fzf-history'
+    let g:fzf_action = {
+                \ 'ctrl-t': 'tab split',
+                \ 'ctrl-s': 'split',
+                \ 'ctrl-v': 'vsplit' }
 
-    let g:ctrlp_map = ''
-    let g:ctrlp_cache_dir=$EDITOR_ROOT . '/tmp/cache/ctrlp'
-    let g:ctrlp_clear_cache_on_exit=0
-    let g:ctrlp_regexp=0
-    let g:ctrlp_root_markers=g:root_markers
-    let g:ctrlp_show_hidden=0
-    let g:ctrlp_max_files=10000
-    let g:ctrlp_max_depth=40
-    let g:ctrlp_open_new_file='v'
-    let g:ctrlp_arg_map=1
-    let g:ctrlp_follow_symlinks=1
-    let g:ctrlp_lazy_update=0
+    let g:fzf_layout = { 'down': '~40%' }
 
-    let g:ctrlp_custom_ignore = {
-                \ 'dir': '\v[\/](\.git|\.hg|\.svn|node_modules|build|bundle|dist|tmp)$',
+    let g:fzf_layout = { 'window': 'enew' }
+    let g:fzf_layout = { 'window': '-tabnew' }
+    let g:fzf_layout = { 'window': '10split enew' }
+
+    let g:fzf_colors = {
+                \ 'fg':      ['fg', 'Normal'],
+                \ 'bg':      ['bg', 'Normal'],
+                \ 'hl':      ['fg', 'Comment'],
+                \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+                \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+                \ 'hl+':     ['fg', 'Statement'],
+                \ 'info':    ['fg', 'PreProc'],
+                \ 'border':  ['fg', 'Ignore'],
+                \ 'prompt':  ['fg', 'Conditional'],
+                \ 'pointer': ['fg', 'Exception'],
+                \ 'marker':  ['fg', 'Keyword'],
+                \ 'spinner': ['fg', 'Label'],
+                \ 'header':  ['fg', 'Comment']
                 \ }
-endif
 
-if !dein#tap('buffergator')
-    nnoremap gb :ls<CR>:buffer<Space>
-else
-    let g:buffergator_suppress_keymaps=0
-    nnoremap <silent> <Leader>b :BuffergatorToggle<cr>
-    nnoremap <silent> ]b :BuffergatorMruCyclePrev<cr>
-    nnoremap <silent> [b :BuffergatorMruCycleNext<cr>
+    let g:rg_command_grep = '
+                \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
+                \ -g "!*.{a,lock,png,jpg,jpeg,ico,svg}"
+                \ -g "!{.git,.cache,node_modules,bundle,build,pkg,vendor,third_party,bin,dist}/*" '
+    command! -bang -nargs=* FzfRipgrep call fzf#vim#grep(g:rg_command_grep .shellescape(<q-args>), 1, <bang>0)
 endif
 
 if dein#tap('list-toggle')
     let g:lt_height=5
-    let g:lt_location_list_toggle_map = '<leader>l'
-    let g:lt_quickfix_list_toggle_map = '<leader>q'
+    let g:lt_location_list_toggle_map = '<leader>ol'
+    let g:lt_quickfix_list_toggle_map = '<leader>oq'
 endif

@@ -1,6 +1,7 @@
 tint2 &
 nm-applet &
 volumeicon &
+parcellite &
 conky &
 $HOME/.config/openbox/scripts/init
 feh --bg-scale $HOME/.config/openbox/backgrounds/jpg/relicanth.jpg

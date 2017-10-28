@@ -1,26 +1,40 @@
-"generate doxygen docstrings
-if dein#tap('doxygenToolkit')
-    nnoremap <buffer><silent> <Leader>md :Dox<cr>
+function! s:SetLeaderGuideMappings()
+    call functions#InitLeaderModeMap()
+
+    if dein#tap('leader-guide')
+        if dein#tap('DoxygenToolkit')
+            let g:leader_map.m.D = ['Dox', 'Doxygen']
+        endif
+        if dein#tap('headerguard')
+            let g:leader_map.m.g = ['HeaderguardAdd', 'make headerguard']
+        endif
+        if dein#tap('fswitch')
+            let g:leader_map.m.f = {'name': '[FSwitch]'}
+            let g:leader_map.m.f.h = ['FSHere', 'switch here']
+            let g:leader_map.m.f.r = ['FSSplitRight', 'switch right split']
+            let g:leader_map.m.f.l = ['FSSplitLeft', 'switch left split']
+        endif
+    endif
+endfunction
+
+augroup my_autocmds
+    au BufEnter * if &ft ==# 'cpp' || &ft ==# 'c' | call s:SetLeaderGuideMappings() | endif
+augroup END
+
+let s:flags=clang#Config()
+
+if dein#tap('neoinclude')
+    call dein#source('neoinclude')
+    call neoinclude#initialize()
+    call neoinclude#set_filetype_paths('%', neoinclude#util#get_context_filetype())
+    if !empty(s:flags['dirs'])
+        let g:neoinclude#paths.cpp.=','.join(s:flags.dirs, ',')
+    endif
 endif
 
-"generate header gaurds
-if dein#tap('headerguard')
-    nnoremap <buffer><silent> <Leader>mg :HeaderguardAdd<cr>
-endif
-
-if dein#tap('fswitch')
-    "open complimentary file here
-    nnoremap <buffer><silent> <Leader>mfh :FSHere<cr>
-
-    "open complimentary file in right vertical split
-    nnoremap <buffer><silent> <Leader>mfr :FSSplitRight<cr>
-
-    "open complimentary file in left vertical split
-    nnoremap <buffer><silent> <Leader>mfl :FSSplitLeft<cr>
-endif
-
-"generate implementation files
-if dein#tap('protodef')
-    nnoremap <buffer><silent> <Leader>mpp :set paste<cr>i<c-r>=protodef#ReturnSkeletonsFromPrototypesForCurrentBuffer({'includeNS' : 0})<cr><esc>='[:set nopaste<cr>:retab<cr>
-    nnoremap <buffer><silent> <Leader>mpn :set paste<cr>i<c-r>=protodef#ReturnSkeletonsFromPrototypesForCurrentBuffer({})<cr><esc>='[:set nopaste<cr>:retab<cr>
+if dein#tap('ale')
+    if !empty(s:flags['all'])
+        let g:ale_cpp_clang_options=join(s:flags.all, ' ')
+        let g:ale_c_gcc_options=join(s:flags.all, ' ')
+    endif
 endif

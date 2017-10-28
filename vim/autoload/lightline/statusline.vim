@@ -60,23 +60,6 @@ function! lightline#statusline#CtrlPMark()
     endif
 endfunction
 
-function! lightline#statusline#Neomake()
-    let errors = neomake#statusline#LoclistCounts()
-    let output = ''
-
-    if has_key(errors, 'E')
-        let output .= '[E:'.errors['E'].']'
-    endif
-    if has_key(errors, 'W')
-        let output .= '[W:'.errors['W'].']'
-    endif
-    if has_key(errors, 'x')
-        let output .= '[x:'.errors['x'].']'
-    endif
-
-    return output
-endfunction
-
 function! lightline#statusline#CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
     let g:lightline.ctrlp_regex = a:regex
     let g:lightline.ctrlp_prev = a:prev

@@ -1,0 +1,34 @@
+#!/usr/bin/bash
+
+CURDIR=$(pwd)
+
+# link directories of configs
+echo "$CURDIR"/dunst ~/.config/dunst
+echo "$CURDIR"/i3 ~/.config/i3
+echo "$CURDIR"/lxde ~/.config/lxsession/LXDE
+echo "$CURDIR"/openbox ~/.config/openbox
+echo "$CURDIR"/ranger ~/.config/ranger
+echo "$CURDIR"/termite ~/.config/termite
+
+# link vim to locations for both nvim and vim
+echo "$CURDIR"/vim ~/.vim
+echo "$CURDIR"/vim ~/.config/nvim
+
+# link each script in scripts into .local/bin
+for script in "$CURDIR"/scripts/*; do
+    echo "$CURDIR"/scripts/"$(basename "$script")" ~/.local/bin/"$(basename "$script")"
+done
+
+# link other config files
+echo "$CURDIR"/bash_profile ~/.bash_profile
+echo "$CURDIR"/bashrc ~/.bashrc
+echo "$CURDIR"/profile ~/.profile
+echo "$CURDIR"/inputrc ~/.inputrc
+echo "$CURDIR"/tmux.conf ~/.tmux.conf
+echo "$CURDIR"/Xresources ~/.Xresources
+
+echo "$CURDIR"/git-prompt.sh ~/.git-prompt.sh
+echo "$CURDIR"/gitconfig ~/.gitconfig
+echo "$CURDIR"/gitignore ~/.gitignore
+
+echo "$CURDIR"/conky.conf ~/.config/conky/conky.conf

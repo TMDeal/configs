@@ -14,14 +14,14 @@ if [ -d $HOME/.tmux/sessions ]; then
     PATH=$PATH:$HOME/.tmux/sessions
 fi
 
+export ANDROID_HOME=/opt/android-sdk
 if [ -d /opt/android-sdk ]; then
-    export ANDROID_HOME=/opt/android-sdk
     PATH=$PATH:$ANDROID_HOME/tools
     PATH=$PATH:$ANDROID_HOME/platform-tools
 fi
 
+export NPM_PREFIX=$HOME/.npm-packages
 if [ -x /usr/bin/npm ]; then
-    NPM_PREFIX=$HOME/.npm-packages
     if [ ! -d $NPM_PREFIX ]; then
         mkdir $NPM_PREFIX
     fi
@@ -31,8 +31,8 @@ if [ -x /usr/bin/npm ]; then
     PATH=$PATH:$NPM_PREFIX/bin
 fi
 
-if [ -d $HOME/.go ]; then
-    export GOPATH=$HOME/.go
+export GOPATH=$HOME/go
+if [ -d $HOME/go ]; then
     PATH=$PATH:$GOPATH/bin
 fi
 

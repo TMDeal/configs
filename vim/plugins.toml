@@ -1,0 +1,410 @@
+####################
+# Initial ##########
+####################
+
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'hecal3/vim-leader-guide'
+name = 'leader-guide'
+
+[[plugins]]
+repo = 'dbakker/vim-projectroot'
+name = 'projectroot'
+hook_add = '''
+let g:rootmarkers=g:root_markers
+'''
+
+[[plugins]]
+repo = 'EinfachToll/DidYouMean'
+name = 'did-you-mean'
+
+####################
+# C/CPP ############
+####################
+
+[[plugins]]
+repo = 'vim-scripts/DoxygenToolkit.vim'
+name = 'doxygen-toolkit'
+on_ft = ['c', 'cpp']
+
+[[plugins]]
+repo = 'derekwyatt/vim-fswitch'
+name = 'fswitch'
+on_ft = ['c', 'cpp']
+
+[[plugins]]
+repo = 'drmikehenry/vim-headerguard'
+name = 'headerguard'
+on_ft = ['c', 'cpp']
+
+####################
+# Python ###########
+####################
+
+[[plugins]]
+repo = 'python-mode/python-mode'
+on_ft = ['python']
+
+[[plugins]]
+repo = 'jmcantrell/vim-virtualenv'
+name = 'python-virtualenv'
+on_ft = ['python']
+on_if = "!empty($VIRTUAL_ENV)"
+
+[[plugins]]
+repo = 'heavenshell/vim-pydocstring'
+name = 'pydocstring'
+on_ft = ['python']
+
+[[plugins]]
+repo = 'tweekmonster/impsort.vim'
+name = 'impsort'
+on_ft = ['python']
+
+####################
+# Go ###############
+####################
+
+[[plugins]]
+repo = 'fatih/vim-go'
+name = 'go'
+on_cmd = ['GoInstallBinaries', 'GoUpdateBinaries']
+on_ft = ['go', 'gohtmltmpl']
+
+####################
+# Latex ############
+####################
+
+[[plugins]]
+repo = 'lervag/vimtex'
+on_ft = ['tex']
+
+[[plugins]]
+repo = 'xuhdev/vim-latex-live-preview'
+name = 'latex-live-preview'
+on_ft = ['tex']
+
+[[plugins]]
+repo = 'rhysd/vim-grammarous'
+name = 'grammarous'
+on_ft = ['tex']
+hook_add = '''
+nmap ]g <Plug>(grammarous-move-to-next-error)
+nmap ]g <Plug>(grammarous-move-to-previous-error)
+'''
+
+####################
+# Web ##############
+####################
+
+[[plugins]]
+repo = 'vim-scripts/Emmet.vim'
+name = 'emmet'
+on_ft = ['html', 'javascript', 'javascript.jsx', 'jinja', 'gohtmltmpl']
+
+[[plugins]]
+repo = 'alvan/vim-closetag'
+name = 'closetag'
+hook_add = '''
+let g:closetag_filenames="*.html,*.php,*.xhtml,*.xml,*.jsx,*.js,*.hbs,*.handlebars,*.jinja,*.tsx,*.vue,*.tmpl"
+let g:closetag_shortcut='>'
+let g:closetag_close_shortcut='<C-x>.'
+'''
+
+[[plugins]]
+repo = 'dunckr/js_alternate.vim'
+name = 'js-alternate'
+on_func = ['js_alternate#run']
+
+[[plugins]]
+repo = 'heavenshell/vim-jsdoc'
+name = 'jsdoc'
+on_cmd = ['JsDoc']
+
+[[plugins]]
+repo = 'bdauria/angular-cli.vim'
+name = 'angular-cli'
+hook_add = '''
+let g:angular_cli_stylesheet_format="scss"
+'''
+
+[[plugins]]
+repo = 'ternjs/tern_for_vim'
+name = 'ternjs'
+if = 'executable("npm")'
+build = 'npm install'
+on_ft = ['javascript', 'javascript.jsx']
+
+####################
+# Filetype #########
+####################
+
+[[plugins]]
+repo = 'othree/javascript-libraries-syntax.vim'
+name = 'javascript-libraries-syntax'
+
+[[plugins]]
+repo = 'alampros/vim-react-keywords'
+name = 'react-keywords'
+
+[[plugins]]
+repo = 'lepture/vim-jinja'
+name = 'jinja'
+
+[[plugins]]
+repo = 'sheerun/vim-polyglot'
+name = 'polyglot'
+hook_add = '''
+let g:polyglot_disabled=['javascript', 'jsx', 'typescript']
+'''
+
+[[plugins]]
+repo = 'leafgarland/typescript-vim'
+name = 'typescript'
+on_ft = ['typescript']
+
+[[plugins]]
+repo = 'pangloss/vim-javascript'
+name = 'javascript'
+on_ft = ['javascript', 'javascript.jsx', 'html']
+hook_add = '''
+let g:javascript_plugin_jsdoc=1
+let g:javascript_plugin_ngdoc=1
+let g:javascript_plugin_flow=1
+'''
+
+[[plugins]]
+repo = 'mxw/vim-jsx'
+name = 'jsx'
+on_ft = ['javascript', 'javascript.jsx']
+
+####################
+# Project ##########
+####################
+
+[[plugins]]
+repo = 'embear/vim-localvimrc'
+name = 'localvimrc'
+on_cmd = ['LocalVimRC', 'LocalVimRCClear']
+on_if = 'filereadable(expand(projectroot#guess() . "/.lvimrc"))'
+hook_add = '''
+let g:localvimrc_name=".lvimrc"
+let g:localvimrc_event=["BufWinEnter", "BufNewFile", "BufRead"]
+let g:localvimrc_persistent=2
+let g:localvimrc_persistence_file=$EDITOR_ROOT . "/.localvimrc_persistent"
+'''
+
+[[plugins]]
+repo = 'ludovicchabant/vim-gutentags'
+name = 'gutentags'
+if = 'executable("ctags")'
+
+[[plugins]]
+repo = 'majutsushi/tagbar'
+if = 'executable("ctags")'
+on_cmd = ['TagbarToggle']
+
+[[plugins]]
+repo = 'junegunn/fzf'
+build = './install --all'
+merged = 0
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+depends = 'fzf'
+
+[[plugins]]
+repo = 'editorconfig/editorconfig-vim'
+name = 'editorconfig'
+on_if = 'filereadable(expand(projectroot#guess() . "/.editorconfig"))'
+hook_add = '''
+let g:EditorConfig_exclude_patterns = ['scp://.*']
+'''
+
+[[plugins]]
+repo = 'rhysd/committia.vim'
+name = 'committia'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+name = 'fugitive'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+name = 'gitgutter'
+hook_add = '''
+let g:gitgutter_map_keys=0
+'''
+
+####################
+# Checkers #########
+####################
+
+[[plugins]]
+repo = 'w0rp/ale'
+
+####################
+# Completion #######
+####################
+
+[[plugins]]
+repo = 'Raimondi/delimitMate'
+on_event = 'InsertEnter'
+
+[[plugins]]
+repo = 'SirVer/ultisnips'
+if = 'has("python")'
+on_ft = ['snippets']
+on_event = 'InsertEnter'
+
+[[plugins]]
+repo = 'honza/vim-snippets'
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+name = 'deoplete'
+if = 'has("nvim")'
+on_event = 'InsertEnter'
+hook_source = '''
+source $EDITOR_ROOT/config/deoplete.vim
+'''
+
+[[plugins]]
+repo = 'Shougo/neoinclude.vim'
+name = 'neoinclude'
+on_source = 'deoplete'
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+name = 'context-filetype'
+on_source = 'deoplete'
+
+[[plugins]]
+repo = 'Shougo/echodoc.vim'
+name = 'echodoc'
+hook_add = '''
+let g:echodoc#enable_at_startup=1
+'''
+
+[[plugins]]
+repo = 'zchee/deoplete-go'
+
+[[plugins]]
+repo = 'zchee/deoplete-jedi'
+
+[[plugins]]
+repo = 'TMDeal/deoplete-clang'
+
+[[plugins]]
+repo = 'carlitux/deoplete-ternjs'
+if = 'executable("npm")'
+
+[[plugins]]
+repo = 'mhartington/nvim-typescript'
+if = 'executable("npm") && executable("tsserver")'
+
+####################
+# Vim Extensions ###
+####################
+
+[[plugins]]
+repo = 'tpope/vim-eunuch'
+name = 'eunuch'
+on_cmd = ['Remove', 'Unlink', 'Move', 'Rename', 'Chmod', 'Mkdir', 'Find', 'Locate', 'Wall', 'SudoWrite', 'SudoEdit']
+
+[[plugins]]
+repo = 'Valloric/ListToggle'
+name = 'list-toggle'
+on_cmd = ['LToggle', 'QToggle']
+
+[[plugins]]
+repo = 'Konfekt/FastFold'
+name = 'fast-fold'
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+name = 'surround'
+
+[[plugins]]
+repo = 'tpope/vim-repeat'
+name = 'repeat'
+
+[[plugins]]
+repo = 'vim-scripts/YankRing.vim'
+name = 'yankring'
+hook_add = '''
+let g:yankring_history_dir=$EDITOR_ROOT . '/.cache'
+let g:yankring_history_file='yankring'
+let g:yankring_clipboard_monitor=0
+'''
+
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+name = 'tcomment'
+hook_add = '''
+let g:tcommentMapLeader1=''
+let g:tcommentMapLeader2=''
+'''
+
+####################
+# UI ###############
+####################
+
+[[plugins]]
+repo = 'gcmt/taboo.vim'
+name = 'taboo'
+hook_add = '''
+let g:taboo_tabline=1
+let g:taboo_tab_format='[%N]%f%m'
+'''
+
+[[plugins]]
+repo = 'lilydjwg/colorizer'
+hook_add = '''
+let g:colorizer_nomap=1
+'''
+
+[[plugins]]
+repo = 'nanotech/jellybeans.vim'
+name = 'jellybeans'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+name = 'lightline'
+
+####################
+# Extra ############
+####################
+
+[[plugins]]
+repo = 'sbdchd/vim-shebang'
+name = 'shebang'
+on_cmd = ['ShebangInsert']
+
+[[plugins]]
+repo = 'godlygeek/tabular'
+on_cmd = ['Tabularize']
+
+[[plugins]]
+repo = 'sbdchd/neoformat'
+on_cmd = ['Neoformat']
+
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+on_cmd = ['NERDTreeToggle', 'NERDTreeFind']
+
+[[plugins]]
+repo = 'Xuyuanp/nerdtree-git-plugin'
+name = 'nerdtree-git'
+on_source = 'nerdtree'
+depends = 'nerdtree'
+
+[[plugins]]
+repo = 'mbbill/undotree'
+on_cmd = ['UndotreeToggle']
+
+[[plugins]]
+repo = 'christoomey/vim-tmux-navigator'
+name = 'tmux-navigator'
