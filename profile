@@ -31,8 +31,8 @@ if [ -x /usr/bin/npm ]; then
     PATH=$PATH:$NPM_PREFIX/bin
 fi
 
-export GOPATH=$HOME/go
-if [ -d $HOME/go ]; then
+export GOPATH=$HOME/my-workspace/go
+if [ -d $GOPATH/bin ]; then
     PATH=$PATH:$GOPATH/bin
 fi
 
