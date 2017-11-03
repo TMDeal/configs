@@ -103,7 +103,7 @@ our $SCHEMA = [
     {end_cat => undef},
     {sep => undef},
 
-    {item => ['lxlock', 'Lock', 'lock']},
+    {item => ['my-lxlock', 'Lock', 'lock']},
 
     {item => ['lxsession-logout', 'Exit', 'exit']},
 ]
