@@ -45,7 +45,7 @@ export EDITOR="nvim"
 if [[ -f ~/.fzf.bash ]]; then
     export FZF_DEFAULT_OPTS="--reverse --border"
     # export FZF_DEFAULT_COMMAND='ag -g ""'
-    export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules,build,dist}/*" 2> /dev/null'
+    export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules,build,dist,vendor,.cache,bundle}/*" 2> /dev/null'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     bind -x '"\C-p": vim $(fzf --height 40%);'
     source ~/.fzf.bash
