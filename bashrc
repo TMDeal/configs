@@ -93,7 +93,7 @@ if $( command_exists nvim ); then
    alias vim="nvim"
 
    if $( command_exists nvim-qt ); then
-       alias vimq="nvim-qt"
+       alias gvim="nvim-qt"
    fi
 
 fi
