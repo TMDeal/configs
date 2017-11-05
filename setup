@@ -12,6 +12,7 @@ ln -si "$CURDIR"/termite ~/.config/termite
 
 # link vim to locations for both nvim and vim
 ln -si "$CURDIR"/vim ~/.vim
+ln -si "$CURDIR"/vim/vimrc "$CURDIR"/vim/init.vim
 ln -si "$CURDIR"/vim ~/.config/nvim
 
 # link each script in scripts into .local/bin
