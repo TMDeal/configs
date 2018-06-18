@@ -4,10 +4,8 @@ CURDIR=$(pwd)
 
 # link directories of configs
 ln -si "$CURDIR"/dunst ~/.config/dunst
-ln -si "$CURDIR"/i3 ~/.config/i3
 ln -si "$CURDIR"/lxde ~/.config/lxsession/LXDE
 ln -si "$CURDIR"/openbox ~/.config/openbox
-ln -si "$CURDIR"/ranger ~/.config/ranger
 ln -si "$CURDIR"/termite ~/.config/termite
 
 # link vim to locations for both nvim and vim
