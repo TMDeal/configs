@@ -1,11 +1,10 @@
 @tint2
 @nm-applet
 @volumeicon
-@compton -b
+@conky -d -p 10
+#@compton -b
 @pcmanfm --desktop --profile LXDE
-@~/.config/lxsession/LXDE/init
 @xset b off
 @xset -dpms
 @xset s 1800 1800
-@conky -d -p 10
 @xss-lock -- i3lock-wrapper -e
