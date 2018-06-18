@@ -6,9 +6,9 @@ if [ -d $HOME/.config/composer/vendor/bin ]; then
     PATH=$PATH:$HOME/.config/composer/vendor/bin
 fi
 
-if [ -d $HOME/.gem/ruby/2.4.0/bin ]; then
-    PATH=$PATH:$HOME/.gem/ruby/2.4.0/bin
-fi
+# if [ -d $HOME/.gem/ruby/2.5.0/bin ]; then
+#     PATH=$PATH:$HOME/.gem/ruby/2.5.0/bin
+# fi
 
 if [ -d $HOME/.tmux/sessions ]; then
     PATH=$PATH:$HOME/.tmux/sessions
@@ -42,3 +42,8 @@ fi
 
 export PATH
 export SWT_GTK3=0
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+if [ -d $HOME/.rvm/bin ]; then
+    export PATH="$PATH:$HOME/.rvm/bin"
+fi

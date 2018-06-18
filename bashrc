@@ -57,9 +57,9 @@ if [ -f /usr/bin/virtualenvwrapper.sh ]; then
     source /usr/bin/virtualenvwrapper.sh
 fi
 
-if $( command_exists ng ); then
-    source <(ng completion --bash)
-fi
+# if $( command_exists ng ); then
+#     source <(ng completion --bash)
+# fi
 
 if [ -f $HOME/.tnsrc ]; then 
     source $HOME/.tnsrc 
@@ -130,3 +130,7 @@ alias ei3="vim ~/.config/i3/config"
 alias ei3b="vim ~/.config/i3/i3blocks.conf"
 alias ei3s="vim ~/.config/i3/i3status.conf"
 alias ehttp="vim /etc/httpd/conf/httpd.conf"
+#
+# # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+# export PATH="$PATH:$HOME/.rvm/bin"
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
