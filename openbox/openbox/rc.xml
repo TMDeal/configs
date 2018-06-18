@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <openbox_config xmlns="http://openbox.org/3.4/rc" xmlns:xi="http://www.w3.org/2001/XInclude">
   <resistance>
     <strength>10</strength>
@@ -120,10 +121,10 @@
     <number>4</number>
     <firstdesk>1</firstdesk>
     <names>
-      <name>D:1</name>
-      <name>D:2</name>
-      <name>D:3</name>
-      <name>D:4</name>
+      <name>&#xF108;:1</name>
+      <name>&#xF108;:2</name>
+      <name>&#xF108;:3</name>
+      <name>&#xF108;:4</name>
     </names>
     <popupTime>875</popupTime>
     <!-- The number of milliseconds to show the popup for when switching
@@ -363,7 +364,7 @@
         <action name="Move"/>
       </mousebind>
       <mousebind action="DoubleClick" button="Left">
-        <action name="ToggleMaximize"/>
+        <action xmlns="http://openbox.org/3.4/rc" name="ToggleMaximize"/>
       </mousebind>
       <mousebind action="Click" button="Up">
         <action name="if">
@@ -651,9 +652,11 @@
     <!-- show the manage desktops section in the client-list-(combined-)menu -->
   </menu>
   <applications>
-      <application name="termite" class="Termite">
-          <decor>no</decor>
-      </application>
+    <application class="*">
+      <decor>no</decor>
+      <focus>yes</focus>
+      <layer>normal</layer>
+    </application>
     <!--
   # this is an example with comments through out. use these to make your
   # own rules, but without the comments of course.
