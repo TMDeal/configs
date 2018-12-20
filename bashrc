@@ -33,10 +33,11 @@ extract(){
    fi
  }
 
-# Bash completion
 if [ -f /etc/bash_completion ]; then
-    ./etc/bash_completion
+   . /etc/bash_completion
 fi
+
+export VIRTUALENV_PYTHON=/usr/bin/python3
 
 export TERM=xterm-256color
 export VISUAL="nvim-qt --nofork"
@@ -45,7 +46,9 @@ export EDITOR="nvim"
 if [[ -f ~/.fzf.bash ]]; then
     export FZF_DEFAULT_OPTS="--reverse --border"
     # export FZF_DEFAULT_COMMAND='ag -g ""'
-    export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules,build,dist,vendor,.cache,bundle}/*" 2> /dev/null'
+    export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow \
+        -g "!*.{a,lock,png,jpg,jpeg,ico,svg}" \
+        -g "!{.git,.cache,node_modules,bundle,build,pkg,vendor,third_party,bin,dist,target,_build,deps}/*" 2> /dev/null'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     bind -x '"\C-p": vim $(fzf --height 40%);'
     source ~/.fzf.bash
@@ -121,7 +124,7 @@ alias gpp="g++ -std=c++1y -Wall -Wextra -g"
 alias mongo="mongo --quiet"
 alias open="xdg-open"
 
-alias ev="vim ~/configs/vim/vimrc"
+alias ev="vim ~/.vim/vimrc"
 alias eb="vim ~/.bashrc"
 alias sb="source ~/.bashrc"
 alias et="vim ~/.tmux.conf"
@@ -130,7 +133,13 @@ alias ei3="vim ~/.config/i3/config"
 alias ei3b="vim ~/.config/i3/i3blocks.conf"
 alias ei3s="vim ~/.config/i3/i3status.conf"
 alias ehttp="vim /etc/httpd/conf/httpd.conf"
-#
-# # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-# export PATH="$PATH:$HOME/.rvm/bin"
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
+if [ -d $HOME/.asdf ]; then
+    . $HOME/.asdf/asdf.sh
+    . $HOME/.asdf/completions/asdf.bash
+fi

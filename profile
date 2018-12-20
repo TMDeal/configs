@@ -1,14 +1,10 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
 if [ -d $HOME/.config/composer/vendor/bin ]; then
     PATH=$PATH:$HOME/.config/composer/vendor/bin
 fi
-
-# if [ -d $HOME/.gem/ruby/2.5.0/bin ]; then
-#     PATH=$PATH:$HOME/.gem/ruby/2.5.0/bin
-# fi
 
 if [ -d $HOME/.tmux/sessions ]; then
     PATH=$PATH:$HOME/.tmux/sessions
@@ -20,7 +16,12 @@ if [ -d /opt/android-sdk ]; then
     PATH=$PATH:$ANDROID_HOME/platform-tools
 fi
 
+if [ -d $HOME/.cargo/bin ]; then
+    PATH=$PATH:$HOME/.cargo/bin
+fi
+
 export NPM_PREFIX=$HOME/.npm-packages
+export NVM_DIR="$HOME/.nvm"
 if [ -x /usr/bin/npm ]; then
     if [ ! -d $NPM_PREFIX ]; then
         mkdir $NPM_PREFIX
@@ -31,9 +32,13 @@ if [ -x /usr/bin/npm ]; then
     PATH=$PATH:$NPM_PREFIX/bin
 fi
 
+export GOROOT=/usr/local/go
 export GOPATH=$HOME/my-workspace/go
 if [ -d $GOPATH/bin ]; then
     PATH=$PATH:$GOPATH/bin
+fi
+if [ -d $GOROOT/bin ]; then
+    PATH=$PATH:$GOROOT/bin
 fi
 
 if [ -d $HOME/.local/bin ]; then
@@ -43,7 +48,4 @@ fi
 export PATH
 export SWT_GTK3=0
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-if [ -d $HOME/.rvm/bin ]; then
-    export PATH="$PATH:$HOME/.rvm/bin"
-fi
+export PATH="$HOME/.cargo/bin:$PATH"

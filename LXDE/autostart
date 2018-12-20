@@ -1,0 +1,8 @@
+@tint2
+#@nm-applet
+@volumeicon-delay
+@conky -d -p 10
+@xset b off
+@xset -dpms
+@xset s 1800 1800
+@pcmanfm --desktop --profile LXDE
