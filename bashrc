@@ -124,7 +124,7 @@ alias gpp="g++ -std=c++1y -Wall -Wextra -g"
 alias mongo="mongo --quiet"
 alias open="xdg-open"
 
-alias ev="vim ~/.vim/vimrc"
+alias ev="vim ~/.config/nvim/vimrc"
 alias eb="vim ~/.bashrc"
 alias sb="source ~/.bashrc"
 alias et="vim ~/.tmux.conf"
