@@ -2,10 +2,6 @@
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-if [ -d $HOME/.config/composer/vendor/bin ]; then
-    PATH=$PATH:$HOME/.config/composer/vendor/bin
-fi
-
 if [ -d $HOME/.tmux/sessions ]; then
     PATH=$PATH:$HOME/.tmux/sessions
 fi
@@ -43,6 +39,10 @@ fi
 
 if [ -d $HOME/.local/bin ]; then
     PATH=$PATH:$HOME/.local/bin
+fi
+
+if [ -d $HOME/.scripts ]; then
+    PATH=$PATH:$HOME/.scripts
 fi
 
 export PATH

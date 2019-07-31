@@ -1,0 +1,10 @@
+#!/bin/bash
+
+case $1 in
+    up)
+        xbacklight -inc 10 ;;
+        # xbacklight -inc 10 && echo "brightness: $(xbacklight -get)" | awk '{print $1, int($2)}' | xargs notify-send ;;
+    down)
+        xbacklight -dec 10 ;;
+        # xbacklight -inc 10 && echo "brightness: $(xbacklight -get)" | awk '{print $1, int($2)}' | xargs notify-send ;;
+esac

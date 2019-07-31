@@ -1,0 +1,249 @@
+# autostart
+exec --no-startup-id feh --bg-scale $wallpaper_picture
+exec --no-startup-id xss-lock -l -- slock
+exec --no-startup-id $scripts/xset-settings
+exec --no-startup-id $scripts/alternate-layout.py
+exec --no-startup-id compton -b
+exec --no-startup-id lxpolkit
+exec --no-startup-id udiskie
+
+# mod variables
+set $mod Mod4
+set $alt Mod1
+
+# term variable
+set $term --no-startup-id st
+
+# scripts dir
+set $scripts $HOME/.config/i3/scripts
+
+# colors
+set_from_resource $background   background #121212
+set_from_resource $foreground   foreground #d7d7d7
+set_from_resource $dark_black   color0     #393939
+set_from_resource $black        color8     #535551
+set_from_resource $dark_red     color1     #ca674a
+set_from_resource $red          color9     #ea2828
+set_from_resource $dark_green   color2     #96a967
+set_from_resource $green        color10    #87dd32
+set_from_resource $dark_yellow  color3     #d3a94a
+set_from_resource $yellow       color11    #f7e44d
+set_from_resource $dark_blue    color4     #5778c1
+set_from_resource $blue         color12    #6f9bca
+set_from_resource $dark_magenta color5     #9c35ac
+set_from_resource $magenta      color13    #a97ca4
+set_from_resource $dark_cyan    color6     #6eb5f3
+set_from_resource $cyan         color14    #32dddd
+set_from_resource $dark_white   color7     #a9a9a9
+set_from_resource $white        color15    #e9e9e7
+
+# font
+set $FONT pango:Anonymous Pro Sans 10
+# fonts
+font $FONT
+
+# direction variables
+set $left  h
+set $down  j
+set $up    k
+set $right l
+
+# workspace variables
+set $ws1  1:I
+set $ws2  2:II
+set $ws3  3:III
+set $ws4  4:IV
+set $ws5  5:V
+set $ws6  6:VI
+set $ws7  7:VII
+set $ws8  8:VIII
+set $ws9  9:IX
+set $ws10 10:X
+
+# background
+set $wallpaper_picture $HOME/.config/i3/background.jpg
+
+# class                 border     background   text         indicator    child_border
+client.focused          $black     $black       $white       $white       $blue
+client.focused_inactive $black     $dark_black  $dark_white  $dark_black  $black
+client.unfocused        $black     $black       $dark_white  $dark_black  $black
+client.urgent           $dark_red  $dark_red    $black       $dark_red    $dark_red
+client.background       $background
+
+# window borders
+new_window pixel 1
+new_float  pixel 1
+
+# give chromium a border
+for_window [class="Chromium"] border 1pixel
+
+floating_modifier $mod
+
+# dont change focus on mouse hover
+focus_follows_mouse no
+
+# move back and forth between workspaces easier
+workspace_auto_back_and_forth yes
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# change focus
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+
+# move focused window
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+
+# split in vertical orientation
+bindsym $mod+minus split v
+
+# split in horizontal orientation
+bindsym $mod+backslash split h
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+comma focus parent
+
+# focus the child container
+bindsym $mod+period focus child
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+bindsym $mod+equal scratchpad show
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+bindsym $mod+Shift+equal move scratchpad
+
+# toggle status bar
+bindsym $mod+m bar mode toggle
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 prompt
+bindsym $mod+Shift+e exec $scripts/i3exit
+# start a terminal
+bindsym $mod+Return exec $term
+# prompt to take screenshot
+bindsym $mod+p exec --no-startup-id my-screenshot
+# rofi
+# bindsym $mod+d exec --no-startup-id my-rofi
+bindsym $mod+d exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -i -l 10 -p 'run'" --use-xdg-de --no-generic --term=st
+# networkmanager dmenu
+bindsym $mod+n exec --no-startup-id $scripts/nmcli-dmenu.py
+
+# XF86 commands
+# lock screen
+bindsym XF86ScreenSaver exec --no-startup-id slock
+
+# media controls
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioStop exec --no-startup-id playerctl stop
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q sset Master 5%+ && pkill -RTMIN+10 i3blocks 
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute exec --no-startup-id amixer -q sset Master toggle && pkill -RTMIN+10 i3blocks
+
+# brightness
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10
+
+mode "resize" {
+    # Pressing left will shrink the window’s width.
+    # Pressing right will grow the window’s width.
+    # Pressing up will shrink the window’s height.
+    # Pressing down will grow the window’s height.
+    bindsym $left       resize shrink width 10 px or 10 ppt
+    bindsym $down       resize grow height 10 px or 10 ppt
+    bindsym $up         resize shrink height 10 px or 10 ppt
+    bindsym $right      resize grow width 10 px or 10 ppt
+
+    # same bindings, but for the arrow keys
+    bindsym Left        resize shrink width 10 px or 10 ppt
+    bindsym Down        resize grow height 10 px or 10 ppt
+    bindsym Up          resize shrink height 10 px or 10 ppt
+    bindsym Right       resize grow width 10 px or 10 ppt
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+no_focus [window_role="pop-up"]
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+
+bar {
+    status_command i3blocks -c $HOME/.config/i3/i3blocks.conf
+    mode dock
+    hidden_state hide
+    modifier none
+    strip_workspace_numbers yes
+    workspace_buttons yes
+    binding_mode_indicator yes
+    separator_symbol "|"
+    position top
+    font $FONT
+    tray_output primary
+    tray_padding 2
+
+    colors {
+        #          color
+        background $background
+        statusline $white
+        separator  $black
+
+        #                  border      background  text
+        focused_workspace  $background $background $white
+        active_workspace   $background $background $white
+        inactive_workspace $background $background $black
+        urgent_workspace   $background $background $dark_red
+        binding_mode       $background $background $dark_red
+    }
+}

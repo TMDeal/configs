@@ -12,6 +12,11 @@ md(){
     cd $1
 }
 
+pydir() {
+    mkdir -p $1
+    touch $1/__init__.py
+}
+
 extract(){
    if [ -f $1 ] ; then
        case $1 in
@@ -40,7 +45,7 @@ fi
 export VIRTUALENV_PYTHON=/usr/bin/python3
 
 export TERM=xterm-256color
-export VISUAL="nvim-qt --nofork"
+export VISUAL="nvim"
 export EDITOR="nvim"
 
 if [[ -f ~/.fzf.bash ]]; then
@@ -63,10 +68,6 @@ fi
 # if $( command_exists ng ); then
 #     source <(ng completion --bash)
 # fi
-
-if [ -f $HOME/.tnsrc ]; then 
-    source $HOME/.tnsrc 
-fi
 
 # don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth
@@ -114,16 +115,15 @@ fi
 
 alias l="ls -Alh"
 alias t="tmux -2"
+alias ta="tmux -2 attach"
+alias tt="tmuxinator"
 alias ..="cd .."
 alias q="exit"
 alias :q="exit"
 alias c="clear"
-alias links="xlinks"
 alias vimn="vim -u NONE"
 alias gpp="g++ -std=c++1y -Wall -Wextra -g"
-alias mongo="mongo --quiet"
 alias open="xdg-open"
-
 alias ev="vim ~/.config/nvim/vimrc"
 alias eb="vim ~/.bashrc"
 alias sb="source ~/.bashrc"
@@ -133,13 +133,28 @@ alias ei3="vim ~/.config/i3/config"
 alias ei3b="vim ~/.config/i3/i3blocks.conf"
 alias ei3s="vim ~/.config/i3/i3status.conf"
 alias ehttp="vim /etc/httpd/conf/httpd.conf"
+# alias python="python3"
+# alias pip="pip3"
+alias ctrlc='xclip -selection c'
+alias ctrlv='xclip -selection c -o'
+alias weather='curl wttr.in'
+
+# if [ -n "$VIRTUAL_ENV" ]; then
+#   . "$VIRTUAL_ENV/bin/activate"
+# fi
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 if [ -d $HOME/.asdf ]; then
     . $HOME/.asdf/asdf.sh
     . $HOME/.asdf/completions/asdf.bash
 fi
+
+if [ -f $HOME/.tmuxinator.bash ]; then
+    . ~/.tmuxinator.bash
+fi
+
+export PATH="/home/trent/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"

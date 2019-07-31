@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <openbox_config xmlns='http://openbox.org/3.4/rc' xmlns:xi='http://www.w3.org/2001/XInclude'>
     <resistance>
         <strength>10</strength>
@@ -119,10 +120,10 @@
         <number>4</number>
         <firstdesk>1</firstdesk>
         <names>
-            <name>:1</name>
-            <name>:2</name>
-            <name>:3</name>
-            <name>:4</name>
+            <name>:1</name>
+            <name>:2</name>
+            <name>:3</name>
+            <name>:4</name>
         </names>
         <popupTime>875</popupTime>
     </desktops>
@@ -196,11 +197,6 @@
         <keybind key='W-4'>
             <action name='Desktop'>
                 <desktop>4</desktop>
-            </action>
-        </keybind>
-        <keybind key='W-d'>
-            <action name='Execute'>
-                <command>my-rofi</command>
             </action>
         </keybind>
         <keybind key='Super-Shift-1'>
@@ -287,7 +283,23 @@
         </keybind>
         <keybind key='W-Return'>
             <action name='Execute'>
-                <command>lxterminal</command>
+                <command>st</command>
+            </action>
+        </keybind>
+        <keybind key='W-d'>
+            <action name='Execute'>
+                <command>j4-dmenu-desktop --dmenu=&quot;dmenu -i -l 10 -p &apos;run&apos;&quot; --use-xdg-de --no-generic --term=st
+</command>
+            </action>
+        </keybind>
+        <keybind key='W-n'>
+            <action name='Execute'>
+                <command>nmcli-dmenu</command>
+            </action>
+        </keybind>
+        <keybind key='S-W-e'>
+            <action name='Execute'>
+                <command>lxsession-logout</command>
             </action>
         </keybind>
     </keyboard>
@@ -363,7 +375,7 @@
                 <action name='Move'/>
             </mousebind>
             <mousebind action='DoubleClick' button='Left'>
-                <action name='ToggleMaximize' xmlns='http://openbox.org/3.4/rc'/>
+                <action xmlns='http://openbox.org/3.4/rc' name='ToggleMaximize'/>
             </mousebind>
             <mousebind action='Click' button='Up'>
                 <action name='if'>
@@ -649,7 +661,7 @@
     </menu>
     <!-- show the manage desktops section in the client-list-(combined-)menu -->
     <applications>
-        <application class='*'>
+        <application class='st-256color'>
             <decor>yes</decor>
             <focus>yes</focus>
             <layer>normal</layer>

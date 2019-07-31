@@ -1,6 +1,6 @@
 @tint2
-#@nm-applet
 @volumeicon-delay
+@compton -b
 @conky -d -p 10
 @xset b off
 @xset -dpms

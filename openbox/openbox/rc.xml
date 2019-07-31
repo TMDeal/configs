@@ -120,10 +120,10 @@
     <number>4</number>
     <firstdesk>1</firstdesk>
     <names>
-      <name>:1</name>
-      <name>:2</name>
-      <name>:3</name>
-      <name>:4</name>
+      <name>:1</name>
+      <name>:2</name>
+      <name>:3</name>
+      <name>:4</name>
     </names>
     <popupTime>875</popupTime>
     <!-- The number of milliseconds to show the popup for when switching
@@ -655,7 +655,7 @@
   </menu>
   <applications>
     <application class="*">
-      <decor>yes</decor>
+      <decor>no</decor>
       <focus>yes</focus>
       <layer>normal</layer>
     </application>

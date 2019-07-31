@@ -1,0 +1,16 @@
+#!/bin/bash
+
+choices="Cancel\nShutdown\nReboot\nLogout"
+
+choice=$(echo -e "$choices" | dmenu -i -p "Exit")
+
+case $choice in
+    Cancel)
+        ;;
+    Shutdown)
+        gksudo -- shutdown -h now ;;
+    Reboot)
+        gksudo -- shutdown -r now ;;
+    Logout)
+        i3-msg exit
+esac
