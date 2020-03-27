@@ -17,7 +17,6 @@ if [ -d $HOME/.cargo/bin ]; then
 fi
 
 export NPM_PREFIX=$HOME/.npm-packages
-export NVM_DIR="$HOME/.nvm"
 if [ -x /usr/bin/npm ]; then
     if [ ! -d $NPM_PREFIX ]; then
         mkdir $NPM_PREFIX
