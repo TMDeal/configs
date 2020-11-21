@@ -138,6 +138,7 @@ alias ehttp="vim /etc/httpd/conf/httpd.conf"
 alias ctrlc='xclip -selection c'
 alias ctrlv='xclip -selection c -o'
 alias weather='curl wttr.in'
+alias tales='cd ~/Documents/t-engine4-1.6.7/ && ./t-engine'
 
 # if [ -n "$VIRTUAL_ENV" ]; then
 #   . "$VIRTUAL_ENV/bin/activate"
@@ -163,3 +164,5 @@ eval "$(pyenv virtualenv-init -)"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# export JABBA_HOME="$HOME/.jabba"
+# [ -s "$JABBA_HOME/jabba.sh" ] && source "$JABBA_HOME/jabba.sh"
